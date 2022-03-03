@@ -16,12 +16,12 @@
       <MenuBar prefHeight="38.0" prefWidth="961.0" style="-fx-background-color: #3D5B59;" />
       <ImageView fitHeight="77.0" fitWidth="85.0" layoutX="8.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../xocolored-0١.png" />
+            <Image url="@imgs/xocolored-0١.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="380.0" fitWidth="471.0" layoutX="277.0" layoutY="-50.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../xocolored-0١.png" />
+            <Image url="@imgs/xocolored-0١.png" />
          </image>
       </ImageView>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
@@ -42,7 +42,7 @@
       </Button>
       <ImageView fitHeight="213.0" fitWidth="202.0" layoutX="300.0" layoutY="296.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../user1-0١.png" />
+            <Image url="@imgs/user1-0١.png" />
          </image>
       </ImageView>
       <TableView id="table" fx:id="tPlayers" layoutX="630.0" layoutY="145.0" prefHeight="384.0" prefWidth="299.0" style="-fx-background-radius: 10;">
@@ -65,7 +65,7 @@
       </Label>
       <ImageView fitHeight="77.0" fitWidth="87.0" layoutX="507.0" layoutY="367.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../computer-0١.png" />
+            <Image url="@imgs/computer-0١.png" />
          </image>
       </ImageView>
       <Label id="Redressed" fx:id="ChoosePlayers11" layoutX="349.0" layoutY="303.0" prefHeight="29.0" prefWidth="203.0" text="Score:" textFill="WHITE">

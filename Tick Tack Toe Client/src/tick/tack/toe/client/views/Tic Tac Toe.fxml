@@ -16,12 +16,12 @@
       <MenuBar prefHeight="38.0" prefWidth="961.0" style="-fx-background-color: #3D5B59;" />
       <ImageView fitHeight="77.0" fitWidth="85.0" layoutX="8.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../xocolored-0١.png" />
+            <Image url="@imgs/xocolored-0١.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="380.0" fitWidth="471.0" layoutX="158.0" layoutY="-58.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../xocolored-0١.png" />
+            <Image url="@imgs/xocolored-0١.png" />
          </image>
       </ImageView>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
@@ -113,22 +113,22 @@
       </Button>
       <ImageView fitHeight="213.0" fitWidth="202.0" layoutX="-16.0" layoutY="190.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../user1-0١.png" />
+            <Image url="@imgs/user1-0١.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="202.0" fitWidth="208.0" layoutX="503.0" layoutY="190.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../user2-0١.png" />
+            <Image url="@imgs/user2-0١.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="70.0" fitWidth="71.0" layoutX="51.0" layoutY="350.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../x-0١.png" />
+            <Image url="@imgs/x-0١.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="77.0" fitWidth="77.0" layoutX="563.0" layoutY="351.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../o-0١.png" />
+            <Image url="@imgs/o-0١.png" />
          </image>
       </ImageView>
       <Button fx:id="b131" blendMode="OVERLAY" layoutX="181.0" layoutY="214.0" mnemonicParsing="false" onAction="#button1" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">

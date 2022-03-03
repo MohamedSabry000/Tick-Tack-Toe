@@ -15,14 +15,14 @@
       <MenuBar prefHeight="38.0" prefWidth="655.0" style="-fx-background-color: #3D5B59;" />
       <ImageView fitHeight="77.0" fitWidth="85.0" layoutX="8.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../xocolored-0١.png" />
+            <Image url="@imgs/xocolored-0١.png" />
          </image>
       </ImageView>
       <Pane centerShape="false" focusTraversable="true" layoutX="173.0" layoutY="86.0" prefHeight="377.0" prefWidth="308.0" style="-fx-background-color: white; -fx-background-radius: 20;">
          <children>
             <ImageView fitHeight="308.0" fitWidth="342.0" layoutX="-3.0" layoutY="-141.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../xocolored-0١.png" />
+                  <Image url="@imgs/xocolored-0١.png" />
                </image>
             </ImageView>
             <TextField layoutX="75.0" layoutY="84.0" opacity="0.45" prefHeight="38.0" prefWidth="156.0" promptText="User Name" style="-fx-font-style-color: white; -fx-background-radius: 20;" text="User Name">

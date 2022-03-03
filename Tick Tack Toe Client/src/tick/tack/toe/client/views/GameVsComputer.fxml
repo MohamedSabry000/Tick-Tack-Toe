@@ -15,12 +15,12 @@
       <MenuBar prefHeight="38.0" prefWidth="845.0" style="-fx-background-color: #3D5B59;" />
       <ImageView fitHeight="77.0" fitWidth="85.0" layoutX="8.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../xocolored-0١.png" />
+            <Image url="@imgs/xocolored-0١.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="380.0" fitWidth="471.0" layoutX="218.0" layoutY="-49.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../xocolored-0١.png" />
+            <Image url="@imgs/xocolored-0١.png" />
          </image>
       </ImageView>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
@@ -41,7 +41,7 @@
       </Button>
       <ImageView fitHeight="213.0" fitWidth="202.0" layoutX="37.0" layoutY="222.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../user1-0١.png" />
+            <Image url="@imgs/user1-0١.png" />
          </image>
       </ImageView>
       <Button fx:id="b11" blendMode="OVERLAY" layoutX="474.0" layoutY="416.0" mnemonicParsing="false" onAction="" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
@@ -118,17 +118,17 @@
       </Button>
       <ImageView fitHeight="70.0" fitWidth="71.0" layoutX="102.0" layoutY="387.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../x-0١.png" />
+            <Image url="@imgs/x-0١.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="77.0" fitWidth="77.0" layoutX="665.0" layoutY="384.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../o-0١.png" />
+            <Image url="@imgs/o-0١.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="77.0" fitWidth="87.0" layoutX="660.0" layoutY="285.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../computer-0١.png" />
+            <Image url="@imgs/computer-0١.png" />
          </image>
       </ImageView>
       <ButtonBar prefHeight="40.0" prefWidth="200.0" />

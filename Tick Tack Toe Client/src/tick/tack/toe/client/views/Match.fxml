@@ -15,12 +15,12 @@
       <MenuBar prefHeight="38.0" prefWidth="789.0" style="-fx-background-color: #3D5B59;" />
       <ImageView fitHeight="77.0" fitWidth="85.0" layoutX="8.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../xocolored-0١.png" />
+            <Image url="@imgs/xocolored-0١.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="380.0" fitWidth="471.0" layoutX="203.0" layoutY="-73.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../xocolored-0١.png" />
+            <Image url="@imgs/xocolored-0١.png" />
          </image>
       </ImageView>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
