@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="729.0" prefWidth="789.0" style="-fx-background-color: linear-gradient(to right, #3D5B59, #B99095);;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="729.0" prefWidth="789.0" style="-fx-background-color: linear-gradient(to right, #3D5B59, #B99095);;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tick.tack.toe.client.controllers.MatchViewController">
    <children>
       <MenuBar prefHeight="38.0" prefWidth="789.0" style="-fx-background-color: #3D5B59;" />
       <ImageView fitHeight="77.0" fitWidth="85.0" layoutX="8.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
@@ -29,12 +29,12 @@
             <Font name="Gill Sans MT" size="17.0" />
          </font>
       </Text>
-      <Button fx:id="ExirButton" layoutX="409.0" layoutY="596.0" mnemonicParsing="false" onAction="#onActionFinish" prefHeight="38.0" prefWidth="139.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Resume" textFill="WHITE">
+      <Button id="resume" fx:id="ExirButton" layoutX="409.0" layoutY="596.0" mnemonicParsing="false" onAction="#onActionResume" prefHeight="38.0" prefWidth="139.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Resume" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="ExirButton1" layoutX="238.0" layoutY="596.0" mnemonicParsing="false" onAction="#onActionAskToPause" prefHeight="38.0" prefWidth="148.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="View" textFill="WHITE">
+      <Button id="view" fx:id="ExirButton1" layoutX="238.0" layoutY="596.0" mnemonicParsing="false" onAction="#onActionView" prefHeight="38.0" prefWidth="148.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="View" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT Bold" size="18.0" />
          </font>
@@ -48,7 +48,7 @@
             <TableColumn id="matchText" fx:id="winnerColumn" editable="false" prefWidth="88.0" style="-fx-alignment: BASELINE_CENTER; -fx-font-size: 16;" styleClass=".col" text="Winner" />
          </columns>
       </TableView>
-      <Button fx:id="ExirButton2" layoutX="317.0" layoutY="656.0" mnemonicParsing="false" onAction="#onActionFinish" prefHeight="38.0" prefWidth="154.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Back" textFill="WHITE">
+      <Button id="back" fx:id="ExirButton2" layoutX="317.0" layoutY="656.0" mnemonicParsing="false" onAction="#onActionBack" prefHeight="38.0" prefWidth="154.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Back" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT Bold" size="18.0" />
          </font>

@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="845.0" style="-fx-background-color: linear-gradient(to right, #3D5B59, #B99095);" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:controller="tick.tack.toe.client.controllers.GameVsComputerViewController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="660.0" prefWidth="845.0" style="-fx-background-color: linear-gradient(to right, #3D5B59, #B99095);" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" >
    <children>
       <MenuBar prefHeight="38.0" prefWidth="845.0" style="-fx-background-color: #3D5B59;" />
       <ImageView fitHeight="77.0" fitWidth="85.0" layoutX="8.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
@@ -29,12 +29,12 @@
             <Font name="Gill Sans MT" size="17.0" />
          </font>
       </Text>
-      <Button fx:id="ExirButton" layoutX="425.0" layoutY="555.0" mnemonicParsing="false" onAction="" prefHeight="46.0" prefWidth="154.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Exit" textFill="WHITE">
+      <Button id="exit" fx:id="ExirButton" layoutX="425.0" layoutY="555.0" mnemonicParsing="false" onAction="#onActionExit" prefHeight="46.0" prefWidth="154.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Exit" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="ExirButton1" layoutX="254.0" layoutY="555.0" mnemonicParsing="false" onAction="" prefHeight="46.0" prefWidth="154.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Reset" textFill="WHITE">
+      <Button id="reset" fx:id="ExirButton1" layoutX="254.0" layoutY="555.0" mnemonicParsing="false" onAction="#onActionReset" prefHeight="46.0" prefWidth="154.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Reset" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT Bold" size="18.0" />
          </font>
@@ -44,7 +44,7 @@
             <Image url="@imgs/user1-0١.png" />
          </image>
       </ImageView>
-      <Button fx:id="b11" blendMode="OVERLAY" layoutX="474.0" layoutY="416.0" mnemonicParsing="false" onAction="" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
+      <Button id="bs9" fx:id="b11" blendMode="OVERLAY" layoutX="474.0" layoutY="416.0" mnemonicParsing="false" onAction="#onActionBS9" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
          <effect>
             <InnerShadow />
          </effect>
@@ -52,7 +52,7 @@
             <Font size="42.0" />
          </font>
       </Button>
-      <Button fx:id="b12" blendMode="OVERLAY" layoutX="251.0" layoutY="331.0" mnemonicParsing="false" onAction="" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
+      <Button id="bs4" fx:id="b12" blendMode="OVERLAY" layoutX="251.0" layoutY="331.0" mnemonicParsing="false" onAction="#onActionBS4" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
          <effect>
             <InnerShadow />
          </effect>
@@ -60,7 +60,7 @@
             <Font size="42.0" />
          </font>
       </Button>
-      <Button fx:id="b13" blendMode="OVERLAY" layoutX="362.0" layoutY="331.0" mnemonicParsing="false" onAction="" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
+      <Button id="bs5" fx:id="b13" blendMode="OVERLAY" layoutX="362.0" layoutY="331.0" mnemonicParsing="false" onAction="#onActionBS5" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
          <effect>
             <InnerShadow />
          </effect>
@@ -68,7 +68,7 @@
             <Font size="42.0" />
          </font>
       </Button>
-      <Button fx:id="b14" blendMode="OVERLAY" layoutX="474.0" layoutY="331.0" mnemonicParsing="false" onAction="" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
+      <Button id="bs6" fx:id="b14" blendMode="OVERLAY" layoutX="474.0" layoutY="331.0" mnemonicParsing="false" onAction="#onActionBS6" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
          <effect>
             <InnerShadow />
          </effect>
@@ -76,7 +76,7 @@
             <Font size="42.0" />
          </font>
       </Button>
-      <Button fx:id="b15" blendMode="OVERLAY" layoutX="474.0" layoutY="247.0" mnemonicParsing="false" onAction="" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
+      <Button id="bs3" fx:id="b15" blendMode="OVERLAY" layoutX="474.0" layoutY="247.0" mnemonicParsing="false" onAction="#onActionBS3" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
          <effect>
             <InnerShadow />
          </effect>
@@ -84,7 +84,7 @@
             <Font size="42.0" />
          </font>
       </Button>
-      <Button fx:id="b16" blendMode="OVERLAY" layoutX="363.0" layoutY="247.0" mnemonicParsing="false" onAction="" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
+      <Button id="bs2" fx:id="b16" blendMode="OVERLAY" layoutX="363.0" layoutY="247.0" mnemonicParsing="false" onAction="#onActionBS2" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
          <effect>
             <InnerShadow />
          </effect>
@@ -92,7 +92,7 @@
             <Font size="42.0" />
          </font>
       </Button>
-      <Button fx:id="b111" blendMode="OVERLAY" layoutX="363.0" layoutY="416.0" mnemonicParsing="false" onAction="" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
+      <Button id="bs8" fx:id="b111" blendMode="OVERLAY" layoutX="363.0" layoutY="416.0" mnemonicParsing="false" onAction="#onActionBS8" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
          <effect>
             <InnerShadow />
          </effect>
@@ -100,7 +100,7 @@
             <Font size="42.0" />
          </font>
       </Button>
-      <Button fx:id="b112" blendMode="OVERLAY" layoutX="251.0" layoutY="416.0" mnemonicParsing="false" onAction="" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
+      <Button id="bs7" fx:id="b112" blendMode="OVERLAY" layoutX="251.0" layoutY="416.0" mnemonicParsing="false" onAction="#onActionBS7" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
          <effect>
             <InnerShadow />
          </effect>
@@ -108,7 +108,7 @@
             <Font size="42.0" />
          </font>
       </Button>
-      <Button fx:id="b131" blendMode="OVERLAY" layoutX="251.0" layoutY="247.0" mnemonicParsing="false" onAction="" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
+      <Button id="bs1" fx:id="b131" blendMode="OVERLAY" layoutX="251.0" layoutY="247.0" mnemonicParsing="false" onAction="#onActionBS1" prefHeight="83.0" prefWidth="110.0" style="-fx-border-radius: 20; -fx-background-color: white; -fx-font-size: 0.1px; -fx-text-fill: white;" textFill="TRANSPARENT" textOverrun="WORD_ELLIPSIS" wrapText="true">
          <effect>
             <InnerShadow />
          </effect>

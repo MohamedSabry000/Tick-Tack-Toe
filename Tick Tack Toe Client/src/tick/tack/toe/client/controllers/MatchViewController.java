@@ -13,6 +13,14 @@ import javafx.scene.text.Text;
 
 
 public class MatchViewController {
+            @FXML protected void onActionBack(ActionEvent event) {
+            }
+              @FXML protected void onActionResume(ActionEvent event) {
+            }
+                @FXML protected void onActionView(ActionEvent event) {
+            }
+            
+
    
 }
 

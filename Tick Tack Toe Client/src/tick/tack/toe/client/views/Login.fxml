@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="496.0" prefWidth="655.0" style="-fx-background-color: linear-gradient(to right, #526463, #B99095);" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="496.0" prefWidth="655.0" style="-fx-background-color: linear-gradient(to right, #526463, #B99095);" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tick.tack.toe.client.controllers.LoginViewController">
    <children>
       <MenuBar prefHeight="38.0" prefWidth="655.0" style="-fx-background-color: #3D5B59;" />
       <ImageView fitHeight="77.0" fitWidth="85.0" layoutX="8.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
@@ -30,7 +30,7 @@
                   <Font name="Gill Sans MT" size="15.0" />
                </font>
             </TextField>
-            <Button layoutX="96.0" layoutY="198.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #B99095; -fx-background-radius: 20;" text="Login" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Button id="login" layoutX="96.0" layoutY="198.0" mnemonicParsing="false" onAction="#onActionLogin" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #B99095; -fx-background-radius: 20;" text="Login" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
                   <Font name="Gill Sans MT Bold" size="15.0" />
                </font>
@@ -40,12 +40,12 @@
                   <Font name="Gill Sans MT" size="15.0" />
                </font>
             </TextField>
-            <Button layoutX="97.0" layoutY="251.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #B99095; -fx-background-radius: 20;" text="Register" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Button id="register" layoutX="97.0" layoutY="251.0" mnemonicParsing="false" onAction="#onActionRegister" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #B99095; -fx-background-radius: 20;" text="Register" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
                   <Font name="Gill Sans MT Bold" size="15.0" />
                </font>
             </Button>
-            <Button layoutX="97.0" layoutY="304.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #B99095; -fx-background-radius: 20;" text="Guest" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+            <Button id="guest" layoutX="97.0" layoutY="304.0" mnemonicParsing="false" onAction="#onActionGuest" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #B99095; -fx-background-radius: 20;" text="Guest" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
                   <Font name="Gill Sans MT Bold" size="15.0" />
                </font>

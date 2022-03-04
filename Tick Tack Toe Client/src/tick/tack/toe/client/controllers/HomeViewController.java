@@ -13,6 +13,22 @@ import javafx.scene.text.Text;
 
 
 public class HomeViewController {
+      @FXML protected void onActionLogin(ActionEvent event) {
+
+        System.out.println("pressed BS1");
+    }
+        @FXML protected void onActionMatch(ActionEvent event) {
+
+        System.out.println("pressed BS1");
+    }
+          @FXML protected void onActionVsComputer(ActionEvent event) {
+
+        System.out.println("pressed BS1");
+    }
+            @FXML protected void onActionInvitePlayer(ActionEvent event) {
+
+        System.out.println("pressed BS1");
+    }
    
 }
 

@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="694.0" prefWidth="961.0" style="-fx-background-color: linear-gradient(to right, #3D5B59, #B99095);" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="694.0" prefWidth="961.0" style="-fx-background-color: linear-gradient(to right, #3D5B59, #B99095);" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tick.tack.toe.client.controllers.HomeViewController">
    <children>
       <MenuBar prefHeight="38.0" prefWidth="961.0" style="-fx-background-color: #3D5B59;" />
       <ImageView fitHeight="77.0" fitWidth="85.0" layoutX="8.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
@@ -30,12 +30,12 @@
             <Font name="Gill Sans MT" size="17.0" />
          </font>
       </Text>
-      <Button fx:id="ExirButton" layoutX="485.0" layoutY="570.0" mnemonicParsing="false" onAction="" prefHeight="46.0" prefWidth="154.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Login" textFill="WHITE">
+      <Button id="login" fx:id="ExirButton" layoutX="485.0" layoutY="570.0" mnemonicParsing="false" onAction="#onActionLogin" prefHeight="46.0" prefWidth="154.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Login" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="ExirButton1" layoutX="314.0" layoutY="570.0" mnemonicParsing="false" onAction="" prefHeight="46.0" prefWidth="154.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Matches" textFill="WHITE">
+      <Button id="match" fx:id="ExirButton1" layoutX="314.0" layoutY="570.0" mnemonicParsing="false" onAction="#onActionMatch" prefHeight="46.0" prefWidth="154.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Matches" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT Bold" size="18.0" />
          </font>
@@ -83,12 +83,12 @@
             <Font name="Gill Sans MT" size="23.0" />
          </font>
       </Label>
-      <Button fx:id="ExirButton11" layoutX="335.0" layoutY="446.0" mnemonicParsing="false" onAction="" prefHeight="33.0" prefWidth="134.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Invite Player" textFill="WHITE">
+      <Button id="invitePlayer" fx:id="ExirButton11" layoutX="335.0" layoutY="446.0" mnemonicParsing="false" onAction="#onActionInvitePlayer" prefHeight="33.0" prefWidth="134.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Invite Player" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT Bold" size="15.0" />
          </font>
       </Button>
-      <Button fx:id="ExirButton111" layoutX="485.0" layoutY="447.0" mnemonicParsing="false" onAction="" prefHeight="33.0" prefWidth="134.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Vs Computer" textFill="WHITE">
+      <Button id="vsComputer" fx:id="ExirButton111" layoutX="485.0" layoutY="447.0" mnemonicParsing="false" onAction="#onActionVsComputer" prefHeight="33.0" prefWidth="134.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Vs Computer" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT Bold" size="14.0" />
          </font>

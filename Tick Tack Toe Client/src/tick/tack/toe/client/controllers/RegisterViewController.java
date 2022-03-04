@@ -13,27 +13,15 @@ import javafx.scene.text.Text;
 // import tick.tack.toe.server.controllers.client.*;
 
 
-public class LoginViewController {
-//    private static ServerListener clientListener;
-        
-//     @FXML protected void onActionStartServer(ActionEvent event) {
-//         clientListener = new ServerListener();
-//         clientListener.setDaemon(true);
-//         clientListener.start();
-//         System.out.println("pressed Start");
-//     }
-    
-//     @FXML protected void onActionStopServer(ActionEvent event) {
-//         try{
-//             clientListener.interrupt();
-//             clientListener = null;        
-//             System.out.println("stop");
+public class RegisterViewController {
+    @FXML protected void onActionRegister(ActionEvent event) {
 
-//         }catch (NullPointerException e){
-//             System.out.println("Server is Allready Down!");
-//         }
-        
-        
-//     }
+        System.out.println("pressed BS1");
+    }
+    @FXML protected void onActionBack(ActionEvent event) {
+
+        System.out.println("pressed BS1");
+    }
+    
 }
 
