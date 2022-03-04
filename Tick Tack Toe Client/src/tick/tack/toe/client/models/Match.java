@@ -30,6 +30,7 @@ public class Match {
     public static final char CHOICE_O = 'O';
     public static final String STATUS_FINISHED = "finished";
     public static final String STATUS_PAUSED = "paused";
+    public static String GAME_GRID = "---------";
 
     public Match() {
         this.match_id = this.winner = -1;
@@ -75,6 +76,13 @@ public class Match {
         return player2_id;
     }
 
+    public static String getGAME_GRID() {
+        return GAME_GRID;
+    }
+
+     public void setGAME_GRID(String game_grid) {
+        GAME_GRID = game_grid;
+    }
     public void setPlayer2_id(int player2_id) {
         this.player2_id = player2_id;
     }

@@ -24,7 +24,6 @@ public class MatchTable {
         this.player1_id = player1_id;
         this.player2_id = player2_id;
     }
-
     public String getPlayer1_Name() {
         return player1_Name;
     }
