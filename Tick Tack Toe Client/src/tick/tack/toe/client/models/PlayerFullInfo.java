@@ -20,7 +20,7 @@ public class PlayerFullInfo extends Player{
     }
 
     public PlayerFullInfo(int index, int database_id, String name, int points) {
-        this.database_id = database_id;
+        this.match_id = database_id;
         this.name = name;
         this.points = points;
         player_id = -1;
@@ -29,7 +29,7 @@ public class PlayerFullInfo extends Player{
     }
 
     public PlayerFullInfo(int database_id, String name, int points) {
-        this.database_id = database_id;
+        this.match_id = database_id;
         this.name = name;
         this.points = points;
         player_id = -1;
