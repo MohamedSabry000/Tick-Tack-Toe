@@ -5,10 +5,14 @@
  */
 package tick.tack.toe.client.controllers;
 
-/**
- *
- * @author wwwmo
- */
-public class temp {
-    
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.text.Text;
+
+
+
+
+public class HomeViewController {
+   
 }
+
