@@ -33,8 +33,6 @@ public class MainViewController {
 
         }catch (NullPointerException e){
             System.out.println("Server is Allready Down!");
-        }
-        
-        
+        }  
     }
 }

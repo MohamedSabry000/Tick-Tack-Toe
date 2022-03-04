@@ -9,6 +9,7 @@ package tick.tack.toe.client.controllers;
  *
  * @author wwwmo
  */
-public class temp {
-    
+public abstract class Controller {
+    public Controller(){};
+    public void showAnimation(){};
 }
