@@ -16,11 +16,11 @@ import javafx.scene.text.Text;
 public class RegisterViewController {
     @FXML protected void onActionRegister(ActionEvent event) {
 
-        System.out.println("pressed BS1");
+        System.out.println("pressed Register");
     }
     @FXML protected void onActionBack(ActionEvent event) {
 
-        System.out.println("pressed BS1");
+        System.out.println("pressed Back");
     }
     
 }

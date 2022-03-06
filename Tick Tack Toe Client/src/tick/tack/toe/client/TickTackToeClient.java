@@ -44,7 +44,7 @@ import tick.tack.toe.client.models.*;
 public class TickTackToeClient extends Application {
     
      private static Stage mainStage;
-    private static Scene sceneRegister, sceneHome, sceneGame, sceneLogin, sceneMatch, sceneGameVsComputer;
+    private static Scene sceneRegister, sceneHome, sceneGame, sceneLogin, sceneMatch, sceneGameVsComputer, sceneTTT, sceneScore;
 
     private URL url;
     private String css;
@@ -96,16 +96,19 @@ public class TickTackToeClient extends Application {
             sceneRegister = new Scene(FXMLLoader.load(getClass().getResource("views/Register.fxml")));
 
             // Home view
-            sceneRegister = new Scene(FXMLLoader.load(getClass().getResource("views/Home.fxml")));
+            sceneHome = new Scene(FXMLLoader.load(getClass().getResource("views/Home.fxml")));
 
             // Game View
-            sceneRegister = new Scene(FXMLLoader.load(getClass().getResource("views/Game.fxml")));
+            sceneScore = new Scene(FXMLLoader.load(getClass().getResource("views/Score.fxml")));
 
             // GameVsComputer View
-            sceneRegister = new Scene(FXMLLoader.load(getClass().getResource("views/GameVsComputer.fxml")));
+            sceneGameVsComputer = new Scene(FXMLLoader.load(getClass().getResource("views/GameVsComputer.fxml")));
 
             // Match View
-            sceneRegister = new Scene(FXMLLoader.load(getClass().getResource("views/Match.fxml")));
+            sceneMatch = new Scene(FXMLLoader.load(getClass().getResource("views/Match.fxml")));
+            
+            // Match View
+            sceneTTT = new Scene(FXMLLoader.load(getClass().getResource("views/Tic Tac Toe.fxml")));
 
         } catch (IOException e) {
             e.printStackTrace();

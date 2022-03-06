@@ -14,6 +14,12 @@ import java.net.Socket;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.*;
+import tick.tack.toe.server.models.PlayerFullInfo;
+import tick.tack.toe.server.controllers.MainViewController;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.application.Platform;
+import tick.tack.toe.server.controllers.MainViewController;
+
 
 /**
  *
@@ -26,6 +32,12 @@ public class ClientHandler extends Thread {
     private BufferedReader dataInputStream;
     private PrintStream printStream;
     private static Map<Long, ClientHandler> clients = new HashMap<>();
+    private static final ObjectMapper mapper = new ObjectMapper();
+    private static Map<Integer, PlayerFullInfo> playersFullInfo;
+    private Map<String, IAction> actions;
+    private ClientHandler competitor;
+    private PlayerFullInfo myFullInfoPlayer;
+
 
     
     public ClientHandler(Socket socket) {
@@ -40,6 +52,13 @@ public class ClientHandler extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static void initPlayerList() {
+        playersFullInfo = new HashMap<>();
+        playersFullInfo = DBConnection.getAllPlayers();
+        System.out.println(playersFullInfo.size());
+        Platform.runLater(() -> MainViewController.fillPlayersTable(playersFullInfo.values()));
     }
     
     @Override
@@ -75,5 +94,9 @@ public class ClientHandler extends Thread {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    
+    interface IAction {
+        void handleAction(String json);
     }
 }

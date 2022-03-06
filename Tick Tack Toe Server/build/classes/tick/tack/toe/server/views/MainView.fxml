@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:controller="tick.tack.toe.server.controllers.MainViewController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="729.0" prefWidth="669.0" style="-fx-background-color: linear-gradient(to right, #3D5B59, #B99095);;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:controller="tick.tack.toe.server.controllers.MainViewController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="729.0" prefWidth="669.0" style="-fx-background-color: linear-gradient(to right, #3D5B59, #B99095);" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MenuBar prefHeight="38.0" prefWidth="669.0" style="-fx-background-color: #3D5B59;" />
       <ImageView fitHeight="77.0" fitWidth="85.0" layoutX="8.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
@@ -29,22 +29,22 @@
             <Font name="Gill Sans MT" size="17.0" />
          </font>
       </Text>
-      <Button fx:id="ExirButton" layoutX="346.0" layoutY="596.0" mnemonicParsing="false" onAction="#onActionStopServer" prefHeight="38.0" prefWidth="139.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Stop" textFill="WHITE">
+      <Button fx:id="StopServerButton" layoutX="346.0" layoutY="596.0" mnemonicParsing="false" onAction="#onActionStopServer" prefHeight="38.0" prefWidth="139.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Stop" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="ExirButton1" layoutX="175.0" layoutY="596.0" mnemonicParsing="false" onAction="#onActionStartServer" prefHeight="38.0" prefWidth="148.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Start" textFill="WHITE">
+      <Button fx:id="StartServerButton" layoutX="175.0" layoutY="596.0" mnemonicParsing="false" onAction="#onActionStartServer" prefHeight="38.0" prefWidth="148.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Start" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT Bold" size="18.0" />
          </font>
       </Button>
-      <TableView id="table" fx:id="MatchTable" layoutX="122.0" layoutY="171.0" prefHeight="387.0" prefWidth="421.0" style="-fx-background-radius: 20;">
+      <TableView id="table" fx:id="tPlayers" layoutX="122.0" layoutY="171.0" prefHeight="387.0" prefWidth="421.0" style="-fx-background-radius: 20;">
          <columns>
-            <TableColumn id="matchText" fx:id="player1Column" editable="false" prefWidth="97.0" style="-fx-alignment: BASELINE_CENTER; -fx-font-size: 16;" styleClass=".col" text="Player" />
-            <TableColumn id="matchText" fx:id="player2Column" editable="false" prefWidth="102.0" style="-fx-alignment: BASELINE_CENTER; -fx-font-size: 16;" styleClass=".col" text="Status" />
-            <TableColumn id="matchText" fx:id="statusColumn" editable="false" prefWidth="123.0" style="-fx-alignment: BASELINE_CENTER; -fx-font-size: 16;" styleClass=".col" text="Is In Game" />
-            <TableColumn id="matchText" fx:id="winnerColumn" editable="false" prefWidth="98.0" style="-fx-alignment: BASELINE_CENTER; -fx-font-size: 16;" styleClass=".col" text="Winner" />
+            <TableColumn id="cPlayerName" fx:id="cPlayerName" editable="false" prefWidth="97.0" style="-fx-alignment: BASELINE_CENTER; -fx-font-size: 16;" styleClass=".col" text="Player" />
+            <TableColumn id="cStatus" fx:id="cStatus" editable="false" prefWidth="102.0" style="-fx-alignment: BASELINE_CENTER; -fx-font-size: 16;" styleClass=".col" text="Status" />
+            <TableColumn id="cIsInGame" fx:id="cIsInGame" editable="false" prefWidth="123.0" style="-fx-alignment: BASELINE_CENTER; -fx-font-size: 16;" styleClass=".col" text="Is In Game" />
+            <TableColumn id="cScore" fx:id="cScore" editable="false" prefWidth="98.0" style="-fx-alignment: BASELINE_CENTER; -fx-font-size: 16;" styleClass=".col" text="Winner" />
          </columns>
       </TableView>
    </children>

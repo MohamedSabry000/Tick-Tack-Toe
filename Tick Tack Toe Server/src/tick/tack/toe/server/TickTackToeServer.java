@@ -13,6 +13,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import tick.tack.toe.server.controllers.*;
+import tick.tack.toe.server.controllers.client.ClientListener;
 
 /**
  *
@@ -25,10 +26,13 @@ public class TickTackToeServer extends Application {
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("views/MainView.fxml"));
 
+        
         Scene scene = new Scene(root);
         primaryStage.setTitle("Server");
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+        MainViewController.initClientListener();
     }
 
     /**

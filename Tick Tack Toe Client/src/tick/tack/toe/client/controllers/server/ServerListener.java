@@ -46,7 +46,7 @@ public class ServerListener extends Thread {
 //            backFromOffline();
             first = false;
         } catch (Exception ex) {
-            System.out.println("Failed to connect");
+            System.out.println("Failed to Connect Due to the Server is Down");
             if (first) {
                 first = false;
                 goOffline();
@@ -100,9 +100,16 @@ public class ServerListener extends Thread {
     public void interrupt() throws NullPointerException{
         super.interrupt();
         try {
+            System.out.println("h");
             socket.close();
+                        System.out.println("1h");
+
             first=false;
+                        System.out.println("2h");
+
             running=false;
+                        System.out.println("3h");
+
             goOffline();
         } catch (IOException e) {
             System.out.println("what");

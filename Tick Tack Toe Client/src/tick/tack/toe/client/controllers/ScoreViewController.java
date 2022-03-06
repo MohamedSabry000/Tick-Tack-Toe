@@ -14,11 +14,11 @@ import javafx.scene.text.Text;
 public class ScoreViewController {
      @FXML protected void onActionPlayAgain(ActionEvent event) {
 
-        System.out.println("pressed BS1");
+        System.out.println("pressed Play Again");
     }
       @FXML protected void onActionBack(ActionEvent event) {
 
-        System.out.println("pressed BS1");
+        System.out.println("pressed Back");
     }
   
 }
