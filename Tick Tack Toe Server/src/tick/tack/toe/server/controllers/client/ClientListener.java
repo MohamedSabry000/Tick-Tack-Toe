@@ -18,7 +18,7 @@ public class ClientListener extends Thread {
 
     @Override
     public void run() {
-        ClientHandler.initPlayerList();
+//        ClientHandler.initPlayerList();
         try {
             serverSocket = new ServerSocket(5050);
             while (true) {
@@ -28,7 +28,7 @@ public class ClientListener extends Thread {
                 new ClientHandler(socket);
             }
         } catch (IOException e) {
-            System.out.println("Server Stopped");
+//            System.out.println("Server Stopped");
         }
     }
     

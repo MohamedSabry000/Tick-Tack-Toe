@@ -9,7 +9,7 @@ package tick.tack.toe.server.models;
  *
  * @author booga
  */
-public class User {
+public class User extends Credentials{
     private int user_id;
     private String name;
     private int points;

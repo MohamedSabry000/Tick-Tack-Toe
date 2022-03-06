@@ -16,23 +16,23 @@ public class PlayerFullInfo extends Player{
 
   
     public PlayerFullInfo(){
-       player_id = -1;
+       s_id = -1;
     }
 
     public PlayerFullInfo(int index, int database_id, String name, int points) {
-        this.match_id = database_id;
+        this.player_id = database_id;
         this.name = name;
         this.points = points;
-        player_id = -1;
+        s_id = -1;
         status = OFFLINE;
         inGame = false;
     }
 
     public PlayerFullInfo(int database_id, String name, int points) {
-        this.match_id = database_id;
+        this.player_id = database_id;
         this.name = name;
         this.points = points;
-        player_id = -1;
+        s_id = -1;
         status = OFFLINE;
         inGame = false;
     }

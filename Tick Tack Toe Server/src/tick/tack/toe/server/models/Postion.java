@@ -11,12 +11,13 @@ package tick.tack.toe.server.models;
  */
 public class Postion {
     private int match_id, player_id;
-    private String position;
+    //changed from string to char.
+    private char position;
 
     public Postion() {
     }
 
-    public Postion(int match_id, int player_id, String position) {
+    public Postion(int match_id, int player_id, char position) {
         this.match_id = match_id;
         this.player_id = player_id;
         this.position = position;
@@ -38,11 +39,11 @@ public class Postion {
         this.player_id = player_id;
     }
 
-    public String getPosition() {
+    public char getPosition() {
         return position;
     }
 
-    public void setPosition(String position) {
+    public void setPosition(char position) {
         this.position = position;
     }
 

@@ -13,8 +13,8 @@ package tick.tack.toe.client.models;
 public class Player {
     public static final String ONLINE = "online";
     public static final String OFFLINE = "offline";
-    protected int match_id;
-    protected long player_id;
+    protected int player_id;
+    protected long s_id;
     
     //must exist.
     public Player()
@@ -22,29 +22,30 @@ public class Player {
     }
     public Player(PlayerFullInfo playerfullinfo)
     {
+        this.s_id = playerfullinfo.s_id;
         this.player_id = playerfullinfo.player_id;
-        this.match_id = playerfullinfo.match_id;
     }
 
     public Player(int database_id, long player_id) {
-        this.match_id = database_id;
-        this.player_id = player_id;
+        this.player_id = database_id;
+        this.s_id = player_id;
     }
 
-    public int getMatch_id() {
-        return match_id;
-    }
-
-    public void setMatch_id(int match_id) {
-        this.match_id = match_id;
-    }
-
-    public long getPlayer_id() {
+    public int getPlayer_id() {
         return player_id;
     }
 
-    public void setPlayer_id(long player_id) {
+    public void setPlayer_id(int player_id) {
         this.player_id = player_id;
     }
+
+    public long getS_id() {
+        return s_id;
+    }
+
+    public void setS_id(long s_id) {
+        this.s_id = s_id;
+    }
+
     
 }
