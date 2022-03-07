@@ -13,6 +13,11 @@ public class Credentials {
     protected String username;
     protected String password;
 
+    public Credentials(String user, String pass) {
+        this.username = user;
+        this.password = pass;
+    }
+
     public String getUsername() {
         return username;
     }

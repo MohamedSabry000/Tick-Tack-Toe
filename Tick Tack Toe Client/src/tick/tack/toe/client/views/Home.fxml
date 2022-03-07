@@ -30,12 +30,7 @@
             <Font name="Gill Sans MT" size="17.0" />
          </font>
       </Text>
-      <Button id="login" fx:id="ExirButton" layoutX="485.0" layoutY="570.0" mnemonicParsing="false" onAction="#onActionLogin" prefHeight="46.0" prefWidth="154.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Login" textFill="WHITE">
-         <font>
-            <Font name="Gill Sans MT Bold" size="18.0" />
-         </font>
-      </Button>
-      <Button id="match" fx:id="ExirButton1" layoutX="314.0" layoutY="570.0" mnemonicParsing="false" onAction="#onActionMatch" prefHeight="46.0" prefWidth="154.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Matches" textFill="WHITE">
+      <Button id="match" fx:id="btnMatches" layoutX="403.0" layoutY="599.0" mnemonicParsing="false" onAction="#onActionMatch" prefHeight="46.0" prefWidth="154.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Matches" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT Bold" size="18.0" />
          </font>
@@ -68,12 +63,12 @@
             <Image url="@imgs/computer-0١.png" />
          </image>
       </ImageView>
-      <Label id="Redressed" fx:id="ChoosePlayers11" layoutX="349.0" layoutY="303.0" prefHeight="29.0" prefWidth="203.0" text="Score:" textFill="WHITE">
+      <Label id="Redressed" fx:id="ChoosePlayers11" layoutX="349.0" layoutY="303.0" prefHeight="29.0" prefWidth="142.0" text="Score:" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT" size="23.0" />
          </font>
       </Label>
-      <Label id="Redressed" fx:id="ChoosePlayers12" layoutX="349.0" layoutY="259.0" prefHeight="29.0" prefWidth="203.0" text="Player Name:" textFill="WHITE">
+      <Label id="Redressed" fx:id="ChoosePlayers12" layoutX="349.0" layoutY="259.0" prefHeight="29.0" prefWidth="142.0" text="Player Name:" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT" size="23.0" />
          </font>
@@ -83,14 +78,29 @@
             <Font name="Gill Sans MT" size="23.0" />
          </font>
       </Label>
-      <Button id="invitePlayer" fx:id="ExirButton11" layoutX="335.0" layoutY="446.0" mnemonicParsing="false" onAction="#onActionInvitePlayer" prefHeight="33.0" prefWidth="134.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Invite Player" textFill="WHITE">
+      <Button id="invitePlayer" fx:id="btnInvite" layoutX="335.0" layoutY="446.0" mnemonicParsing="false" onAction="#onActionInvitePlayer" prefHeight="33.0" prefWidth="134.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Invite Player" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT Bold" size="15.0" />
          </font>
       </Button>
-      <Button id="vsComputer" fx:id="ExirButton111" layoutX="485.0" layoutY="447.0" mnemonicParsing="false" onAction="#onActionVsComputer" prefHeight="33.0" prefWidth="134.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Vs Computer" textFill="WHITE">
+      <Button id="vsComputer" fx:id="vsComputerButton" layoutX="485.0" layoutY="447.0" mnemonicParsing="false" onAction="#onActionVsComputer" prefHeight="33.0" prefWidth="134.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Vs Computer" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT Bold" size="14.0" />
+         </font>
+      </Button>
+      <Label id="lblName" fx:id="lblName" layoutX="480.0" layoutY="259.0" prefHeight="29.0" prefWidth="142.0" textFill="WHITE">
+         <font>
+            <Font name="Gill Sans MT Bold" size="23.0" />
+         </font>
+      </Label>
+      <Label id="lblScore" fx:id="lblScore" layoutX="431.0" layoutY="303.0" prefHeight="29.0" prefWidth="142.0" textFill="WHITE">
+         <font>
+            <Font name="Gill Sans MT Bold" size="23.0" />
+         </font>
+      </Label>
+      <Button id="btnLogin" fx:id="btnLogin" layoutX="403.0" layoutY="529.0" mnemonicParsing="false" onAction="#onActionMatch" prefHeight="46.0" prefWidth="154.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Login" textFill="WHITE" visible="false">
+         <font>
+            <Font name="Gill Sans MT Bold" size="18.0" />
          </font>
       </Button>
    </children>

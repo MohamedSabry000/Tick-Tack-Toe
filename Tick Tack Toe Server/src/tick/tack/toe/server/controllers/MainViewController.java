@@ -30,11 +30,11 @@ import tick.tack.toe.server.models.PlayerFullInfo;
  */
 public class MainViewController implements Initializable {
     private static ClientListener clientListener = null;
-    @FXML private static TableView<PlayerFullInfo> tPlayers;
-    @FXML private static TableColumn<PlayerFullInfo, String> cPlayerName;
-    @FXML private static TableColumn<PlayerFullInfo, String> cStatus;
-    @FXML private static TableColumn<PlayerFullInfo, Boolean> cIsInGame;
-    @FXML private static TableColumn<PlayerFullInfo, Integer> cScore;
+    @FXML private static TableView<PlayerFullInfo> tPlayers = new TableView<>();
+    @FXML private static TableColumn<PlayerFullInfo, String> cPlayerName = new TableColumn<>();
+    @FXML private static TableColumn<PlayerFullInfo, String> cStatus = new TableColumn<>();
+    @FXML private static TableColumn<PlayerFullInfo, Boolean> cIsInGame = new TableColumn<>();
+    @FXML private static TableColumn<PlayerFullInfo, Integer> cScore = new TableColumn<>();
     
     public static ObservableList _tableView = FXCollections.observableArrayList();
 
@@ -45,6 +45,7 @@ public class MainViewController implements Initializable {
 //        cIsInGame.setCellValueFactory(new PropertyValueFactory<>("inGame"));
 //        cScore.setCellValueFactory(new PropertyValueFactory<>("points"));
 //        cStatus.setComparator(cStatus.getComparator().reversed());
+
     }
     
     @FXML protected void onActionStartServer(ActionEvent event) {
@@ -89,7 +90,7 @@ public class MainViewController implements Initializable {
 //        System.out.println(playersFullInfo);
 //cPlayerName.setText("Good Luck");
 //        System.out.println(cPlayerName.getId());
-        System.out.println("what");
+        System.out.println(cPlayerName.toString()+"what");
         cPlayerName.setCellValueFactory( new PropertyValueFactory<>("name") );
                 System.out.println("what2");
 

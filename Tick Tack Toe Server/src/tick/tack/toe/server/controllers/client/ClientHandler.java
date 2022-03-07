@@ -5,6 +5,7 @@
  */
 package tick.tack.toe.server.controllers.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import tick.tack.toe.server.controllers.db.*;
 //import tick.tack.toe.server.models.*;
 
@@ -16,7 +17,11 @@ import java.sql.Timestamp;
 import java.util.*;
 import tick.tack.toe.server.models.PlayerFullInfo;
 import tick.tack.toe.server.controllers.MainViewController;
+import tick.tack.toe.server.requests.*;
+import tick.tack.toe.server.responses.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.application.Platform;
 import tick.tack.toe.server.controllers.MainViewController;
 
@@ -60,7 +65,38 @@ public class ClientHandler extends Thread {
         System.out.println(playersFullInfo.size());
         Platform.runLater(() -> MainViewController.fillPlayersTable(playersFullInfo.values()));
     }
-    
+    public static PlayerFullInfo getPlayerFullInfo(int player_id) {
+        return playersFullInfo.get(player_id);
+    }
+
+//    public void login(String json) {
+//        try {
+//            LoginRequest loginReq = mapper.readValue(json, LoginRequest.class);
+//            LoginResponse loginRes = new LoginResponse();
+//            int u_id = dbConnection.authenticate(loginReq.getCredentials());
+//            if (u_id != -1) {
+//                playersFullInfo.get(u_id).setStatus(PlayerFullInfo.ONLINE);
+//                playersFullInfo.get(u_id).setS_id(this.getId());
+//                clients.get(this.getId()).myFullInfoPlayer = playersFullInfo.get(u_id);
+//                updateStatus(clients.get(this.getId()).myFullInfoPlayer);
+//                loginRes.setStatus(LoginRes.STATUS_OK);
+//                loginRes.setPlayerFullInfo(playersFullInfo.get(u_id));
+//                loginRes.setPlayerFullInfoMap(playersFullInfo);
+//            } else {
+//                loginRes.setStatus(LoginRes.STATUS_ERROR);
+//                loginRes.setMessage("Incorrect Password or Username.");
+//            }
+//            String jResponse = mapper.writeValueAsString(loginRes);
+//            System.out.println(jResponse);
+//            printStream.println(jResponse);
+//
+//        } catch (SQLException | JsonProcessingException e) {
+//            e.printStackTrace();
+//        } catch (JsonProcessingException ex) {
+//            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//    }
+
     @Override
     public void run() {
         while (true) {

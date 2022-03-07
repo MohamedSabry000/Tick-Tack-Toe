@@ -15,6 +15,7 @@ public class MatchTable {
     public static final String STATUS_FINISHED = "finished";
     public static final String STATUS_PAUSED = "paused";
 
+    public MatchTable(){}
     public MatchTable(String player1_Name, String player2_Name, String winner, String status, String match_date, int match_id, int player1_id, int player2_id) {
         this.player1_Name = player1_Name;
         this.player2_Name = player2_Name;

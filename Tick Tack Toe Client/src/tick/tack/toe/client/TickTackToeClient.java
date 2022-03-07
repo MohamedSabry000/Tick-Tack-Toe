@@ -10,6 +10,7 @@ package tick.tack.toe.client;
 //import com.iti.tictactoeclient.controllers.*;
 //import com.iti.tictactoeclient.helpers.ServerListener;
 //import com.iti.tictactoeclient.requests.UpdateInGameStatusReq;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import javafx.application.Application;
@@ -33,9 +34,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 import java.net.URL;
+import tick.tack.toe.client.controllers.HomeViewController;
 import tick.tack.toe.client.controllers.server.ServerListener;
 
-import tick.tack.toe.client.models.*;
 
 /**
  *
@@ -43,13 +44,14 @@ import tick.tack.toe.client.models.*;
  */
 public class TickTackToeClient extends Application {
     
-     private static Stage mainStage;
+    private static Stage mainStage;
     private static Scene sceneRegister, sceneHome, sceneGame, sceneLogin, sceneMatch, sceneGameVsComputer, sceneTTT, sceneScore;
+    public static final ObjectMapper mapper = new ObjectMapper();
 
     private URL url;
     private String css;
 //    public static RegisterController registerController;
-//    public static HomeController homeController;
+    public static HomeViewController homeController;
 //    public static GameController gameController;
 //    public static LoginController loginController;
 //    public static MatchController matchController;
@@ -75,7 +77,7 @@ public class TickTackToeClient extends Application {
     
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("views/login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("views/Login.fxml"));
 
         Scene loginScene = new Scene(root);
         primaryStage.setTitle("Login");
@@ -92,6 +94,9 @@ public class TickTackToeClient extends Application {
 
     private void initViews() {
         try {
+            // Register view
+            sceneLogin = new Scene(FXMLLoader.load(getClass().getResource("views/Login.fxml")));
+            
             // Register view
             sceneRegister = new Scene(FXMLLoader.load(getClass().getResource("views/Register.fxml")));
 
@@ -160,6 +165,32 @@ public class TickTackToeClient extends Application {
             System.err.println("System tray not supported!");
         }
     }
+    
+
+    public static void openLoginView() {
+
+        mainStage.hide();
+        mainStage.setScene(sceneLogin);
+        mainStage.setTitle("Login");
+        File iconfile = new File("views/imgs/xocolored-0١");
+        Image icon = new Image(iconfile.toURI().toString());
+        mainStage.getIcons().add(icon);
+//        loginController.showAnimation();
+        openedScene = scenes.loginS;
+        mainStage.show();
+    }
+    public static void openRegisterView() {
+        mainStage.hide();
+        mainStage.setScene(sceneRegister);
+        mainStage.setTitle("Register");
+        File iconfile = new File("views/imgs/xocolored-0١");
+        Image icon = new Image(iconfile.toURI().toString());
+        mainStage.getIcons().add(icon);
+//        registerController.showAnimation();
+        openedScene = scenes.registerS;
+        mainStage.show();
+    }
+
     public static void openHomeView() {
         mainStage.hide();
         mainStage.setScene(sceneHome);
@@ -171,7 +202,40 @@ public class TickTackToeClient extends Application {
         mainStage.show();
 //        homeController.showAnimation();
     }
-    
+    public static void openMatchView() {
+        mainStage.hide();
+        mainStage.setScene(sceneMatch);
+        mainStage.setTitle("Match");
+        File iconfile = new File("views/imgs/xocolored-0١");
+        Image icon = new Image(iconfile.toURI().toString());
+        mainStage.getIcons().add(icon);
+        openedScene = scenes.matchS;
+        mainStage.show();
+//        matchController.showAnimation();
+    }
+    public static void openGameView() {
+        mainStage.hide();
+        mainStage.setScene(sceneGame);
+        mainStage.setTitle("TicTacToe");
+        File iconfile = new File("views/imgs/xocolored-0١");
+        Image icon = new Image(iconfile.toURI().toString());
+        mainStage.getIcons().add(icon);
+        openedScene = scenes.vsPlayerS;
+        mainStage.show();
+//        gameController.showAnimation();
+    }
+    public static void openGameVsComputerView() {
+        mainStage.hide();
+        mainStage.setScene(sceneGameVsComputer);
+        mainStage.setTitle("TicTacToe");
+        File iconfile = new File("images/7.png");
+        Image icon = new Image(iconfile.toURI().toString());
+        mainStage.getIcons().add(icon);
+//        gameVsComputerController.showAnimation();
+        openedScene = scenes.vsComputerS;
+        mainStage.show();
+    }
+
     @Override
     public void stop() throws Exception {
         try{

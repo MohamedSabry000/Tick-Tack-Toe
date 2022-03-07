@@ -9,11 +9,15 @@ package tick.tack.toe.client.models;
  *
  * @author booga
  */
-public class User {
+public class User extends Credentials{
     private int user_id;
     private String name;
     private int points;
 
+    public User(String user, String pass) {
+        super(user, pass);
+    }
+    
     public int getUser_id() {
         return user_id;
     }

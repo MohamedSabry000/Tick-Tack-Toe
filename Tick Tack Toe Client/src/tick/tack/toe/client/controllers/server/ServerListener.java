@@ -75,6 +75,17 @@ public class ServerListener extends Thread {
         }
     }
     
+    /****************************************************/
+    public static void sendRequest(String json) {
+        try {
+            System.out.println(json);
+            printStream.println(json);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+    }
+    /***************************************************/
 
     @Override
     public void run() {

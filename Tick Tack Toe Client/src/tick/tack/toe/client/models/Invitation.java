@@ -5,6 +5,9 @@
  */
 package tick.tack.toe.client.models;
 
+import tick.tack.toe.client.models.Match;
+import tick.tack.toe.client.models.Player;
+
 /**
  *
  * @author booga
