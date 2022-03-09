@@ -5,16 +5,21 @@
  */
 package tick.tack.toe.client.controllers.server;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import java.awt.TrayIcon;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.Map;
 
 import javafx.application.Platform;
+import org.json.JSONObject;
 import tick.tack.toe.client.TickTackToeClient;
+import tick.tack.toe.client.responses.LoginResponse;
+import tick.tack.toe.client.responses.Response;
 
 /**
  *
@@ -33,7 +38,7 @@ public class ServerListener extends Thread {
     public ServerListener() {
         running = true;
         first = true;
-//        initTypes();
+        initTypes();
         initConnection();
     }
 
@@ -58,6 +63,29 @@ public class ServerListener extends Thread {
             
             initConnection();
         }
+    }
+    
+    private void initTypes() {
+        types = new HashMap<>();
+        types.put(Response.RESPONSE_LOGIN, this::Login);
+//        types.put(Response.RESPONSE_INVITE_TO_GAME, this::inviteToGameResponse);
+//        types.put(Response.RESPONSE_SIGN_UP, this::signUpRes);
+//        types.put(Response.RESPONSE_GET_MATCH_HISTORY, this::getMatchHistory);
+//        types.put(Response.RESPONSE_ASK_TO_RESUME, this::rejectToResumeGame);
+//        types.put(Response.RESPONSE_GET_PAUSED_MATCH, this::getPausedMatch);
+//        types.put(Response.RESPONSE_ASK_TO_PAUSE, this::askToPauseResponse);
+//
+//        types.put(Notification.NOTIFICATION_UPDATE_STATUS, this::updateStatus);
+//        types.put(Notification.NOTIFICATION_GAME_INVITATION, this::gameInvitation);
+//        types.put(Notification.NOTIFICATION_START_GAME, this::startGame);
+//        types.put(Notification.NOTIFICATION_ASK_TO_PAUSE, this::askToPauseNotification);
+//        types.put(Notification.NOTIFICATION_MESSAGE, this::sendMessageRes);
+//        types.put(Notification.NOTIFICATION_ASK_TO_RESUME, this::askToResume);
+//        types.put(Notification.NOTIFICATION_RESUME_GAME, this::resumeGame);
+//        types.put(Notification.NOTIFICATION_FINISH_GAME, this::finishGameNotification);
+//        types.put(Notification.NOTIFICATION_PAUSE_GAME, this::pauseGameNotification);
+//        types.put(Notification.NOTIFICATION_COMPETITOR_CONNECTION_ISSUE, this::competitorConnectionIssueNotification);
+//        types.put(Notification.NOTIFICATION_UPDATE_BOARD, this::updateBoardNotification);
     }
     
     private void goOffline() {
@@ -86,24 +114,48 @@ public class ServerListener extends Thread {
 
     }
     /***************************************************/
-
+    /**
+     * Handle Response
+     */
+    private void Login(String json) {
+        try {
+            LoginResponse loginRes = TickTackToeClient.mapper.readValue(json, LoginResponse.class);
+            System.out.println("hello: "+ loginRes.getStatus());
+            Platform.runLater(() -> TickTackToeClient.loginController.handleResponse(loginRes));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void signUpRes(String json) {
+        try {
+            Response signUpRes = TickTackToeClient.mapper.readValue(json, Response.class);
+            Platform.runLater(() -> TickTackToeClient.registerController.handleResponse(signUpRes));
+            System.out.println("Failed to connect1");
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    
+    /*****************************************************/
     @Override
     public void run() {
         while (running) {
-//            try {
-//                String sMessage = bufferedReader.readLine();
-//                System.out.println(sMessage);
-//                JSONObject json = new JSONObject(sMessage);
-//                String serverType = (String) json.get("type");
-//                if (types.get(serverType) != null) {
-//                    types.get(serverType).handleAction(sMessage);
-//                }
-//            } catch (Exception e) {
-//                if (running) {
-//                    goOffline();
-//                    initConnection();
-//                }
-//            }
+            try {
+                String sMessage = bufferedReader.readLine();
+                System.out.println(sMessage);
+                JSONObject json = new JSONObject(sMessage);
+                String serverType = (String) json.get("type");
+                if (types.get(serverType) != null) {
+                    types.get(serverType).handleAction(sMessage);
+                }
+            } catch (Exception e) {
+                if (running) {
+                    goOffline();
+                    initConnection();
+                }
+            }
         }
     }
     
@@ -127,6 +179,8 @@ public class ServerListener extends Thread {
         } 
     }
 
+    
+    
     interface IType {
 
         void handleAction(String json);

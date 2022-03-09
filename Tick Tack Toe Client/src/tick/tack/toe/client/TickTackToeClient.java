@@ -34,7 +34,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 import java.net.URL;
-import tick.tack.toe.client.controllers.HomeViewController;
+import tick.tack.toe.client.controllers.*;
 import tick.tack.toe.client.controllers.server.ServerListener;
 
 
@@ -50,12 +50,12 @@ public class TickTackToeClient extends Application {
 
     private URL url;
     private String css;
-//    public static RegisterController registerController;
+    public static RegisterViewController registerController;
     public static HomeViewController homeController;
-//    public static GameController gameController;
-//    public static LoginController loginController;
-//    public static MatchController matchController;
-//    public static GameVsComputerController gameVsComputerController;
+    public static TicTacToeViewController gameController;
+    public static LoginViewController loginController;
+    public static MatchViewController matchController;
+    public static GameVsComputerViewController gameVsComputerController;
     private static ServerListener serverListener;
 //    public static final ObjectMapper mapper = new ObjectMapper();
     private static TrayIcon trayIcon;
@@ -77,12 +77,17 @@ public class TickTackToeClient extends Application {
     
     @Override
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("views/Login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(TickTackToeClient.class.getResource("views/Login.fxml"));
+        sceneLogin = new Scene(fxmlLoader.load());
+        loginController = fxmlLoader.getController();
+        
+//        Parent root = FXMLLoader.load(getClass().getResource("views/Login.fxml"));
 
-        Scene loginScene = new Scene(root);
+//        Scene loginScene = new Scene(root);
         primaryStage.setTitle("Login");
         primaryStage.setResizable(false);
-        primaryStage.setScene(loginScene);
+//        primaryStage.setScene(loginScene);
+        primaryStage.setScene(sceneLogin);
         
         File iconfile = new File("views/imgs/xocolored-0١.png");
         Image icon = new Image(iconfile.toURI().toString());
@@ -95,25 +100,37 @@ public class TickTackToeClient extends Application {
     private void initViews() {
         try {
             // Register view
-            sceneLogin = new Scene(FXMLLoader.load(getClass().getResource("views/Login.fxml")));
+            FXMLLoader fxmlLoaderLogin = new FXMLLoader(TickTackToeClient.class.getResource("views/Login.fxml"));
+            sceneLogin = new Scene(fxmlLoaderLogin.load());
+            loginController = fxmlLoaderLogin.getController();
             
             // Register view
-            sceneRegister = new Scene(FXMLLoader.load(getClass().getResource("views/Register.fxml")));
+            FXMLLoader fxmlLoaderRegister = new FXMLLoader(TickTackToeClient.class.getResource("views/Register.fxml"));
+            sceneRegister = new Scene(fxmlLoaderRegister.load());
+            registerController = fxmlLoaderRegister.getController();
 
             // Home view
-            sceneHome = new Scene(FXMLLoader.load(getClass().getResource("views/Home.fxml")));
+            FXMLLoader fxmlLoaderHome = new FXMLLoader(TickTackToeClient.class.getResource("views/Home.fxml"));
+            sceneHome = new Scene(fxmlLoaderHome.load());
+            homeController = fxmlLoaderHome.getController();
 
             // Game View
             sceneScore = new Scene(FXMLLoader.load(getClass().getResource("views/Score.fxml")));
 
             // GameVsComputer View
-            sceneGameVsComputer = new Scene(FXMLLoader.load(getClass().getResource("views/GameVsComputer.fxml")));
+            FXMLLoader fxmlLoaderGameVsComputer = new FXMLLoader(TickTackToeClient.class.getResource("views/GameVsComputer.fxml"));
+            sceneGameVsComputer = new Scene(fxmlLoaderGameVsComputer.load());
+            gameVsComputerController = fxmlLoaderGameVsComputer.getController();
 
             // Match View
-            sceneMatch = new Scene(FXMLLoader.load(getClass().getResource("views/Match.fxml")));
+            FXMLLoader fxmlLoaderMatch = new FXMLLoader(TickTackToeClient.class.getResource("views/Match.fxml"));
+            sceneMatch = new Scene(fxmlLoaderMatch.load());
+            matchController = fxmlLoaderMatch.getController();
             
             // Match View
-            sceneTTT = new Scene(FXMLLoader.load(getClass().getResource("views/Tic Tac Toe.fxml")));
+            FXMLLoader fxmlLoaderGame = new FXMLLoader(TickTackToeClient.class.getResource("views/Tic Tac Toe.fxml"));
+            sceneTTT = new Scene(fxmlLoaderGame.load());
+            gameController = fxmlLoaderGame.getController();
 
         } catch (IOException e) {
             e.printStackTrace();

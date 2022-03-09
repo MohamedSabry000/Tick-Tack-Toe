@@ -86,6 +86,8 @@ public class LoginViewController implements Initializable{
     }
     
     public void handleResponse(LoginResponse loginRes) {
+        System.out.println("sssssssssssssssssss");
+        System.out.println("Status: "+ loginRes.getStatus());
         if (Objects.equals(loginRes.getStatus(), Response.STATUS_OK)) {
             TickTackToeClient.homeController.fromLogin(loginRes.getPlayerFullInfo(), loginRes.getPlayerFullInfoMap());
             if (TickTackToeClient.openedScene != TickTackToeClient.scenes.homeS && TickTackToeClient.openedScene != TickTackToeClient.scenes.vsComputerS) {

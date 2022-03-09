@@ -16,16 +16,54 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.net.URL;
 import java.util.Collection;
 import java.util.ResourceBundle;
+import tick.tack.toe.server.controllers.client.ClientListener;
+import tick.tack.toe.server.models.PlayerFullInfo;
 /**
  *
  * @author wwwmo
  */
 public class Controller implements Initializable  {
+    
+    private static ClientListener clientListener;
+
+    @FXML
+    private TableView<PlayerFullInfo> tPlayers;
+    @FXML
+    private TableColumn<PlayerFullInfo, String> cPlayerName;
+    @FXML
+    private TableColumn<PlayerFullInfo, String> cStatus;
+    @FXML
+    private TableColumn<PlayerFullInfo, Boolean> cIsInGame;
+    @FXML
+    private TableColumn<PlayerFullInfo, Integer> cScore;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println("Hello");
+        cPlayerName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        cStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        cIsInGame.setCellValueFactory(new PropertyValueFactory<>("inGame"));
+        cScore.setCellValueFactory(new PropertyValueFactory<>("points"));
+        cStatus.setComparator(cStatus.getComparator().reversed());
     }
-    
-    
+
+    @FXML
+    protected void onActionStart() {
+        clientListener = new ClientListener();
+        clientListener.setDaemon(true);
+        clientListener.start();
+    }
+
+    @FXML
+    protected void onActionStop() {
+        clientListener.interrupt();
+        clientListener = null;
+    }
+
+    public void fillPlayersTable(Collection<PlayerFullInfo> playersFullInfo) {
+        tPlayers.getItems().clear();
+        tPlayers.getItems().setAll(playersFullInfo);
+        tPlayers.getSortOrder().add(cStatus);
+    }
+
+
 }

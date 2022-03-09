@@ -5,54 +5,58 @@
  */
 package tick.tack.toe.server.models;
 
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+
 /**
  *
  * @author booga
  */
 public class PlayerFullInfo extends Player{
-    private int points;
-    private String name, status;
+    private SimpleIntegerProperty points;
+    private SimpleStringProperty name, status;
     private boolean inGame;
+
 
   
     public PlayerFullInfo(){
-       player_id = -1;
-       this.name = "";
-       this.points = 0;
-       status = OFFLINE;
+       db_player_id = -1;
+        this.name = new SimpleStringProperty("");
+       this.points = new SimpleIntegerProperty(0);
+       status = new SimpleStringProperty(OFFLINE);
        inGame = false;
     }
 
     public PlayerFullInfo(int index, int player_id, String name, int points) {
-        this.player_id = player_id;
-        this.name = name;
-        this.points = points;
-        status = OFFLINE;
+        this.db_player_id = player_id;
+        this.name = new SimpleStringProperty(name);
+        this.points = new SimpleIntegerProperty(points);
+        status = new SimpleStringProperty(OFFLINE);
         inGame = false;
     }
 
     public PlayerFullInfo(int player_id, String name, int points) {
-        this.player_id = player_id;
-        this.name = name;
-        this.points = points;
-        status = OFFLINE;
+        this.db_player_id = player_id;
+        this.name = new SimpleStringProperty(name);
+        this.points = new SimpleIntegerProperty(points);
+        status = new SimpleStringProperty(OFFLINE);
         inGame = false;
     }
 
     public String getName() {
-        return name;
+        return name.get();
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.name = new SimpleStringProperty(name);
     }
 
     public String getStatus() {
-        return status;
+        return status.get();
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.status = new SimpleStringProperty(status);
     }
 
     public boolean isInGame() {
@@ -64,10 +68,12 @@ public class PlayerFullInfo extends Player{
     }
 
     public int getPoints() {
-        return points;
+        return points.get();
     }
 
     public void setPoints(int points) {
-        this.points = points;
+        this.points = new SimpleIntegerProperty(points);
+
+        
     }
 }

@@ -20,7 +20,7 @@ import tick.tack.toe.server.controllers.client.ClientListener;
  * @author wwwmo
  */
 public class TickTackToeServer extends Application {
-    public static Controller controller;
+    public static MainViewController controller;
     
     @Override
     public void start(Stage primaryStage) throws IOException {

@@ -78,9 +78,9 @@ public class HomeViewController {
     public void fromLogin(PlayerFullInfo myPlayerFullInfo, Map<Integer, PlayerFullInfo> playersFullInfo) {
         this.myPlayerFullInfo = myPlayerFullInfo;
         this.playersFullInfo = playersFullInfo;
-        playersFullInfo.remove(myPlayerFullInfo.getPlayer_id());
+        playersFullInfo.remove(myPlayerFullInfo.getDb_Player_id());
         fillView();
-        sent.clear();
+//        sent.clear();
         offline(false);
     }
     private void fillView() {

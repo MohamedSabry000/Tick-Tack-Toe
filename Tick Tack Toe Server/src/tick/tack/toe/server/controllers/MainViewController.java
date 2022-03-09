@@ -29,22 +29,25 @@ import tick.tack.toe.server.models.PlayerFullInfo;
  * @author wwwmo
  */
 public class MainViewController implements Initializable {
-    private static ClientListener clientListener = null;
-    @FXML private static TableView<PlayerFullInfo> tPlayers = new TableView<>();
-    @FXML private static TableColumn<PlayerFullInfo, String> cPlayerName = new TableColumn<>();
-    @FXML private static TableColumn<PlayerFullInfo, String> cStatus = new TableColumn<>();
-    @FXML private static TableColumn<PlayerFullInfo, Boolean> cIsInGame = new TableColumn<>();
-    @FXML private static TableColumn<PlayerFullInfo, Integer> cScore = new TableColumn<>();
+    private static ClientListener clientListener;
+   
+    public  TableView<PlayerFullInfo> tPlayers;
+    public  TableColumn<PlayerFullInfo, String> cPlayerName;
+    public  TableColumn<PlayerFullInfo, String> cStatus;
+    public  TableColumn<PlayerFullInfo, Boolean> cIsInGame;
+    public  TableColumn<PlayerFullInfo, Integer> cScore;
     
     public static ObservableList _tableView = FXCollections.observableArrayList();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-//        cPlayerName.setCellValueFactory(new PropertyValueFactory<>("user"));
-//        cStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
-//        cIsInGame.setCellValueFactory(new PropertyValueFactory<>("inGame"));
-//        cScore.setCellValueFactory(new PropertyValueFactory<>("points"));
-//        cStatus.setComparator(cStatus.getComparator().reversed());
+        
+        cPlayerName.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        cStatus.setCellValueFactory(new PropertyValueFactory<>("Status"));
+        cIsInGame.setCellValueFactory(new PropertyValueFactory<>("InGame"));
+        cScore.setCellValueFactory(new PropertyValueFactory<>("Points"));
+        cStatus.setComparator(cStatus.getComparator().reversed());
+        tPlayers.setItems(_tableView);
 
     }
     
@@ -81,26 +84,10 @@ public class MainViewController implements Initializable {
     }
     
     public static void fillPlayersTable(Collection<PlayerFullInfo> playersFullInfo) {
-        
+        _tableView.clear();
         for (PlayerFullInfo p : playersFullInfo) {
             _tableView.add(p);
             System.out.println(p.getName());
         }
-        
-//        System.out.println(playersFullInfo);
-//cPlayerName.setText("Good Luck");
-//        System.out.println(cPlayerName.getId());
-        System.out.println(cPlayerName.toString()+"what");
-        cPlayerName.setCellValueFactory( new PropertyValueFactory<>("name") );
-                System.out.println("what2");
-
-        cStatus.setCellValueFactory( new PropertyValueFactory<>("status") );
-        cIsInGame.setCellValueFactory( new PropertyValueFactory<>("inGame") );
-        cScore.setCellValueFactory( new PropertyValueFactory<>("points") );
-        
-        tPlayers.setItems(_tableView);
-//        tPlayers.getItems().clear();
-//        tPlayers.getItems().setAll(playersFullInfo);
-//        tPlayers.getSortOrder().add(cStatus);
     }    
 }

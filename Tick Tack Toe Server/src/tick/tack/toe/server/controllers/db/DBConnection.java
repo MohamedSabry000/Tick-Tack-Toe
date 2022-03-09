@@ -60,7 +60,7 @@ public class DBConnection {
     public int authenticate(Credentials credentials) {
         try {
             Statement stmt = connection.createStatement();
-            String queryString = new String("select id from player where username='" + credentials.getUsername() + "' and password='" + credentials.getPassword() + "';");
+            String queryString = new String("select id from player where user_name='" + credentials.getUsername() + "' and password='" + credentials.getPassword() + "';");
             ResultSet rs = stmt.executeQuery(queryString);
             if (rs.next()) {
                 return rs.getInt("id");

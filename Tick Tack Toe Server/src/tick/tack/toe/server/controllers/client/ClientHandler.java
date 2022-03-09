@@ -23,7 +23,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import tick.tack.toe.server.TickTackToeServer;
 import tick.tack.toe.server.controllers.MainViewController;
+import tick.tack.toe.server.notifications.*;
+import org.json.JSONObject;
 
 
 /**
@@ -46,7 +49,7 @@ public class ClientHandler extends Thread {
 
     
     public ClientHandler(Socket socket) {
-//        initActions();
+        initActions();
         try {
             dataInputStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             printStream = new PrintStream(socket.getOutputStream());
@@ -58,7 +61,27 @@ public class ClientHandler extends Thread {
             e.printStackTrace();
         }
     }
-
+    
+    private void initActions() {
+        actions = new HashMap<>();
+//        actions.put(Request.ACTION_INVITE_TO_GAME, this::inviteToGame);
+//        actions.put(Request.ACTION_ACCEPT_INVITATION, this::acceptInvitation);
+//        actions.put(Request.ACTION_REJECT_INVITATION, this::rejectInvitation);
+//        actions.put(Request.ACTION_UPDATE_BOARD, this::updateBoard);
+//        actions.put(Request.ACTION_UPDATE_IN_GAME_STATUS, this::updateInGameStatus);
+//        actions.put(Request.ACTION_SIGN_UP, this::signUp);
+        actions.put(Request.ACTION_LOGIN, this::login);
+//        actions.put(Request.ACTION_ASK_TO_PAUSE, this::askToPause);
+//        actions.put(Request.ACTION_SAVE_MATCH, this::saveMatch);
+//        actions.put(Request.ACTION_REJECT_TO_PAUSE, this::rejectToPause);
+//        actions.put(Request.ACTION_SEND_MESSAGE, this::sendMessage);
+//        actions.put(Request.ACTION_GET_MATCH_HISTORY, this::getMatchHistory);
+//        actions.put(Request.ACTION_ASK_TO_RESUME, this::askToResume);
+//        actions.put(Request.ACTION_REJECT_TO_RESUME, this::rejectToResume);
+//        actions.put(Request.ACTION_ACCEPT_TO_RESUME, this::acceptToResume);
+//        actions.put(Request.ACTION_BACK_FROM_OFFLINE, this::backFromOffline);
+//        actions.put(Request.ACTION_GET_PAUSED_MATCH, this::getPausedMatch);
+    }
     public static void initPlayerList() {
         playersFullInfo = new HashMap<>();
         playersFullInfo = DBConnection.getAllPlayers();
@@ -69,51 +92,45 @@ public class ClientHandler extends Thread {
         return playersFullInfo.get(player_id);
     }
 
-//    public void login(String json) {
-//        try {
-//            LoginRequest loginReq = mapper.readValue(json, LoginRequest.class);
-//            LoginResponse loginRes = new LoginResponse();
-//            int u_id = dbConnection.authenticate(loginReq.getCredentials());
-//            if (u_id != -1) {
-//                playersFullInfo.get(u_id).setStatus(PlayerFullInfo.ONLINE);
-//                playersFullInfo.get(u_id).setS_id(this.getId());
-//                clients.get(this.getId()).myFullInfoPlayer = playersFullInfo.get(u_id);
-//                updateStatus(clients.get(this.getId()).myFullInfoPlayer);
-//                loginRes.setStatus(LoginRes.STATUS_OK);
-//                loginRes.setPlayerFullInfo(playersFullInfo.get(u_id));
-//                loginRes.setPlayerFullInfoMap(playersFullInfo);
-//            } else {
-//                loginRes.setStatus(LoginRes.STATUS_ERROR);
-//                loginRes.setMessage("Incorrect Password or Username.");
-//            }
-//            String jResponse = mapper.writeValueAsString(loginRes);
-//            System.out.println(jResponse);
-//            printStream.println(jResponse);
-//
-//        } catch (SQLException | JsonProcessingException e) {
-//            e.printStackTrace();
-//        } catch (JsonProcessingException ex) {
-//            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-
     @Override
     public void run() {
-        while (true) {
-//            try {
-//                String jRequest = dataInputStream.readLine();
-//                System.out.println(jRequest);
-//                JSONObject json = new JSONObject(jRequest);
-//                String clientAction = (String) json.get("action");
-//                actions.get(clientAction).handleAction(jRequest);
-//            } catch (Exception e) {
-//                System.out.println("Stopped");
-//                dropConnection();
-//                System.out.println("No. of Clients: " + clients.size());
-//                e.printStackTrace();
-//                break;
-//            }
+        while (true) {  
+            try {
+                String jRequest = dataInputStream.readLine();
+                System.out.println(jRequest);
+                JSONObject json = new JSONObject(jRequest);
+                String clientAction = (String) json.get("action");
+                actions.get(clientAction).handleAction(jRequest);
+            } catch (Exception e) {
+                System.out.println("Stopped");
+                dropConnection();
+                System.out.println("No. of Clients: " + clients.size());
+                e.printStackTrace();
+                break;
+            }
         }
+    }
+    private void dropConnection() {
+        // check if were playing with a competitor
+        if (clients.get(this.getId()).competitor != null) {
+            try {
+                // notify the competitor
+                CompetitorConnectionIssueNotification competitorConnectionIssueNotification = new CompetitorConnectionIssueNotification();
+                String jNotification = mapper.writeValueAsString(competitorConnectionIssueNotification);
+
+                clients.get(this.getId()).competitor.printStream.println(jNotification);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+        // if not logged in
+        if (clients.get(this.getId()).myFullInfoPlayer != null) {
+            clients.get(this.getId()).myFullInfoPlayer.setStatus(PlayerFullInfo.OFFLINE);
+            clients.get(this.getId()).myFullInfoPlayer.setInGame(false);
+            clients.get(this.getId()).myFullInfoPlayer.setServer_id(-1);
+        }
+        updateStatus(clients.get(this.getId()).myFullInfoPlayer);
+        clients.remove(this.getId());
     }
     
     public static void stopAll() {
@@ -131,6 +148,55 @@ public class ClientHandler extends Thread {
             e.printStackTrace();
         }
     }
+    
+    public void login(String json) {
+        try {
+            LoginRequest loginReq = mapper.readValue(json, LoginRequest.class);
+            LoginResponse loginRes = new LoginResponse();
+            int u_id = dbConnection.authenticate(loginReq.getCredentials());
+            if (u_id != -1) {
+                playersFullInfo.get(u_id).setStatus(PlayerFullInfo.ONLINE);
+                playersFullInfo.get(u_id).setDb_Player_id(this.getId());
+                clients.get(this.getId()).myFullInfoPlayer = playersFullInfo.get(u_id);
+                updateStatus(clients.get(this.getId()).myFullInfoPlayer);
+                
+                loginRes.setStatus(LoginResponse.STATUS_OK);
+                loginRes.setPlayerFullInfo(playersFullInfo.get(u_id));
+                loginRes.setPlayerFullInfoMap(playersFullInfo);
+            } else {
+                loginRes.setStatus(LoginResponse.STATUS_ERROR);
+                loginRes.setMessage("Incorrect Password or Username.");
+            }
+            String jResponse = mapper.writeValueAsString(loginRes);
+            System.out.println(jResponse);
+            printStream.println(jResponse);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    private void updateStatus(PlayerFullInfo playerFullInfo) {
+        // update player status in the list
+        playersFullInfo.put(playerFullInfo.getServer_id(), playerFullInfo);
+        // create notification to send
+        UpdateStatusNotification updateStatusNotification = new UpdateStatusNotification(playerFullInfo);
+        try {
+            // create json from the notification
+            String jNotification = mapper.writeValueAsString(updateStatusNotification);
+            // send to all client notification with now status for the player
+            new Thread(() -> {
+                for (ClientHandler client : clients.values()) {
+                    if (client.myFullInfoPlayer != null) {
+                        client.printStream.println(jNotification);
+                    }
+                }
+            }).start();
+            Platform.runLater(() -> TickTackToeServer.controller.fillPlayersTable(playersFullInfo.values()));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+
     
     interface IAction {
         void handleAction(String json);
