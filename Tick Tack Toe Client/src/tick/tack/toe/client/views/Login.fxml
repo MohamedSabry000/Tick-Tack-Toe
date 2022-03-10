@@ -53,7 +53,7 @@
                   <Font name="Gill Sans MT Bold" size="15.0" />
                </font>
             </Button>
-            <Label fx:id="invaliduserTxt" layoutX="72.0" layoutY="53.0" lineSpacing="1.0" textAlignment="CENTER" textFill="#a80909">
+            <Label fx:id="invaliduserTxt" layoutX="25.0" layoutY="37.0" lineSpacing="1.0" prefHeight="38.0" prefWidth="264.0" textAlignment="CENTER" textFill="#a80909">
                <font>
                   <Font name="Gill Sans MT" size="17.0" />
                </font>

@@ -23,16 +23,16 @@
       </ImageView>
       <Pane centerShape="false" focusTraversable="true" layoutX="174.0" layoutY="87.0" prefHeight="377.0" prefWidth="308.0" style="-fx-background-color: white; -fx-background-radius: 20;">
          <children>
-            <TextField fx:id="UserNameTxt" layoutX="75.0" layoutY="139.0" opacity="0.45" prefHeight="38.0" prefWidth="156.0" promptText="User Name" style="-fx-font-style-color: white; -fx-background-radius: 20;">
-               <font>
-                  <Font name="Gill Sans MT" size="15.0" />
-               </font>
-            </TextField>
             <ImageView fitHeight="308.0" fitWidth="342.0" layoutY="-141.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@imgs/xocolored-0١.png" />
                </image>
             </ImageView>
+            <TextField fx:id="UserNameTxt" layoutX="75.0" layoutY="139.0" opacity="0.45" prefHeight="38.0" prefWidth="156.0" promptText="User Name" style="-fx-font-style-color: white; -fx-background-radius: 20;">
+               <font>
+                  <Font name="Gill Sans MT" size="15.0" />
+               </font>
+            </TextField>
             <TextField fx:id="FirstNameTxt" layoutX="75.0" layoutY="84.0" opacity="0.45" prefHeight="38.0" prefWidth="156.0" promptText="Frst Name" style="-fx-font-style-color: white; -fx-background-radius: 20;">
                <font>
                   <Font name="Gill Sans MT" size="15.0" />

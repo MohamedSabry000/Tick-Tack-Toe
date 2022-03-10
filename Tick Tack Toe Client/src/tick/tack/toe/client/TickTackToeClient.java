@@ -252,6 +252,23 @@ public class TickTackToeClient extends Application {
         openedScene = scenes.vsComputerS;
         mainStage.show();
     }
+    //
+        public static void showAlert(String title, String type) {
+
+        FXMLLoader loader = new FXMLLoader(TickTackToeClient.class.getResource(type + ".fxml"));
+        try {
+            Scene scene = new Scene(loader.load());
+            Stage stage = new Stage();
+            stage.setResizable(false);
+            stage.setTitle(title);
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            System.out.println("tick.tack.toe.client.TickTackToeClient.showAlert()");
+        }
+    }
+
 
     @Override
     public void stop() throws Exception {

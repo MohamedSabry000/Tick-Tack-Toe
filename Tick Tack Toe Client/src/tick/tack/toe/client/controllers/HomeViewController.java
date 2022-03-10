@@ -21,7 +21,7 @@ import tick.tack.toe.client.models.Invitation;
 import tick.tack.toe.client.models.Player;
 import tick.tack.toe.client.models.PlayerFullInfo;
 
-
+import tick.tack.toe.client.TickTackToeClient;
 
 
 public class HomeViewController implements Initializable {
@@ -78,6 +78,8 @@ public class HomeViewController implements Initializable {
     @FXML protected void onActionVsComputer(ActionEvent event) {
 
         System.out.println("pressed VsComputer");
+        TickTackToeClient.openGameVsComputerView();
+        
     }
     @FXML protected void onActionInvitePlayer(ActionEvent event) {
 
@@ -116,5 +118,13 @@ public class HomeViewController implements Initializable {
     public void showHideLoginBtn(boolean isOffline){
         btnLogin.setVisible(myPlayerFullInfo == null && !isOffline);
     }
+    
+        public PlayerFullInfo getPlayerFullInfo(int id) {
+        if (myPlayerFullInfo.getDb_Player_id()== id) {
+            return myPlayerFullInfo;
+        }
+        return playersFullInfo.get(id);
+    }
+
 }
 

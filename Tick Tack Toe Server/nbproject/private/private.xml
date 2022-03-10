@@ -2,21 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/E:/21_%20Java/Grad%20Project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/notifications/CompetitorConnectionIssueNotification.java</file>
-            <file>file:/E:/21_%20Java/Grad%20Project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/TickTackToeServer.java</file>
-            <file>file:/E:/21_%20Java/Grad%20Project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/models/Player.java</file>
-            <file>file:/E:/21_%20Java/Grad%20Project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/controllers/Controller.java</file>
-            <file>file:/E:/21_%20Java/Grad%20Project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/models/PlayerFullInfo.java</file>
-            <file>file:/E:/21_%20Java/Grad%20Project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/models/Credentials.java</file>
-            <file>file:/E:/21_%20Java/Grad%20Project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/controllers/client/ClientListener.java</file>
-            <file>file:/E:/21_%20Java/Grad%20Project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/models/User.java</file>
-            <file>file:/E:/21_%20Java/Grad%20Project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/requests/SignUpRequest.java</file>
-            <file>file:/E:/21_%20Java/Grad%20Project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/notifications/UpdateStatusNotification.java</file>
-            <file>file:/E:/21_%20Java/Grad%20Project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/controllers/client/ClientHandler.java</file>
-            <file>file:/E:/21_%20Java/Grad%20Project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/controllers/MainViewController.java</file>
-            <file>file:/E:/21_%20Java/Grad%20Project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/responses/SignUpResponse.java</file>
-            <file>file:/E:/21_%20Java/Grad%20Project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/controllers/db/DBConnection.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
