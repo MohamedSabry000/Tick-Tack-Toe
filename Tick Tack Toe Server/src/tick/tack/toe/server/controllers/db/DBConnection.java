@@ -62,7 +62,7 @@ public class DBConnection {
             System.out.println("Auth satr 1");
             Statement stmt = connection.createStatement();
             System.out.println("Auth satr 2");
-            String queryString = new String("select id from player where user_name='" + credentials.getUsername() + "' and password='" + credentials.getPassword() + "'");
+            String queryString = new String("select id from player where username='" + credentials.getUsername() + "' and password='" + credentials.getPassword() + "'");
             System.out.println("Auth satr 3");
             ResultSet rs = stmt.executeQuery(queryString);
 
@@ -74,6 +74,26 @@ public class DBConnection {
 
             try { Thread.sleep(500); } catch (InterruptedException ignored) { }
                 authenticate(credentials);
+
+            System.out.println(e);
+        }
+
+
+        System.out.println("Auth satr 5");
+        return -1;
+    }
+    public int getTheLastPlayerId() {
+        try {
+            Statement stmt = connection.createStatement();
+            String queryString = new String("select id from player ORDER BY id DESC LIMIT 1");
+            ResultSet rs = stmt.executeQuery(queryString);
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+
+            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+            getTheLastPlayerId();
 
             System.out.println(e);
         }
@@ -94,11 +114,13 @@ public class DBConnection {
             return null;
         } else {
             try {
-                PreparedStatement stm = connection.prepareStatement("insert into player (user_name, user,password) values (?,?,?);");
+                PreparedStatement stm = connection.prepareStatement("insert into player (username, user, password) values (?,?,?);");
                 stm.setString(1, user.getUsername());
                 stm.setString(2, user.getName());
                 stm.setString(3, user.getPassword());
-                ResultSet result = stm.executeQuery();
+                System.out.println("hello DBConnection Class -> SignUp Method: "+stm.toString());
+                stm.execute();
+                System.out.println("Good Job");
                 return getPlayerInfo(user.getName());
             } catch (SQLException ex) {
                 try { Thread.sleep(500); } catch (InterruptedException ignored) { }
@@ -110,15 +132,15 @@ public class DBConnection {
     }
 
     // -> Validate User Existance
-    public boolean validateUser(String user_name) {
+    public boolean validateUser(String username) {
         try {
-            PreparedStatement stm = connection.prepareStatement("select * from player where user_name=?");
-            stm.setString(1, user_name);
+            PreparedStatement stm = connection.prepareStatement("select * from player where username=?");
+            stm.setString(1, username);
             ResultSet result = stm.executeQuery();
             return result.next();
         } catch (SQLException ex) {
             try { Thread.sleep(500); } catch (InterruptedException ignored) { }
-            validateUser(user_name); 
+            validateUser(username); 
             System.out.println(ex);
         }
         return false;
@@ -126,7 +148,7 @@ public class DBConnection {
 
     private PlayerFullInfo getPlayerInfo(String username) {
         try {
-            PreparedStatement stm = connection.prepareStatement("select id, user, points from player where user_name = ?");
+            PreparedStatement stm = connection.prepareStatement("select id, user, points from player where username = ?");
             stm.setString(1, username);
             ResultSet resultSet = stm.executeQuery();
             resultSet.next();
@@ -359,11 +381,11 @@ public class DBConnection {
     public Map<Integer, PlayerFullInfo> getAllPlayers(boolean eksde) {
         Map<Integer, PlayerFullInfo> players = new HashMap<>();
         try {
-            PreparedStatement stm = connection.prepareStatement("select id,user_name,points from player");
+            PreparedStatement stm = connection.prepareStatement("select id,username,points from player");
             ResultSet resultSet = stm.executeQuery();
             while (resultSet.next()) {
                 int player_id = resultSet.getInt("id");
-                players.put(player_id, new PlayerFullInfo(player_id, resultSet.getString("user_name"), resultSet.getInt("points")));
+                players.put(player_id, new PlayerFullInfo(player_id, resultSet.getString("username"), resultSet.getInt("points")));
             }
         } catch (SQLException ex) {
             try { Thread.sleep(500); } catch (InterruptedException ignored) { }

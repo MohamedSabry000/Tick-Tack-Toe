@@ -155,6 +155,7 @@ public class ClientHandler extends Thread {
             LoginResponse loginRes = new LoginResponse();
             int u_id = dbConnection.authenticate(loginReq.getCredentials());
             if (u_id != -1) {
+                System.out.println(u_id);
                 playersFullInfo.get(u_id).setStatus(PlayerFullInfo.ONLINE);
                 playersFullInfo.get(u_id).setDb_Player_id(this.getId());
                 clients.get(this.getId()).myFullInfoPlayer = playersFullInfo.get(u_id);
@@ -204,8 +205,16 @@ public class ClientHandler extends Thread {
             if (playerFullInfo != null) {
                 signUpRes.setStatus(Response.STATUS_OK);
                 signUpRes.setMessage("You have successfully registered");
-                playersFullInfo.put(playerFullInfo.getServer_id(), playerFullInfo);
-                updateStatus(playerFullInfo);
+                int lastPlayerId = -1;
+                do{
+                    lastPlayerId = dbConnection.getTheLastPlayerId();
+                    if (lastPlayerId != -1) {
+                        playersFullInfo.put(lastPlayerId, playerFullInfo);
+                        updateStatus(playerFullInfo);
+                    }
+                } while(lastPlayerId == -1);
+                 
+                
             } else {
                 signUpRes.setStatus(Response.STATUS_ERROR);
                 signUpRes.setMessage("Username You entered already exists!");
