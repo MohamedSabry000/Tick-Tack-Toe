@@ -38,7 +38,7 @@ public class DBConnection {
     private void connect() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName, dbUser, dbPass);
+            connection = DriverManager.getConnection("jdbc:mysql://" + dbHost + ":" + dbPort + "/" + dbName + "?autoReconnect=true", dbUser, dbPass);
             System.out.println("connected To DB...");
         } catch (Exception e) {
             System.out.println(e);
@@ -59,15 +59,27 @@ public class DBConnection {
      */
     public int authenticate(Credentials credentials) {
         try {
+            System.out.println("Auth satr 1");
             Statement stmt = connection.createStatement();
-            String queryString = new String("select id from player where user_name='" + credentials.getUsername() + "' and password='" + credentials.getPassword() + "';");
+            System.out.println("Auth satr 2");
+            String queryString = new String("select id from player where user_name='" + credentials.getUsername() + "' and password='" + credentials.getPassword() + "'");
+            System.out.println("Auth satr 3");
             ResultSet rs = stmt.executeQuery(queryString);
+
+            System.out.println("Auth satr 4");
             if (rs.next()) {
                 return rs.getInt("id");
             }
         } catch (SQLException e) {
+
+            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+                authenticate(credentials);
+
             System.out.println(e);
         }
+
+
+        System.out.println("Auth satr 5");
         return -1;
     }
 
@@ -82,13 +94,15 @@ public class DBConnection {
             return null;
         } else {
             try {
-                PreparedStatement stm = connection.prepareStatement("insert into player (username, user,password) values (?,?,?);");
+                PreparedStatement stm = connection.prepareStatement("insert into player (user_name, user,password) values (?,?,?);");
                 stm.setString(1, user.getUsername());
                 stm.setString(2, user.getName());
                 stm.setString(3, user.getPassword());
                 ResultSet result = stm.executeQuery();
                 return getPlayerInfo(user.getName());
             } catch (SQLException ex) {
+                try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+                signUp(user);       
                 System.out.println(ex);
             }
         }
@@ -98,11 +112,13 @@ public class DBConnection {
     // -> Validate User Existance
     public boolean validateUser(String user_name) {
         try {
-            PreparedStatement stm = connection.prepareStatement("select * from player where username=?");
+            PreparedStatement stm = connection.prepareStatement("select * from player where user_name=?");
             stm.setString(1, user_name);
             ResultSet result = stm.executeQuery();
             return result.next();
         } catch (SQLException ex) {
+            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+            validateUser(user_name); 
             System.out.println(ex);
         }
         return false;
@@ -110,7 +126,7 @@ public class DBConnection {
 
     private PlayerFullInfo getPlayerInfo(String username) {
         try {
-            PreparedStatement stm = connection.prepareStatement("select id, user, points from player where username = ?");
+            PreparedStatement stm = connection.prepareStatement("select id, user, points from player where user_name = ?");
             stm.setString(1, username);
             ResultSet resultSet = stm.executeQuery();
             resultSet.next();
@@ -118,6 +134,8 @@ public class DBConnection {
                     resultSet.getString("user"),
                     resultSet.getInt("points"));
         } catch (SQLException ex) {
+            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+            getPlayerInfo(username);
             System.out.println(ex);
         }
         return null;
@@ -137,6 +155,8 @@ public class DBConnection {
                 return true;
             }
         } catch (SQLException e) {
+            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+            updatePoints(player_id);
             System.out.println(e);
         }
         return false;
@@ -165,6 +185,8 @@ public class DBConnection {
                 match.setMatch_date(resultSet.getTimestamp(9));
             }
         } catch (SQLException e) {
+            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+            getMatch(match_id);
             System.out.println(e);
         }
         return match;
@@ -195,6 +217,8 @@ public class DBConnection {
                 insertPositions(postions, match_id);
             }
         } catch (SQLException ex) {
+            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+            saveMatch(match, postions);
             System.out.println(ex);
         }
     }
@@ -213,6 +237,8 @@ public class DBConnection {
                 String queryString = new String("INSERT INTO game (game_grid) values('" + grid + "') where game_id = '" + m_id + "' ");
                 ResultSet result = stmt.executeQuery(queryString);
             } catch (SQLException e) {
+                try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+                insertPositions(positions, m_id);
                 System.out.println(e);
             }
         }
@@ -226,6 +252,8 @@ public class DBConnection {
             p.setInt(2, match.getMatch_id());
             p.executeUpdate();
         } catch (SQLException ex) {
+            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+            alterMatch(match, positions);
             System.out.println(ex);
         }
 
@@ -245,6 +273,8 @@ public class DBConnection {
                 match_id = queryResult.getInt("game_id");
             }
         } catch (SQLException ex) {
+            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+            selectMatchId(match_date, player1_id, player2_id);
             System.out.println(ex);
         }
         return match_id;
@@ -280,6 +310,8 @@ public class DBConnection {
                 matches.add(match);
             } while (rs.next());
         } catch (SQLException ex) {
+            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+            getMatchHistory(u_id);
             System.out.println(ex);
         }
         return matches;
@@ -311,6 +343,8 @@ public class DBConnection {
             match.setPlayer2_id(rs.getInt(8));
             return match;
         } catch (SQLException ex) {
+            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+            getMatchTable(match_id);
             System.out.println(ex);
         }
         return null;
@@ -322,7 +356,7 @@ public class DBConnection {
     /**
      * Player Functionalities
      */
-    public Map<Integer, PlayerFullInfo> getAllPlayers(boolean eksde) throws SQLException {
+    public Map<Integer, PlayerFullInfo> getAllPlayers(boolean eksde) {
         Map<Integer, PlayerFullInfo> players = new HashMap<>();
         try {
             PreparedStatement stm = connection.prepareStatement("select id,user_name,points from player");
@@ -332,6 +366,8 @@ public class DBConnection {
                 players.put(player_id, new PlayerFullInfo(player_id, resultSet.getString("user_name"), resultSet.getInt("points")));
             }
         } catch (SQLException ex) {
+            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+            getAllPlayers(eksde);
             System.out.println(ex);
         }
         return players;
@@ -355,6 +391,8 @@ public class DBConnection {
                 }
                 System.out.println("got db");
             } catch (SQLException e) {
+                try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+                getAllPlayers();
                 e.printStackTrace();
             }
         } else {

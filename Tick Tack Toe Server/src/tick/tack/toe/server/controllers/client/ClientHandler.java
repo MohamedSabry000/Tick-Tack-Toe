@@ -69,7 +69,7 @@ public class ClientHandler extends Thread {
 //        actions.put(Request.ACTION_REJECT_INVITATION, this::rejectInvitation);
 //        actions.put(Request.ACTION_UPDATE_BOARD, this::updateBoard);
 //        actions.put(Request.ACTION_UPDATE_IN_GAME_STATUS, this::updateInGameStatus);
-//        actions.put(Request.ACTION_SIGN_UP, this::signUp);
+        actions.put(Request.ACTION_SIGN_UP, this::signUp);
         actions.put(Request.ACTION_LOGIN, this::login);
 //        actions.put(Request.ACTION_ASK_TO_PAUSE, this::askToPause);
 //        actions.put(Request.ACTION_SAVE_MATCH, this::saveMatch);
@@ -103,7 +103,7 @@ public class ClientHandler extends Thread {
                 actions.get(clientAction).handleAction(jRequest);
             } catch (Exception e) {
                 System.out.println("Stopped");
-                dropConnection();
+//                dropConnection();
                 System.out.println("No. of Clients: " + clients.size());
                 e.printStackTrace();
                 break;
@@ -177,7 +177,7 @@ public class ClientHandler extends Thread {
     }
     private void updateStatus(PlayerFullInfo playerFullInfo) {
         // update player status in the list
-        playersFullInfo.put(playerFullInfo.getServer_id(), playerFullInfo);
+//        playersFullInfo.put(playerFullInfo.getServer_id(), playerFullInfo);
         // create notification to send
         UpdateStatusNotification updateStatusNotification = new UpdateStatusNotification(playerFullInfo);
         try {
@@ -196,7 +196,26 @@ public class ClientHandler extends Thread {
             e.printStackTrace();
         }
     }
-
+    private void signUp(String json) {
+        try {
+            SignUpRequest signUpReq = mapper.readValue(json, SignUpRequest.class);
+            PlayerFullInfo playerFullInfo = dbConnection.signUp(signUpReq.getUser());
+            SignUpResponse signUpRes = new SignUpResponse();
+            if (playerFullInfo != null) {
+                signUpRes.setStatus(Response.STATUS_OK);
+                signUpRes.setMessage("You have successfully registered");
+                playersFullInfo.put(playerFullInfo.getServer_id(), playerFullInfo);
+                updateStatus(playerFullInfo);
+            } else {
+                signUpRes.setStatus(Response.STATUS_ERROR);
+                signUpRes.setMessage("Username You entered already exists!");
+            }
+            String jResponse = mapper.writeValueAsString(signUpRes);
+            printStream.println(jResponse);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
     
     interface IAction {
         void handleAction(String json);

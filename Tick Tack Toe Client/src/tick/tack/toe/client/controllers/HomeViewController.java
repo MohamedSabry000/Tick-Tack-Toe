@@ -5,13 +5,17 @@
  */
 package tick.tack.toe.client.controllers;
 
+import java.net.URL;
 import java.util.Map;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
 import tick.tack.toe.client.models.Invitation;
 import tick.tack.toe.client.models.Player;
@@ -20,7 +24,7 @@ import tick.tack.toe.client.models.PlayerFullInfo;
 
 
 
-public class HomeViewController {
+public class HomeViewController implements Initializable {
 
     private Map<Integer, PlayerFullInfo> playersFullInfo;
     private PlayerFullInfo myPlayerFullInfo;
@@ -54,6 +58,14 @@ public class HomeViewController {
     private Label lblName;
     @FXML
     private Label lblScore;
+    
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+         cPlayerName.setCellValueFactory(new PropertyValueFactory<>("Name"));
+         cStatus.setCellValueFactory(new PropertyValueFactory<>("Status"));
+         cIsInGame.setCellValueFactory(new PropertyValueFactory<>("InGame")); 
+         //tPlayers.setItems();
+    }
     
     protected void onActionLogin(ActionEvent event) {
 

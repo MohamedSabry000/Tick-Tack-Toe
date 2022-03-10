@@ -69,7 +69,7 @@ public class ServerListener extends Thread {
         types = new HashMap<>();
         types.put(Response.RESPONSE_LOGIN, this::Login);
 //        types.put(Response.RESPONSE_INVITE_TO_GAME, this::inviteToGameResponse);
-//        types.put(Response.RESPONSE_SIGN_UP, this::signUpRes);
+        types.put(Response.RESPONSE_SIGN_UP, this::signUpRes);
 //        types.put(Response.RESPONSE_GET_MATCH_HISTORY, this::getMatchHistory);
 //        types.put(Response.RESPONSE_ASK_TO_RESUME, this::rejectToResumeGame);
 //        types.put(Response.RESPONSE_GET_PAUSED_MATCH, this::getPausedMatch);
