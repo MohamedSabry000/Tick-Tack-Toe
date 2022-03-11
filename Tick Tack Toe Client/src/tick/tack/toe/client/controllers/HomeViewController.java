@@ -27,6 +27,7 @@ import tick.tack.toe.client.controllers.server.ServerListener;
 import tick.tack.toe.client.models.Invitation;
 import tick.tack.toe.client.models.Player;
 import tick.tack.toe.client.models.PlayerFullInfo;
+import tick.tack.toe.client.requests.GetMatchHistoryRequest;
 import tick.tack.toe.client.requests.InviteToGameRequest;
 
 
@@ -109,6 +110,14 @@ public class HomeViewController implements Initializable {
     @FXML protected void onActionMatch(ActionEvent event) {
 
         System.out.println("pressed Match");
+        try {
+            GetMatchHistoryRequest getMatchHistoryReq = new GetMatchHistoryRequest();
+            String jRequest = TickTackToeClient.mapper.writeValueAsString(getMatchHistoryReq);
+            ServerListener.sendRequest(jRequest);
+            TickTackToeClient.openMatchView();
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
     @FXML protected void onActionVsComputer(ActionEvent event) {
 

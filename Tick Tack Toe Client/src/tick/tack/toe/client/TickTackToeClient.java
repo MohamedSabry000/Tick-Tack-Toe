@@ -273,15 +273,15 @@ public class TickTackToeClient extends Application {
         mainStage.show();
     }
 
-    
     public static void showAlert(String title, String type) {
 
-        FXMLLoader loader = new FXMLLoader(TickTackToeClient.class.getResource(type + ".fxml"));
+        FXMLLoader loader = new FXMLLoader(TickTackToeClient.class.getResource("views/"+type + ".fxml"));
         try {
             Scene scene = new Scene(loader.load());
             Stage stage = new Stage();
             stage.setResizable(false);
             stage.setTitle(title);
+            
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
@@ -289,7 +289,6 @@ public class TickTackToeClient extends Application {
             System.out.println("tick.tack.toe.client.TickTackToeClient.showAlert()");
         }
     }
-
     public static void sendUpdateInGameStatus(boolean isInGame) {
         if (homeController.getMyPlayerFullInfo() != null) {
             UpdateInGameStatusRequest updateInGameStatusReq = new UpdateInGameStatusRequest(isInGame);

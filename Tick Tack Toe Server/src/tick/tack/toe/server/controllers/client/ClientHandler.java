@@ -27,6 +27,7 @@ import tick.tack.toe.server.TickTackToeServer;
 import tick.tack.toe.server.controllers.MainViewController;
 import tick.tack.toe.server.notifications.*;
 import org.json.JSONObject;
+import tick.tack.toe.server.models.MatchTable;
 import tick.tack.toe.server.models.Player;
 
 
@@ -76,7 +77,7 @@ public class ClientHandler extends Thread {
 //        actions.put(Request.ACTION_SAVE_MATCH, this::saveMatch);
 //        actions.put(Request.ACTION_REJECT_TO_PAUSE, this::rejectToPause);
 //        actions.put(Request.ACTION_SEND_MESSAGE, this::sendMessage);
-//        actions.put(Request.ACTION_GET_MATCH_HISTORY, this::getMatchHistory);
+        actions.put(Request.ACTION_GET_MATCH_HISTORY, this::getMatchHistory);
 //        actions.put(Request.ACTION_ASK_TO_RESUME, this::askToResume);
 //        actions.put(Request.ACTION_REJECT_TO_RESUME, this::rejectToResume);
 //        actions.put(Request.ACTION_ACCEPT_TO_RESUME, this::acceptToResume);
@@ -278,6 +279,29 @@ public class ClientHandler extends Thread {
         printStream.println(jResponse);
     }
     
+    public void getMatchHistory(String json) {
+        try {
+            //get the requested client u_id
+            int u_id = clients.get(this.getId()).myFullInfoPlayer.getDb_Player_id();
+            //create response
+            GetMatchHistoryResponse getMatchHistoryRes = new GetMatchHistoryResponse();
+            //get matches from database
+            List<MatchTable> userMatches = dbConnection.getMatchHistory(u_id);
+            //if there are matches, send them back to the client
+            if (userMatches != null) {
+                getMatchHistoryRes.setStatus(GetMatchHistoryResponse.STATUS_OK);
+                getMatchHistoryRes.setMatches(userMatches);
+                //convert the response to json String
+                String jResponse = mapper.writeValueAsString(getMatchHistoryRes);
+                printStream.println(jResponse);
+            } else {
+                getMatchHistoryRes.setStatus(GetMatchHistoryResponse.STATUS_ERROR);
+                getMatchHistoryRes.setMessage("No Matches So Far!");
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
     
     interface IAction {
         void handleAction(String json);

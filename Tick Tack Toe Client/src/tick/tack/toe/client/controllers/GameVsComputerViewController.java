@@ -1,4 +1,3 @@
-
 package tick.tack.toe.client.controllers;
 
 import java.io.File;
@@ -24,13 +23,11 @@ import tick.tack.toe.client.gameAI.AIGameEngine;
 import tick.tack.toe.client.models.*;
 
 
-
-
 public class GameVsComputerViewController implements Initializable{
+    
     private Map<String, Button> buttons;
     private static final AIGameEngine aiGameEngine = new AIGameEngine();
     private Image imgX, imgO;
-    private String imgXPath, imgOPath;
     private boolean myTurn;
     private boolean isEasy, viewMod;
     private Match match;
@@ -102,26 +99,14 @@ public class GameVsComputerViewController implements Initializable{
         onActionReset();
         TickTackToeClient.openHomeView();
     }
-    
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        initButtons();
-        imgX = new Image(new File("../views/imgs/x.png").toURI().toString());
-        imgO = new Image(new File("../views/imgs/o.png").toURI().toString());   
-        imgOPath = "../views/imgs/o-0١.png";
-            imgXPath = "../views/imgs/x-0١.png";
-        startGame(true);
-    }
-    
     /* start the logic */
     private void placeMove(Button b, String btnId) {
         if (myTurn && b.getText().equals("")) {
-            //buttons.get(btnId).setText(String.valueOf(Match.CHOICE_X));
-//            System.out.println(buttons.values());
-//            System.out.println(buttons.size());
-//            buttons.get(btnId).setGraphic(new ImageView(imgX));
-            buttons.get(btnId).setStyle("-fx-background-image: url('"+imgXPath+"')");
-//            System.out.println(buttons.get(btnId));
+            buttons.get(btnId).setText(String.valueOf(Match.CHOICE_X));
+            System.out.println(buttons.values());
+            System.out.println(buttons.size());
+            buttons.get(btnId).setGraphic(new ImageView(imgX));
+            System.out.println(buttons.get(btnId));
             aiGameEngine.setBoard(buttons);
             if (isGameNotEnded()) {
                 //try {Thread.sleep(2000);} catch(InterruptedException ignored){}
@@ -147,21 +132,29 @@ public class GameVsComputerViewController implements Initializable{
         if (aiGameEngine.checkWinner(String.valueOf(Match.CHOICE_O), buttons)) {
             end = true;
             //to be added with views.
-            //TickTackToeClient.showAlert("Loser", "loser");
+            TickTackToeClient.showAlert("Loser", "loser");
             disableScene();
         } else if (aiGameEngine.checkWinner(String.valueOf(Match.CHOICE_X), buttons)) {
             end = true;
-            //TickTackToeClient.showAlert("Winner", "winner");
+            TickTackToeClient.showAlert("Winner", "winner");
             disableScene();
         } else if (aiGameEngine.getAvailableCells().isEmpty()) {
             end = true;
-            //TickTackToeClient.showAlert("Game Over", "gameOver");
+            TickTackToeClient.showAlert("Game Over", "gameOver");
             disableScene();
         }
         return !end;
     }
-    
-    private void aiTurn() {
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        initButtons();
+        InputStream inputX = getClass().getResourceAsStream("imgs/x1.png");
+        InputStream inputO = getClass().getResourceAsStream("imgs/o1.png");
+        imgX = new Image(inputX,55,55,true,true);
+        imgO = new Image(inputO, 55,55,true,true);   
+        startGame(true);
+    }
+        private void aiTurn() {
         myTurn = false;
         if (isEasy) {
             aiGameEngine.easy();
@@ -169,13 +162,7 @@ public class GameVsComputerViewController implements Initializable{
             aiGameEngine.minMax(0, Match.CHOICE_O);
         }
         buttons.get(aiGameEngine.computerMove).setText(String.valueOf(Match.CHOICE_O));
-//        buttons.get(aiGameEngine.computerMove).setGraphic(new ImageView(imgO));
-            InputStream input = getClass().getResourceAsStream("views/o-0١.png");
-        System.out.println("hello: " + input);
-        //set the size for image
-        Image image = new Image(input, 16, 35, true, true);
-        buttons.get(aiGameEngine.computerMove).setGraphic(new ImageView(image));
-//        buttons.get(aiGameEngine.computerMove).setGraphic(TickTackToeClient.getImageChoice('O'));
+        buttons.get(aiGameEngine.computerMove).setGraphic(new ImageView(imgO));
         if (isGameNotEnded()) {
             myTurn = true;
         }
@@ -184,9 +171,9 @@ public class GameVsComputerViewController implements Initializable{
         myTurn = true;
         viewMod = false;
         isEasy = easy;
-        lblXPlayer.setText("X");
-        lblXPlayer1.setText("O");
-        TickTackToeClient.sendUpdateInGameStatus(true);
+        //lblXPlayer.setText("X");
+        //lblXPlayer1.setText("O");
+        //TicTacToeClient.sendUpdateInGameStatus(true);
     }
     private void disableScene() {
         //ResetButton.setDisable(true);
@@ -196,34 +183,34 @@ public class GameVsComputerViewController implements Initializable{
         //imgComputer.setImage(new Image(new File("images/player.png").toURI().toString()));
     }
   //function to retrive data to resume match.
-    private void fillGrid() {
-        String txtChoice;
-        for (Postion position : positions) {
-            Image imgChoice = imgO;
-            if (position.getPlayer_id() == match.getPlayer1_id())
-                txtChoice = match.getPlayer1_choice();
-            else
-                txtChoice = match.getPlayer2_choice();
-
-            if (txtChoice.equals(String.valueOf(Match.CHOICE_X)))
-                imgChoice = imgX;
-
-            buttons.get(position.getPosition()).setText(txtChoice);
-            buttons.get(position.getPosition()).setGraphic(new ImageView(imgChoice));
-        }
-    }
+//    private void fillGrid() {
+//        String txtChoice;
+//        for (Postion position : positions) {
+//            Image imgChoice = imgO;
+//            if (position.getPlayer_id() == match.getPlayer1_id())
+//                txtChoice = match.getPlayer1_choice();
+//            else
+//                txtChoice = match.getPlayer2_choice();
+//
+//            if (txtChoice.equals(String.valueOf(Match.CHOICE_X)))
+//                imgChoice = imgX;
+//
+//            buttons.get(position.getPosition()).setText(txtChoice);
+//            buttons.get(position.getPosition()).setGraphic(new ImageView(imgChoice));
+//        }
+//    }
         //set data to resume match.
-        private void setData() {
-        String playerX;
-        String playerO;
-        if (match.getPlayer1_choice().equals(String.valueOf(Match.CHOICE_X))) {
-            playerX = TickTackToeClient.homeController.getPlayerFullInfo(match.getPlayer1_id()).getName();
-            playerO = TickTackToeClient.homeController.getPlayerFullInfo(match.getPlayer2_id()).getName();
-        } else {
-            playerX = TickTackToeClient.homeController.getPlayerFullInfo(match.getPlayer2_id()).getName();
-            playerO = TickTackToeClient.homeController.getPlayerFullInfo(match.getPlayer1_id()).getName();
-        }
-        lblXPlayer.setText(playerX);
-        lblXPlayer1.setText(playerO);
-    }
+//        private void setData() {
+//        String playerX;
+//        String playerO;
+//        if (match.getPlayer1_choice().equals(String.valueOf(Match.CHOICE_X))) {
+//            playerX = TickTackToeClient.homeController.getPlayerFullInfo(match.getPlayer1_id()).getName();
+//            playerO = TickTackToeClient.homeController.getPlayerFullInfo(match.getPlayer2_id()).getName();
+//        } else {
+//            playerX = TickTackToeClient.homeController.getPlayerFullInfo(match.getPlayer2_id()).getName();
+//            playerO = TickTackToeClient.homeController.getPlayerFullInfo(match.getPlayer1_id()).getName();
+//        }
+//        lblXPlayer.setText(playerX);
+//        lblXPlayer1.setText(playerO);
+//    }
 }
