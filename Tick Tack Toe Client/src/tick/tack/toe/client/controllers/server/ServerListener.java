@@ -19,6 +19,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import org.json.JSONObject;
 import tick.tack.toe.client.TickTackToeClient;
+import tick.tack.toe.client.notifications.GameInvitationNotification;
 import tick.tack.toe.client.notifications.Notification;
 import tick.tack.toe.client.notifications.UpdateStatusNotification;
 import tick.tack.toe.client.responses.LoginResponse;
@@ -79,7 +80,7 @@ public class ServerListener extends Thread {
 //        types.put(Response.RESPONSE_ASK_TO_PAUSE, this::askToPauseResponse);
 //
         types.put(Notification.NOTIFICATION_UPDATE_STATUS, this::updateStatus);
-//        types.put(Notification.NOTIFICATION_GAME_INVITATION, this::gameInvitation);
+        types.put(Notification.NOTIFICATION_GAME_INVITATION, this::gameInvitation);
 //        types.put(Notification.NOTIFICATION_START_GAME, this::startGame);
 //        types.put(Notification.NOTIFICATION_ASK_TO_PAUSE, this::askToPauseNotification);
 //        types.put(Notification.NOTIFICATION_MESSAGE, this::sendMessageRes);
@@ -149,7 +150,14 @@ public class ServerListener extends Thread {
 
     }
     
-    
+    private void gameInvitation(String json) {
+        try {
+            GameInvitationNotification gameInvitationNotification = TickTackToeClient.mapper.readValue(json, GameInvitationNotification.class);
+            Platform.runLater(() -> TickTackToeClient.homeController.notifyGameInvitation(gameInvitationNotification.getPlayer()));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
     /*****************************************************/
     @Override
     public void run() {

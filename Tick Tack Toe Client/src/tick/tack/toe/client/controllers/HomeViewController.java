@@ -8,6 +8,7 @@ package tick.tack.toe.client.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.awt.TrayIcon.MessageType;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -17,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
@@ -67,12 +69,38 @@ public class HomeViewController implements Initializable {
     
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-         cPlayerName.setCellValueFactory(new PropertyValueFactory<>("Name"));
-         cStatus.setCellValueFactory(new PropertyValueFactory<>("Status"));
-         cIsInGame.setCellValueFactory(new PropertyValueFactory<>("InGame")); 
-         //tPlayers.setItems();
+        invitations = new HashMap<>();
+        sent = new HashMap<>();
+        
+        cPlayerName.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        cStatus.setCellValueFactory(new PropertyValueFactory<>("Status"));
+        cIsInGame.setCellValueFactory(new PropertyValueFactory<>("InGame")); 
+        //tPlayers.setItems();
+        
+        cFrom.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        cNotif.setCellValueFactory(new PropertyValueFactory<>("Type"));
+        
+        tInvitation.setRowFactory(tv -> {
+            TableRow<Invitation> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    if(tInvitation.getSelectionModel().getSelectedItem().getType() == Invitation.GAME_INVITATION)
+                        showInvitationConfirmation();
+//                    else
+//                        respondToResumeReq();
+                }
+            });
+            return row;
+        });
+
     }
-    
+    // to confirm user
+    private void showInvitationConfirmation() {
+        Invitation invitation = tInvitation.getSelectionModel().getSelectedItem();
+        if (invitation.getType().equals(Invitation.GAME_INVITATION)) {
+//            confirmGameInvitation(invitation);
+        }
+    }
     @FXML
     protected void onActionLogin(ActionEvent event) {
 
@@ -96,13 +124,10 @@ public class HomeViewController implements Initializable {
         if (isValidSelection(playerFullInfo) && sent.get(playerFullInfo.getDb_Player_id()) == null) {
             // create invite to a game request
             InviteToGameRequest inviteToGameReq = new InviteToGameRequest(new Player(playerFullInfo));
-            
             try {
                 // convert the request to string
                 String jRequest = TickTackToeClient.mapper.writeValueAsString(inviteToGameReq);
                 // send the request
-                            System.out.println("sfdgf :"+jRequest);
-
                 ServerListener.sendRequest(jRequest);
                 // add request to sent
                 sent.put(playerFullInfo.getDb_Player_id(), playerFullInfo);
@@ -156,6 +181,7 @@ public class HomeViewController implements Initializable {
         tPlayers.setDisable(isOffline);
         btnMatches.setDisable(isOffline);
         btnInvite.setDisable(isOffline);
+        vsComputerButton.setDisable(isOffline);
         showHideLoginBtn(isOffline);
     }
     public void showHideLoginBtn(boolean isOffline){
@@ -191,6 +217,25 @@ public class HomeViewController implements Initializable {
             return myPlayerFullInfo;
         }
         return playersFullInfo.get(id);
+    }
+
+    public void notifyGameInvitation(Player player) {
+        // check if received this notification before
+        if (invitations.get(player.getDb_Player_id()) == null) {
+            Invitation invitation = new Invitation();
+            invitation.setType(Invitation.GAME_INVITATION);
+            invitation.setPlayer(player);
+            invitation.setName(playersFullInfo.get(player.getDb_Player_id()).getName());
+            invitations.put(invitation.getPlayer().getDb_Player_id(), invitation);
+            fillInvitationsTable();
+//            TickTackToeClient.showSystemNotification("Game Invitation",
+//                    playersFullInfo.get(player.getDb_Player_id()).getName() + " sent you game invitation.",
+//                    MessageType.INFO);
+        }
+    }
+    private void fillInvitationsTable() {
+        tInvitation.getItems().clear();
+        tInvitation.getItems().setAll(invitations.values());
     }
 }
 

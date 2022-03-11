@@ -65,7 +65,7 @@ public class ClientHandler extends Thread {
     
     private void initActions() {
         actions = new HashMap<>();
-//        actions.put(Request.ACTION_INVITE_TO_GAME, this::inviteToGame);
+        actions.put(Request.ACTION_INVITE_TO_GAME, this::inviteToGame);
 //        actions.put(Request.ACTION_ACCEPT_INVITATION, this::acceptInvitation);
 //        actions.put(Request.ACTION_REJECT_INVITATION, this::rejectInvitation);
 //        actions.put(Request.ACTION_UPDATE_BOARD, this::updateBoard);
@@ -255,6 +255,7 @@ public class ClientHandler extends Thread {
                 String jNotification = mapper.writeValueAsString(gameInvitationNotification);
                 // send the game invitation to the competitor
                 _competitor.printStream.println(jNotification);
+                System.out.println("Response to Invitation Notification: "+jNotification);
             } else {
                 // the competitor became offline or started a new another game
                 sendOfflineOrInGame(inviteToGameReq.getPlayer(), _competitor);
