@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -88,11 +89,14 @@ public class LoginViewController implements Initializable{
     public void handleResponse(LoginResponse loginRes) {
         System.out.println("Status: "+ loginRes.getStatus());
         if (Objects.equals(loginRes.getStatus(), Response.STATUS_OK)) {
+            //                                                                          <DB_ID, player>
             TickTackToeClient.homeController.fromLogin(loginRes.getPlayerFullInfo(), loginRes.getPlayerFullInfoMap());
             if (TickTackToeClient.openedScene != TickTackToeClient.scenes.homeS && TickTackToeClient.openedScene != TickTackToeClient.scenes.vsComputerS) {
                 TickTackToeClient.openHomeView();
             } else {
-                TickTackToeClient.showSystemNotification("Back Online", "You are now online", TrayIcon.MessageType.INFO);
+//                TickTackToeClient.showSystemNotification("Back Online", "You are now online", TrayIcon.MessageType.INFO);
+                  TickTackToeClient.showAlert("Back Online", "You are now online", Alert.AlertType.INFORMATION);
+
             }
         } else {
             invaliduserTxt.setText(loginRes.getMessage());

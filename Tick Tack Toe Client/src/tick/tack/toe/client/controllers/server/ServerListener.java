@@ -16,8 +16,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javafx.application.Platform;
+import javafx.scene.control.Alert;
 import org.json.JSONObject;
 import tick.tack.toe.client.TickTackToeClient;
+import tick.tack.toe.client.notifications.Notification;
+import tick.tack.toe.client.notifications.UpdateStatusNotification;
 import tick.tack.toe.client.responses.LoginResponse;
 import tick.tack.toe.client.responses.Response;
 
@@ -75,7 +78,7 @@ public class ServerListener extends Thread {
 //        types.put(Response.RESPONSE_GET_PAUSED_MATCH, this::getPausedMatch);
 //        types.put(Response.RESPONSE_ASK_TO_PAUSE, this::askToPauseResponse);
 //
-//        types.put(Notification.NOTIFICATION_UPDATE_STATUS, this::updateStatus);
+        types.put(Notification.NOTIFICATION_UPDATE_STATUS, this::updateStatus);
 //        types.put(Notification.NOTIFICATION_GAME_INVITATION, this::gameInvitation);
 //        types.put(Notification.NOTIFICATION_START_GAME, this::startGame);
 //        types.put(Notification.NOTIFICATION_ASK_TO_PAUSE, this::askToPauseNotification);
@@ -91,11 +94,11 @@ public class ServerListener extends Thread {
     private void goOffline() {
         if (!first) {
             Platform.runLater(() -> {
-                TickTackToeClient.showSystemNotification("Disconnected",
+                TickTackToeClient.showAlert("Disconnected",
                         "Unfortunately disconnected from the server please check your internet connection",
-                        TrayIcon.MessageType.INFO);
+                        Alert.AlertType.ERROR);
 
-//                TickTackToeClient.homeController.offline(true);
+                TickTackToeClient.homeController.offline(true);
                 if (TickTackToeClient.openedScene != TickTackToeClient.scenes.vsComputerS && TickTackToeClient.openedScene != TickTackToeClient.scenes.homeS) {
                     TickTackToeClient.openHomeView();
                 }
@@ -131,10 +134,19 @@ public class ServerListener extends Thread {
         try {
             Response signUpRes = TickTackToeClient.mapper.readValue(json, Response.class);
             Platform.runLater(() -> TickTackToeClient.registerController.handleResponse(signUpRes));
-            System.out.println("Failed to connect1");
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+    }
+    
+    private void updateStatus(String json) {
+        try {
+            UpdateStatusNotification updateStatusNotification = TickTackToeClient.mapper.readValue(json, UpdateStatusNotification.class);
+            Platform.runLater(() -> TickTackToeClient.homeController.updateStatus(updateStatusNotification.getPlayerFullInfo()));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
     }
     
     
@@ -149,6 +161,7 @@ public class ServerListener extends Thread {
                 String serverType = (String) json.get("type");
                 if (types.get(serverType) != null) {
                     types.get(serverType).handleAction(sMessage);
+                    System.out.println("Client Notificaion: -> "+sMessage.toString());
                 }
             } catch (Exception e) {
                 if (running) {

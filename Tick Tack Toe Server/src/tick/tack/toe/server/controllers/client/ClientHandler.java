@@ -27,6 +27,7 @@ import tick.tack.toe.server.TickTackToeServer;
 import tick.tack.toe.server.controllers.MainViewController;
 import tick.tack.toe.server.notifications.*;
 import org.json.JSONObject;
+import tick.tack.toe.server.models.Player;
 
 
 /**
@@ -103,7 +104,7 @@ public class ClientHandler extends Thread {
                 actions.get(clientAction).handleAction(jRequest);
             } catch (Exception e) {
                 System.out.println("Stopped");
-//                dropConnection();
+                dropConnection();
                 System.out.println("No. of Clients: " + clients.size());
                 e.printStackTrace();
                 break;
@@ -157,7 +158,9 @@ public class ClientHandler extends Thread {
             if (u_id != -1) {
                 System.out.println(u_id);
                 playersFullInfo.get(u_id).setStatus(PlayerFullInfo.ONLINE);
-                playersFullInfo.get(u_id).setDb_Player_id(this.getId());
+                playersFullInfo.get(u_id).setServer_id(this.getId());
+                // playersFullInfo <database_id, PlayerFullInfo>
+                // clients <server_id, PlayerFullInfo>
                 clients.get(this.getId()).myFullInfoPlayer = playersFullInfo.get(u_id);
                 updateStatus(clients.get(this.getId()).myFullInfoPlayer);
                 
@@ -189,6 +192,7 @@ public class ClientHandler extends Thread {
                 for (ClientHandler client : clients.values()) {
                     if (client.myFullInfoPlayer != null) {
                         client.printStream.println(jNotification);
+                        System.out.println("Notificaion: -> "+jNotification.toString());
                     }
                 }
             }).start();
@@ -225,6 +229,54 @@ public class ClientHandler extends Thread {
             e.printStackTrace();
         }
     }
+    private void updateInGameStatus(String json) {
+        try {
+            UpdateInGameStatusRequest updateInGameStatusReq = mapper.readValue(json, UpdateInGameStatusRequest.class);
+            clients.get(this.getId()).myFullInfoPlayer.setInGame(updateInGameStatusReq.getInGame());
+            updateStatus(clients.get(this.getId()).myFullInfoPlayer);
+            // if were in game then competitor disconnected
+            if (!updateInGameStatusReq.getInGame() && clients.get(this.getId()).competitor != null) {
+                clients.get(this.getId()).competitor = null;
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    private void inviteToGame(String json) {
+        try {
+            InviteToGameRequest inviteToGameReq = mapper.readValue(json, InviteToGameRequest.class);
+            // get the competitor and send the notification
+            ClientHandler _competitor = clients.get(inviteToGameReq.getPlayer().getServer_id());
+            // check if the competitor is still online and not in a game
+            if (_competitor != null && !_competitor.myFullInfoPlayer.isInGame()) {
+                // create the notification
+                GameInvitationNotification gameInvitationNotification = new GameInvitationNotification(new Player(clients.get(this.getId()).myFullInfoPlayer));
+                // create json from the notification
+                String jNotification = mapper.writeValueAsString(gameInvitationNotification);
+                // send the game invitation to the competitor
+                _competitor.printStream.println(jNotification);
+            } else {
+                // the competitor became offline or started a new another game
+                sendOfflineOrInGame(inviteToGameReq.getPlayer(), _competitor);
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    private void sendOfflineOrInGame(Player player, ClientHandler _competitor) throws JsonProcessingException {
+        // create error response
+        InviteToGameResponse inviteToGameRes = new InviteToGameResponse(InviteToGameResponse.STATUS_ERROR, player);
+        if (_competitor == null) {
+            inviteToGameRes.setMessage("Your competitor became offline now.");
+        } else {
+            inviteToGameRes.setMessage("It seems your competitor has entered another game.");
+        }
+        // create json from response
+        String jResponse = mapper.writeValueAsString(inviteToGameRes);
+        // send the response to the client
+        printStream.println(jResponse);
+    }
+    
     
     interface IAction {
         void handleAction(String json);

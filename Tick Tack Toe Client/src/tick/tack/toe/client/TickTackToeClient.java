@@ -10,6 +10,7 @@ package tick.tack.toe.client;
 //import com.iti.tictactoeclient.controllers.*;
 //import com.iti.tictactoeclient.helpers.ServerListener;
 //import com.iti.tictactoeclient.requests.UpdateInGameStatusReq;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
@@ -32,10 +33,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Optional;
 import java.net.URL;
 import tick.tack.toe.client.controllers.*;
 import tick.tack.toe.client.controllers.server.ServerListener;
+import tick.tack.toe.client.requests.UpdateInGameStatusRequest;
 
 
 /**
@@ -57,7 +60,6 @@ public class TickTackToeClient extends Application {
     public static MatchViewController matchController;
     public static GameVsComputerViewController gameVsComputerController;
     private static ServerListener serverListener;
-//    public static final ObjectMapper mapper = new ObjectMapper();
     private static TrayIcon trayIcon;
     private SystemTray tray;
 
@@ -70,7 +72,7 @@ public class TickTackToeClient extends Application {
         super.init();
         serverListener = new ServerListener();
         initViews();
-        initTray();
+//        initTray();
         serverListener.setDaemon(true);
         serverListener.start();
     }
@@ -80,13 +82,9 @@ public class TickTackToeClient extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(TickTackToeClient.class.getResource("views/Login.fxml"));
         sceneLogin = new Scene(fxmlLoader.load());
         loginController = fxmlLoader.getController();
-        
-//        Parent root = FXMLLoader.load(getClass().getResource("views/Login.fxml"));
-
-//        Scene loginScene = new Scene(root);
+  
         primaryStage.setTitle("Login");
         primaryStage.setResizable(false);
-//        primaryStage.setScene(loginScene);
         primaryStage.setScene(sceneLogin);
         
         File iconfile = new File("views/imgs/xocolored-0١.png");
@@ -136,54 +134,77 @@ public class TickTackToeClient extends Application {
             e.printStackTrace();
         }
     }
-    private void initTray() {
-        //Obtain only one instance of the SystemTray object
-        if (SystemTray.isSupported()) {
-            tray = SystemTray.getSystemTray();
-
-            //If the icon is a file
-            java.awt.Image image = Toolkit.getDefaultToolkit().getImage("views/imgs/xocolored-0١.png");
-
-            trayIcon = new TrayIcon(image, "Tic Tac Toe Game");
-
-            //Let the system resize the image if needed
-            trayIcon.setImageAutoSize(true);
-            //Set tooltip text for the tray icon
-            trayIcon.setToolTip("Tic Tac Toe Game");
-            trayIcon.addMouseListener(new MouseListener() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    Platform.runLater(() -> {
-                        mainStage.requestFocus();
-                        mainStage.toFront();
-                    });
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {}
-                @Override
-                public void mouseReleased(MouseEvent e) {}
-                @Override
-                public void mouseEntered(MouseEvent e) {}
-                @Override
-                public void mouseExited(MouseEvent e) {}
-            });
-            try {
-                tray.add(trayIcon);
-            } catch (AWTException e) {
-                e.printStackTrace();
-            }
-        }
+//    private void initTray() {
+//        //Obtain only one instance of the SystemTray object
+//        if (SystemTray.isSupported()) {
+//            tray = SystemTray.getSystemTray();
+//
+//            //If the icon is a file
+//            java.awt.Image image = Toolkit.getDefaultToolkit().getImage("views/imgs/xocolored-0١.png");
+//
+//            trayIcon = new TrayIcon(image, "Tic Tac Toe Game");
+//
+//            //Let the system resize the image if needed
+//            trayIcon.setImageAutoSize(true);
+//            //Set tooltip text for the tray icon
+//            trayIcon.setToolTip("Tic Tac Toe Game");
+//            trayIcon.addMouseListener(new MouseListener() {
+//                @Override
+//                public void mouseClicked(MouseEvent e) {
+//                    Platform.runLater(() -> {
+//                        mainStage.requestFocus();
+//                        mainStage.toFront();
+//                    });
+//                }
+//
+//                @Override
+//                public void mousePressed(MouseEvent e) {}
+//                @Override
+//                public void mouseReleased(MouseEvent e) {}
+//                @Override
+//                public void mouseEntered(MouseEvent e) {}
+//                @Override
+//                public void mouseExited(MouseEvent e) {}
+//            });
+//            try {
+//                tray.add(trayIcon);
+//            } catch (AWTException e) {
+//                e.printStackTrace();
+//            }
+//        }
+//    }
+//    
+    public static void showAlert(String title, String message, Alert.AlertType alertType) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(message);
+        alert.setContentText("");
+        alert.showAndWait();
     }
-    public static void showSystemNotification(String title, String message, TrayIcon.MessageType messageType) {
-        if (SystemTray.isSupported()) {
-            trayIcon.displayMessage(title, message, messageType);
-        } else {
-            System.err.println("System tray not supported!");
-        }
+//    public static void showSystemNotification(String title, String message, TrayIcon.MessageType messageType) {
+//        if (SystemTray.isSupported()) {
+//            trayIcon.displayMessage(title, message, messageType);
+//        } else {
+//            System.err.println("System tray not supported!");
+//        }
+//    }
+    
+    public static boolean showConfirmation(String title, String message, String btn1, String btn2) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "",
+                new ButtonType(btn1, ButtonBar.ButtonData.OK_DONE),
+                new ButtonType(btn2, ButtonBar.ButtonData.CANCEL_CLOSE));
+        alert.setTitle(title);
+        alert.setHeaderText(message);
+        alert.setContentText("");
+        Optional<ButtonType> s = alert.showAndWait();
+        final boolean[] isOk = new boolean[1];
+        s.ifPresent(buttonType -> {
+            isOk[0] = buttonType.getButtonData().isDefaultButton();
+        });
+        return isOk[0];
     }
     
-
+    
     public static void openLoginView() {
 
         mainStage.hide();
@@ -207,7 +228,6 @@ public class TickTackToeClient extends Application {
         openedScene = scenes.registerS;
         mainStage.show();
     }
-
     public static void openHomeView() {
         mainStage.hide();
         mainStage.setScene(sceneHome);
@@ -253,6 +273,35 @@ public class TickTackToeClient extends Application {
         mainStage.show();
     }
 
+    
+    public static void showAlert(String title, String type) {
+
+        FXMLLoader loader = new FXMLLoader(TickTackToeClient.class.getResource(type + ".fxml"));
+        try {
+            Scene scene = new Scene(loader.load());
+            Stage stage = new Stage();
+            stage.setResizable(false);
+            stage.setTitle(title);
+            stage.setScene(scene);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+        } catch (IOException e) {
+            System.out.println("tick.tack.toe.client.TickTackToeClient.showAlert()");
+        }
+    }
+
+    public static void sendUpdateInGameStatus(boolean isInGame) {
+        if (homeController.getMyPlayerFullInfo() != null) {
+            UpdateInGameStatusRequest updateInGameStatusReq = new UpdateInGameStatusRequest(isInGame);
+            try {
+                String jRequest = TickTackToeClient.mapper.writeValueAsString(updateInGameStatusReq);
+                ServerListener.sendRequest(jRequest);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    
     @Override
     public void stop() throws Exception {
         try{

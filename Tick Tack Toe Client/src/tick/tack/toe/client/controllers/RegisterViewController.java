@@ -35,7 +35,7 @@ public class RegisterViewController implements Initializable{
     @FXML private TextField UserNameTxt;
     @FXML private Label invalidinput;
     
-    String regex = "^[a-z]+([_.][a-z0-9]+)*${4,}";
+    String regex = "^[a-z]+([_.][a-z0-9]+)*$";
     Pattern pattern = Pattern.compile(regex);
     
     @FXML protected void onActionRegister(ActionEvent event) {
@@ -68,7 +68,7 @@ public class RegisterViewController implements Initializable{
             invalidinput.setText("Invalid name!");
             return false;
         }
-        if (PasswordTxt.getText().equals("") || PasswordTxt.getText().length() < 6) {
+        if (PasswordTxt.getText().equals("") || PasswordTxt.getText().length() < 4) {
             invalidinput.setText("Invalid Password!");
             return false;
         }
@@ -84,7 +84,8 @@ public class RegisterViewController implements Initializable{
         if (Objects.equals(signUpRes.getStatus(), Response.STATUS_OK)) {
             TickTackToeClient.openLoginView();
         } else {
-            TickTackToeClient.openRegisterView();
+            //TickTackToeClient.openRegisterView();
+            invalidinput.setText("Player Name Already Exits.");
         }
     }
     

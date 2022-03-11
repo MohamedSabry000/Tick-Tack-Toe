@@ -121,7 +121,7 @@ public class DBConnection {
                 System.out.println("hello DBConnection Class -> SignUp Method: "+stm.toString());
                 stm.execute();
                 System.out.println("Good Job");
-                return getPlayerInfo(user.getName());
+                return getPlayerInfo(user.getUsername());
             } catch (SQLException ex) {
                 try { Thread.sleep(500); } catch (InterruptedException ignored) { }
                 signUp(user);       
@@ -215,7 +215,7 @@ public class DBConnection {
     }
 
     // -> Save Match
-    public void saveMatch(Match match, List<Postion> postions) {
+    public void saveMatch(Match match, List<Position> postions) {
         //level should be in game, not in player table
         try {
             //check player_id1
@@ -246,10 +246,10 @@ public class DBConnection {
     }
 
     //to be worked on.
-    private void insertPositions(List<Postion> positions, int m_id) {
+    private void insertPositions(List<Position> positions, int m_id) {
         StringBuilder grid = new StringBuilder("");
         int i = 0;
-        for (Postion position : positions) {
+        for (Position position : positions) {
             try {
                 while (i < 9) {
                     grid.append(position.getPosition().charAt(i));
@@ -266,7 +266,7 @@ public class DBConnection {
         }
     }
 
-    public void alterMatch(Match match, List<Postion> positions) throws SQLException {
+    public void alterMatch(Match match, List<Position> positions) throws SQLException {
         PreparedStatement p = null;
         try {
             p = connection.prepareStatement("update game set game_date=now(), status='finished', winner=? where game_id=?;");

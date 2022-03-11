@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="531.0" prefWidth="415.0" style="-fx-background-color: linear-gradient(to right, #3D5B59, #B99095);;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tick.tack.toe.client.controllers.ScoreViewController">
+   <children>
+      <ImageView fx:id="img" fitHeight="537.0" fitWidth="429.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true" style="-fx-padding: 10px; -fx-margin: 10px;">
+         <image>
+            <Image url="@../../../../../../../../../../../../../Trying/Tic-Tac-Toe-Client-master/src/main/resources/imgs/loser.gif" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>

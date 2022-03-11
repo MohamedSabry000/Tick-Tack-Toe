@@ -27,21 +27,26 @@
                   <Image url="@imgs/xocolored-0١.png" />
                </image>
             </ImageView>
+            <Label fx:id="invaliduserTxt" alignment="CENTER" layoutX="10.0" layoutY="43.0" lineSpacing="1.0" prefHeight="30.0" prefWidth="285.0" textAlignment="CENTER" textFill="#a80909">
+               <font>
+                  <Font name="Gill Sans MT" size="17.0" />
+               </font>
+            </Label>
             <TextField fx:id="UserNameTxt" layoutX="75.0" layoutY="84.0" opacity="0.45" prefHeight="38.0" prefWidth="156.0" promptText="User Name" style="-fx-font-style-color: white; -fx-background-radius: 20;">
                <font>
                   <Font name="Gill Sans MT" size="15.0" />
                </font>
             </TextField>
-            <Button id="login" layoutX="96.0" layoutY="198.0" mnemonicParsing="false" onAction="#onActionLogin" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #B99095; -fx-background-radius: 20;" text="Login" textAlignment="CENTER" textFill="WHITE" wrapText="true">
-               <font>
-                  <Font name="Gill Sans MT Bold" size="15.0" />
-               </font>
-            </Button>
             <PasswordField fx:id="PasswordTxt" layoutX="75.0" layoutY="139.0" opacity="0.45" prefHeight="38.0" prefWidth="156.0" promptText="Password" style="-fx-font-style-color: white; -fx-background-radius: 20;">
                 <font>
                   <Font name="Gill Sans MT" size="15.0" />
                </font>
             </PasswordField>
+            <Button id="login" layoutX="96.0" layoutY="198.0" mnemonicParsing="false" onAction="#onActionLogin" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #B99095; -fx-background-radius: 20;" text="Login" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+               <font>
+                  <Font name="Gill Sans MT Bold" size="15.0" />
+               </font>
+            </Button>
             
             <Button id="register" layoutX="97.0" layoutY="251.0" mnemonicParsing="false" onAction="#onActionRegister" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #B99095; -fx-background-radius: 20;" text="Register" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                <font>
@@ -53,11 +58,6 @@
                   <Font name="Gill Sans MT Bold" size="15.0" />
                </font>
             </Button>
-            <Label fx:id="invaliduserTxt" layoutX="72.0" layoutY="53.0" lineSpacing="1.0" textAlignment="CENTER" textFill="#a80909">
-               <font>
-                  <Font name="Gill Sans MT" size="17.0" />
-               </font>
-            </Label>
          </children>
       </Pane>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />

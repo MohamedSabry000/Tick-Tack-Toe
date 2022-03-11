@@ -17,6 +17,8 @@ public class PlayerFullInfo extends Player{
     private SimpleStringProperty name, status;
     private boolean inGame;
 
+
+  
     public PlayerFullInfo(){
        db_player_id = -1;
         this.name = new SimpleStringProperty("");
@@ -70,6 +72,8 @@ public class PlayerFullInfo extends Player{
     }
 
     public void setPoints(int points) {
-        this.points = new SimpleIntegerProperty(points);        
+        this.points = new SimpleIntegerProperty(points);
+
+        
     }
 }

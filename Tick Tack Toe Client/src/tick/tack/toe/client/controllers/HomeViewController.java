@@ -5,21 +5,27 @@
  */
 package tick.tack.toe.client.controllers;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import java.awt.TrayIcon.MessageType;
 import java.net.URL;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.text.Text;
+import tick.tack.toe.client.TickTackToeClient;
+import tick.tack.toe.client.controllers.server.ServerListener;
 import tick.tack.toe.client.models.Invitation;
 import tick.tack.toe.client.models.Player;
 import tick.tack.toe.client.models.PlayerFullInfo;
+import tick.tack.toe.client.requests.InviteToGameRequest;
 
 
 
@@ -67,9 +73,10 @@ public class HomeViewController implements Initializable {
          //tPlayers.setItems();
     }
     
+    @FXML
     protected void onActionLogin(ActionEvent event) {
 
-        System.out.println("pressed Login");
+        TickTackToeClient.openLoginView();
     }
     @FXML protected void onActionMatch(ActionEvent event) {
 
@@ -78,10 +85,46 @@ public class HomeViewController implements Initializable {
     @FXML protected void onActionVsComputer(ActionEvent event) {
 
         System.out.println("pressed VsComputer");
+        TickTackToeClient.openGameVsComputerView();
     }
     @FXML protected void onActionInvitePlayer(ActionEvent event) {
 
         System.out.println("pressed Invite Player");
+        // get selected object
+        PlayerFullInfo playerFullInfo = tPlayers.getSelectionModel().getSelectedItem();
+        // check if the selected object is valid and not sent him invite before
+        if (isValidSelection(playerFullInfo) && sent.get(playerFullInfo.getDb_Player_id()) == null) {
+            // create invite to a game request
+            InviteToGameRequest inviteToGameReq = new InviteToGameRequest(new Player(playerFullInfo));
+            
+            try {
+                // convert the request to string
+                String jRequest = TickTackToeClient.mapper.writeValueAsString(inviteToGameReq);
+                // send the request
+                            System.out.println("sfdgf :"+jRequest);
+
+                ServerListener.sendRequest(jRequest);
+                // add request to sent
+                sent.put(playerFullInfo.getDb_Player_id(), playerFullInfo);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    private boolean isValidSelection(PlayerFullInfo playerFullInfo) {
+        boolean valid = false;
+        if (playerFullInfo == null) {
+            TickTackToeClient.showAlert("Error", "You have to select a player first", Alert.AlertType.ERROR);
+            // if selected player is in game
+        } else if (playerFullInfo.isInGame()) {
+            TickTackToeClient.showAlert("Error", "You have to select a player which is not in game", Alert.AlertType.ERROR);
+            // if selected player is offline
+        } else if (playerFullInfo.getStatus().equals(PlayerFullInfo.OFFLINE)) {
+            TickTackToeClient.showAlert("Error", "You have to select an online player", Alert.AlertType.ERROR);
+        } else {
+            valid = true;
+        }
+        return valid;
     }
     
     /**
@@ -90,6 +133,8 @@ public class HomeViewController implements Initializable {
     public void fromLogin(PlayerFullInfo myPlayerFullInfo, Map<Integer, PlayerFullInfo> playersFullInfo) {
         this.myPlayerFullInfo = myPlayerFullInfo;
         this.playersFullInfo = playersFullInfo;
+        System.out.println(myPlayerFullInfo.getDb_Player_id());
+        System.out.println(playersFullInfo.values());
         playersFullInfo.remove(myPlayerFullInfo.getDb_Player_id());
         fillView();
 //        sent.clear();
@@ -115,6 +160,37 @@ public class HomeViewController implements Initializable {
     }
     public void showHideLoginBtn(boolean isOffline){
         btnLogin.setVisible(myPlayerFullInfo == null && !isOffline);
+    }
+    
+    public PlayerFullInfo getMyPlayerFullInfo() {
+        return myPlayerFullInfo;
+    }
+    
+    public void updateStatus(PlayerFullInfo playerFullInfo) {
+        if (playersFullInfo != null) {
+            if (playerFullInfo.getDb_Player_id()== myPlayerFullInfo.getDb_Player_id()) {
+
+                lblScore.setText(String.valueOf(playerFullInfo.getPoints()));
+                TickTackToeClient.showAlert("Back Online", "You are now online", Alert.AlertType.INFORMATION);
+            } else {
+                if (!playerFullInfo.getStatus().equals(playersFullInfo.get(playerFullInfo.getDb_Player_id()).getStatus())) {
+                    if(playerFullInfo.getStatus().equals(PlayerFullInfo.ONLINE)){
+                        playersFullInfo.get(playerFullInfo.getDb_Player_id()).setStatus(PlayerFullInfo.ONLINE);
+                    } else {
+                        playersFullInfo.get(playerFullInfo.getDb_Player_id()).setStatus(PlayerFullInfo.OFFLINE);
+                    }
+                }
+                //playersFullInfo.put(playerFullInfo.getDb_Player_id(), playerFullInfo);
+                fillPlayersTable();
+            }
+        }
+    }
+    
+    public PlayerFullInfo getPlayerFullInfo(int id) {
+        if (myPlayerFullInfo.getDb_Player_id()== id) {
+            return myPlayerFullInfo;
+        }
+        return playersFullInfo.get(id);
     }
 }
 
