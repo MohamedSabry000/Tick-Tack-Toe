@@ -61,6 +61,7 @@ public class TickTackToeClient extends Application {
     private static TrayIcon trayIcon;
     private SystemTray tray;
 
+
     public enum scenes {registerS, loginS, homeS, matchS, vsPlayerS, vsComputerS}
 
     public static scenes openedScene;
@@ -255,12 +256,13 @@ public class TickTackToeClient extends Application {
     //
         public static void showAlert(String title, String type) {
 
-        FXMLLoader loader = new FXMLLoader(TickTackToeClient.class.getResource(type + ".fxml"));
+        FXMLLoader loader = new FXMLLoader(TickTackToeClient.class.getResource("views/"+type + ".fxml"));
         try {
             Scene scene = new Scene(loader.load());
             Stage stage = new Stage();
             stage.setResizable(false);
             stage.setTitle(title);
+            
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();

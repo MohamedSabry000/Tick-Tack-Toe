@@ -2,6 +2,7 @@
 package tick.tack.toe.client.controllers;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
@@ -132,15 +133,15 @@ public class GameVsComputerViewController implements Initializable{
         if (aiGameEngine.checkWinner(String.valueOf(Match.CHOICE_O), buttons)) {
             end = true;
             //to be added with views.
-            //TickTackToeClient.showAlert("Loser", "loser");
+            TickTackToeClient.showAlert("Loser", "loser");
             disableScene();
         } else if (aiGameEngine.checkWinner(String.valueOf(Match.CHOICE_X), buttons)) {
             end = true;
-            //TickTackToeClient.showAlert("Winner", "winner");
+            TickTackToeClient.showAlert("Winner", "winner");
             disableScene();
         } else if (aiGameEngine.getAvailableCells().isEmpty()) {
             end = true;
-            //TickTackToeClient.showAlert("Game Over", "gameOver");
+            TickTackToeClient.showAlert("Game Over", "gameOver");
             disableScene();
         }
         return !end;
@@ -148,8 +149,10 @@ public class GameVsComputerViewController implements Initializable{
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         initButtons();
-        imgX = new Image(new File("views/imgs/x.png").toURI().toString());
-        imgO = new Image(new File("views/imgs/o.png").toURI().toString());   
+        InputStream inputX = getClass().getResourceAsStream("imgs/x1.png");
+        InputStream inputO = getClass().getResourceAsStream("imgs/o1.png");
+        imgX = new Image(inputX,55,55,true,true);
+        imgO = new Image(inputO, 55,55,true,true);   
         startGame(true);
     }
         private void aiTurn() {
@@ -169,8 +172,8 @@ public class GameVsComputerViewController implements Initializable{
         myTurn = true;
         viewMod = false;
         isEasy = easy;
-        lblXPlayer.setText("X");
-        lblXPlayer1.setText("O");
+        //lblXPlayer.setText("X");
+        //lblXPlayer1.setText("O");
         //TicTacToeClient.sendUpdateInGameStatus(true);
     }
     private void disableScene() {
@@ -181,34 +184,34 @@ public class GameVsComputerViewController implements Initializable{
         //imgComputer.setImage(new Image(new File("images/player.png").toURI().toString()));
     }
   //function to retrive data to resume match.
-    private void fillGrid() {
-        String txtChoice;
-        for (Postion position : positions) {
-            Image imgChoice = imgO;
-            if (position.getPlayer_id() == match.getPlayer1_id())
-                txtChoice = match.getPlayer1_choice();
-            else
-                txtChoice = match.getPlayer2_choice();
-
-            if (txtChoice.equals(String.valueOf(Match.CHOICE_X)))
-                imgChoice = imgX;
-
-            buttons.get(position.getPosition()).setText(txtChoice);
-            buttons.get(position.getPosition()).setGraphic(new ImageView(imgChoice));
-        }
-    }
+//    private void fillGrid() {
+//        String txtChoice;
+//        for (Postion position : positions) {
+//            Image imgChoice = imgO;
+//            if (position.getPlayer_id() == match.getPlayer1_id())
+//                txtChoice = match.getPlayer1_choice();
+//            else
+//                txtChoice = match.getPlayer2_choice();
+//
+//            if (txtChoice.equals(String.valueOf(Match.CHOICE_X)))
+//                imgChoice = imgX;
+//
+//            buttons.get(position.getPosition()).setText(txtChoice);
+//            buttons.get(position.getPosition()).setGraphic(new ImageView(imgChoice));
+//        }
+//    }
         //set data to resume match.
-        private void setData() {
-        String playerX;
-        String playerO;
-        if (match.getPlayer1_choice().equals(String.valueOf(Match.CHOICE_X))) {
-            playerX = TickTackToeClient.homeController.getPlayerFullInfo(match.getPlayer1_id()).getName();
-            playerO = TickTackToeClient.homeController.getPlayerFullInfo(match.getPlayer2_id()).getName();
-        } else {
-            playerX = TickTackToeClient.homeController.getPlayerFullInfo(match.getPlayer2_id()).getName();
-            playerO = TickTackToeClient.homeController.getPlayerFullInfo(match.getPlayer1_id()).getName();
-        }
-        lblXPlayer.setText(playerX);
-        lblXPlayer1.setText(playerO);
-    }
+//        private void setData() {
+//        String playerX;
+//        String playerO;
+//        if (match.getPlayer1_choice().equals(String.valueOf(Match.CHOICE_X))) {
+//            playerX = TickTackToeClient.homeController.getPlayerFullInfo(match.getPlayer1_id()).getName();
+//            playerO = TickTackToeClient.homeController.getPlayerFullInfo(match.getPlayer2_id()).getName();
+//        } else {
+//            playerX = TickTackToeClient.homeController.getPlayerFullInfo(match.getPlayer2_id()).getName();
+//            playerO = TickTackToeClient.homeController.getPlayerFullInfo(match.getPlayer1_id()).getName();
+//        }
+//        lblXPlayer.setText(playerX);
+//        lblXPlayer1.setText(playerO);
+//    }
 }
