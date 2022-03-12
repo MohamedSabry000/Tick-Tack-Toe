@@ -8,6 +8,7 @@ package tick.tack.toe.client.controllers;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import tick.tack.toe.client.TickTackToeClient;
 import tick.tack.toe.client.models.Match;
 import tick.tack.toe.client.models.MatchTable;
@@ -55,6 +57,15 @@ public class MatchViewController implements Initializable{
 //        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 //        winnerColumn.setCellValueFactory(new PropertyValueFactory<>("winner"));
     }
+    
+    @FXML protected void onActionCloseBtn (ActionEvent event){
+        Platform.exit();
+    }
+    @FXML protected void onActionMinBtn (ActionEvent event){
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        stage.setIconified(true);
+    }
+
     
     @FXML protected void onActionBack(ActionEvent event) {
         TickTackToeClient.openHomeView();

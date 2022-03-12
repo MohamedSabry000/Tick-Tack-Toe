@@ -10,9 +10,36 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:controller="tick.tack.toe.server.controllers.MainViewController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="729.0" prefWidth="669.0" style="-fx-background-color: linear-gradient(to right, #3D5B59, #B99095);" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="729.0" prefWidth="669.0" style="-fx-background-color: linear-gradient(to right, #3D5B59, #B99095);" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="tick.tack.toe.server.controllers.MainViewController">
    <children>
       <MenuBar prefHeight="38.0" prefWidth="669.0" style="-fx-background-color: #3D5B59;" />
+      <Button fx:id="minBtn" layoutX="542.0" layoutY="5.0" mnemonicParsing="false" onAction="#onActionMinBtn" prefHeight="25.0" prefWidth="33.0">
+         <graphic>
+            <ImageView fitHeight="42.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@imgs/min.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="minBtn1" defaultButton="true" disable="true" layoutX="585.0" layoutY="5.0" mnemonicParsing="false" onAction="#onActionMinBtn" prefHeight="25.0" prefWidth="33.0">
+         <graphic>
+            <ImageView fitHeight="42.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@imgs/minkber.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="closeBtn" cancelButton="true" layoutX="628.0" layoutY="5.0" mnemonicParsing="false" onAction="#onActionCloseBtn" prefHeight="25.0" prefWidth="33.0">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@imgs/x.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
       <ImageView fitHeight="77.0" fitWidth="85.0" layoutX="8.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@imgs/xocolored-0١.png" />
@@ -34,7 +61,7 @@
             <Font name="Gill Sans MT Bold" size="18.0" />
          </font>
       </Button>
-      <Button fx:id="StartServerButton" layoutX="175.0" layoutY="596.0" mnemonicParsing="false" onAction="#onActionStartServer" prefHeight="38.0" prefWidth="148.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Start" textFill="WHITE">
+      <Button fx:id="StartServerButton" defaultButton="true" layoutX="175.0" layoutY="596.0" mnemonicParsing="false" onAction="#onActionStartServer" prefHeight="38.0" prefWidth="148.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Start" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT Bold" size="18.0" />
          </font>

@@ -86,7 +86,7 @@ public class TickTackToeClient extends Application {
   
         primaryStage.setTitle("Login");
         primaryStage.setResizable(false);
-        //primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(sceneLogin);
         
         File iconfile = new File("views/imgs/xocolored-0١.png");

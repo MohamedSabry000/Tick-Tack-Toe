@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import javafx.animation.RotateTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -16,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import javax.swing.text.Position;
 import tick.tack.toe.client.TickTackToeClient;
@@ -48,6 +50,13 @@ public class GameVsComputerViewController implements Initializable{
     @FXML
     private Label lblXPlayer, lblXPlayer1;
     
+    @FXML protected void onActionCloseBtn (ActionEvent event){
+        Platform.exit();
+    }
+    @FXML protected void onActionMinBtn (ActionEvent event){
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        stage.setIconified(true);
+    }    
     @FXML protected void onActionBtn1() {
         placeMove(b1,"b1");
         System.out.println("pressed BS1");

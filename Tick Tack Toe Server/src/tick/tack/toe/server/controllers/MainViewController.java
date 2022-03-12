@@ -8,6 +8,7 @@ package tick.tack.toe.server.controllers;
 import java.net.URL;
 import java.util.Collection;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -18,6 +19,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 
 import tick.tack.toe.server.controllers.client.*;
@@ -76,7 +78,14 @@ public class MainViewController implements Initializable {
             System.out.println("Server is Allready Down!");
         }  
     }
-    
+    @FXML protected void onActionCloseBtn (ActionEvent event){
+        Platform.exit();
+    }
+    @FXML protected void onActionMinBtn (ActionEvent event){
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        stage.setIconified(true);
+    }
+
     public static void initClientListener(){
         clientListener = new ClientListener();
         clientListener.setDaemon(true);

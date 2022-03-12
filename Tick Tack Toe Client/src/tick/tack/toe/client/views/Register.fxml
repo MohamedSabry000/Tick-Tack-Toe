@@ -61,6 +61,33 @@
                   <Font name="Gill Sans MT Bold" size="15.0" />
                </font>
             </Button>
+            <Button fx:id="minBtn" defaultButton="true" layoutX="360.0" layoutY="-82.0" mnemonicParsing="false" onAction="#onActionMinBtn" prefHeight="25.0" prefWidth="33.0">
+               <graphic>
+                  <ImageView fitHeight="42.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@imgs/min.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="minBtn1" defaultButton="true" disable="true" layoutX="401.0" layoutY="-82.0" mnemonicParsing="false" onAction="#onActionMinBtn" prefHeight="25.0" prefWidth="33.0">
+               <graphic>
+                  <ImageView fitHeight="42.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@imgs/minkber.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="closeBtn" cancelButton="true" layoutX="441.0" layoutY="-82.0" mnemonicParsing="false" onAction="#onActionCloseBtn" prefHeight="25.0" prefWidth="33.0">
+               <graphic>
+                  <ImageView fitHeight="20.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@imgs/x.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </Pane>
       <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />

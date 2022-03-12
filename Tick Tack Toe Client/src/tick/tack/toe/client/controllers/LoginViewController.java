@@ -9,14 +9,17 @@ import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import tick.tack.toe.client.TickTackToeClient;
 import tick.tack.toe.client.controllers.server.ServerListener;
 import tick.tack.toe.client.models.*;
@@ -76,7 +79,14 @@ public class LoginViewController implements Initializable{
         }
         return true;
     }
-    
+    @FXML protected void onActionCloseBtn (ActionEvent event){
+        Platform.exit();
+    }
+    @FXML protected void onActionMinBtn (ActionEvent event){
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        stage.setIconified(true);
+    }
+
     @FXML protected void onActionRegister(ActionEvent event) {
         TickTackToeClient.openRegisterView();
         System.out.println("pressed Register");

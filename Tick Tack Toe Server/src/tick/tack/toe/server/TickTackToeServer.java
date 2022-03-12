@@ -30,7 +30,7 @@ public class TickTackToeServer extends Application {
         
         Scene scene = new Scene(root);
         primaryStage.setTitle("Server");
-        //primaryStage.initStyle(StageStyle.UNDECORATED);
+        primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(scene);
         primaryStage.show();
         
