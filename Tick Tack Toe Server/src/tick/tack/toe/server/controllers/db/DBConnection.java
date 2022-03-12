@@ -206,20 +206,21 @@ public class DBConnection {
             stm = connection.prepareStatement("select * from game where game_id =?");
             stm.setInt(1, match_id);
             ResultSet resultSet = stm.executeQuery();
-            if (resultSet.next()) {
-                match.setPlayer1_id(resultSet.getInt(1));
-                match.setPlayer2_id(resultSet.getInt(2));
-                match.setMatch_id(resultSet.getInt(3));
-                match.setStatus(resultSet.getString(4));
-                match.setWinner(resultSet.getInt(5));
-                //match.gamegrid(resultSet.getInt(6)); //gamegrid to be put.
-                match.setPlayer1_choice(resultSet.getString(7));
-                match.setPlayer2_choice(resultSet.getString(8));
-                match.setMatch_date(resultSet.getTimestamp(9));
-            }
+            
+            resultSet.next();
+            match.setPlayer1_id(resultSet.getInt(1));
+            match.setPlayer2_id(resultSet.getInt(2));
+            match.setMatch_id(resultSet.getInt(3));
+            match.setStatus(resultSet.getString(4));
+            match.setWinner(resultSet.getInt(5));
+            //match.gamegrid(resultSet.getInt(6)); //gamegrid to be put.
+            match.setPlayer1_choice(resultSet.getString(7));
+            match.setPlayer2_choice(resultSet.getString(8));
+            match.setMatch_date(resultSet.getTimestamp(9));
+            
         } catch (SQLException e) {
-            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
-            getMatch(match_id);
+//            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+            //getMatch(match_id);
             System.out.println(e);
         }
         return match;
@@ -432,5 +433,53 @@ public class DBConnection {
             System.out.println("Can't Enter The Database, Cause of Offline State");
         }
         return players;
+    }
+    
+    public List<Position> getPositions(Match match) {
+        List<Position> positions = new ArrayList<>();
+        try {
+            PreparedStatement pst = connection.prepareStatement("select * from game where m_id = ?");
+            pst.setInt(1, match.getMatch_id());
+            ResultSet rsmatch = pst.executeQuery();
+            if (rsmatch.next()) {
+                
+                    int match_id = rsmatch.getInt("game_id"),
+                    p1 = rsmatch.getInt("player1_id"), 
+                    p2 = rsmatch.getInt("player2_id"), 
+                    winnerId = rsmatch.getInt("winner");
+                    
+                    String status =  rsmatch.getString("status"), 
+                    grid = rsmatch.getString("game_grid"), 
+                    date = rsmatch.getString("game_date") ;
+                    
+                    String p1Choice = rsmatch.getString("player1_choice"), 
+                    p2Choice = rsmatch.getString("player2_choice");
+                
+                for(int i = 0; i<grid.length(); i++){
+                    int player_id;
+                    switch(grid.charAt(i)){
+                        case 'X':
+                        case 'x':
+                            player_id = p1Choice.equalsIgnoreCase("X")? p1 : p2 ;
+                            break;
+                        case 'O':
+                        case 'o':
+                            player_id = p1Choice.equalsIgnoreCase("O")? p1 : p2 ;
+                            break;
+                        default:
+                            player_id = -1;
+                    }
+                    positions.add(new Position(match_id, player_id, grid.charAt(i)+""));
+                    
+                    System.out.println(grid.charAt(i));
+                }
+//                positions.add(new Position(rsmatch.getInt("m_id"),
+//                        rsmatch.getInt("player_id"),
+//                        rsmatch.getString("position")));
+            };
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return positions;
     }
 }

@@ -129,7 +129,7 @@ public class TickTackToeClient extends Application {
             
             // Match View
             FXMLLoader fxmlLoaderGame = new FXMLLoader(TickTackToeClient.class.getResource("views/Tic Tac Toe.fxml"));
-            sceneTTT = new Scene(fxmlLoaderGame.load());
+            sceneGame = new Scene(fxmlLoaderGame.load());
             gameController = fxmlLoaderGame.getController();
 
         } catch (IOException e) {

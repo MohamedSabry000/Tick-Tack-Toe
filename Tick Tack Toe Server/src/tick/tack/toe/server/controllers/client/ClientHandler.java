@@ -27,8 +27,10 @@ import tick.tack.toe.server.TickTackToeServer;
 import tick.tack.toe.server.controllers.MainViewController;
 import tick.tack.toe.server.notifications.*;
 import org.json.JSONObject;
+import tick.tack.toe.server.models.Match;
 import tick.tack.toe.server.models.MatchTable;
 import tick.tack.toe.server.models.Player;
+import tick.tack.toe.server.models.Position;
 
 
 /**
@@ -76,13 +78,13 @@ public class ClientHandler extends Thread {
 //        actions.put(Request.ACTION_ASK_TO_PAUSE, this::askToPause);
 //        actions.put(Request.ACTION_SAVE_MATCH, this::saveMatch);
 //        actions.put(Request.ACTION_REJECT_TO_PAUSE, this::rejectToPause);
-//        actions.put(Request.ACTION_SEND_MESSAGE, this::sendMessage);
+        actions.put(Request.ACTION_SEND_MESSAGE, this::sendMessage);
         actions.put(Request.ACTION_GET_MATCH_HISTORY, this::getMatchHistory);
-//        actions.put(Request.ACTION_ASK_TO_RESUME, this::askToResume);
-//        actions.put(Request.ACTION_REJECT_TO_RESUME, this::rejectToResume);
-//        actions.put(Request.ACTION_ACCEPT_TO_RESUME, this::acceptToResume);
+        actions.put(Request.ACTION_ASK_TO_RESUME, this::askToResume);
+        actions.put(Request.ACTION_REJECT_TO_RESUME, this::rejectToResume);
+        actions.put(Request.ACTION_ACCEPT_TO_RESUME, this::acceptToResume);
 //        actions.put(Request.ACTION_BACK_FROM_OFFLINE, this::backFromOffline);
-//        actions.put(Request.ACTION_GET_PAUSED_MATCH, this::getPausedMatch);
+        actions.put(Request.ACTION_GET_PAUSED_MATCH, this::getPausedMatch);
     }
     public static void initPlayerList() {
         playersFullInfo = new HashMap<>();
@@ -276,7 +278,7 @@ public class ClientHandler extends Thread {
         // create error response
         InviteToGameResponse inviteToGameRes = new InviteToGameResponse(InviteToGameResponse.STATUS_ERROR, player);
         if (_competitor == null) {
-            inviteToGameRes.setMessage("Your competitor became offline now.");
+            inviteToGameRes.setMessage("Your competitor is offline now.");
         } else {
             inviteToGameRes.setMessage("It seems your competitor has entered another game.");
         }
@@ -284,6 +286,59 @@ public class ClientHandler extends Thread {
         String jResponse = mapper.writeValueAsString(inviteToGameRes);
         // send the response to the client
         printStream.println(jResponse);
+    }
+    private void acceptToResume(String json) {
+        try {
+            AcceptToResumeRequest acceptToResumeReq = mapper.readValue(json, AcceptToResumeRequest.class);
+            // get the competitor
+            ClientHandler _competitor = clients.get(acceptToResumeReq.getPlayer().getServer_id());
+            // check if the competitor is still online and not in a game
+            if (_competitor != null && !_competitor.myFullInfoPlayer.isInGame()) {
+                // link the two player with each other
+                clients.get(this.getId()).competitor = _competitor;
+                clients.get(acceptToResumeReq.getPlayer().getServer_id()).competitor = this;
+                Match match = dbConnection.getMatch(acceptToResumeReq.getMatch().getMatch_id());
+                // create resume match notification
+                ResumeGameNotification resumeGameNotification = new ResumeGameNotification(match,
+                        dbConnection.getPositions(acceptToResumeReq.getMatch()));
+                // create json
+                String jNotification = mapper.writeValueAsString(resumeGameNotification);
+                // send the notification to the two players to start the game
+                _competitor.printStream.println(jNotification);
+                printStream.println(jNotification);
+                // update in game status
+                clients.get(this.getId()).myFullInfoPlayer.setInGame(true);
+                clients.get(_competitor.getId()).myFullInfoPlayer.setInGame(true);
+                // cast the status to all
+                updateStatus(clients.get(this.getId()).myFullInfoPlayer);
+                updateStatus(clients.get(_competitor.getId()).myFullInfoPlayer);
+            } else {
+                // the competitor became offline or started a new another game
+                sendOfflineOrInGame(acceptToResumeReq.getPlayer(), _competitor);
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    private void rejectToResume(String json) {
+        try {
+            // get object from json
+            RejectToResumeRequest rejectToResumeReq = mapper.readValue(json, RejectToResumeRequest.class);
+            // get the competitor
+            ClientHandler _competitor = clients.get(rejectToResumeReq.getPlayer().getServer_id());
+            // check if the competitor is still online and not in a game
+            if (_competitor != null && !_competitor.myFullInfoPlayer.isInGame()) {
+                // create error response
+                AskToResumeResponse askToResumeRes = new AskToResumeResponse(AskToResumeResponse.STATUS_ERROR, new Player(clients.get(this.getId()).myFullInfoPlayer));
+                askToResumeRes.setMessage("It seems your competitor can not resume the game at this moment.");
+                // create json from response
+                String jResponse = mapper.writeValueAsString(askToResumeRes);
+                // send the response to the client
+                _competitor.printStream.println(jResponse);
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
     
     public void getMatchHistory(String json) {
@@ -309,7 +364,59 @@ public class ClientHandler extends Thread {
             e.printStackTrace();
         }
     }
-    
+    private void askToResume(String json) {
+        try {
+            // get object from json
+            AskToResumeRequest askToResumeReq = mapper.readValue(json, AskToResumeRequest.class);
+            // get competitor
+            ClientHandler _competitor = clients.get(askToResumeReq.getPlayer().getServer_id());
+            // check if the competitor is still online and not in a game
+            if (_competitor != null && !_competitor.myFullInfoPlayer.isInGame()) {
+                // create the notification
+                AskToResumeNotification askToResumeNotification = new AskToResumeNotification(
+                        new Player(clients.get(this.getId()).myFullInfoPlayer), askToResumeReq.getMatch());
+                // create json from the notification
+                String jNotification = mapper.writeValueAsString(askToResumeNotification);
+                // send the game invitation to the competitor
+                _competitor.printStream.println(jNotification);
+            } else {
+                // the competitor became offline or started a new another game
+                sendOfflineOrInGame(askToResumeReq.getPlayer(), _competitor);
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    public void getPausedMatch(String json){
+        try {
+            GetPausedMatchRequest getPausedMatchReq = mapper.readValue(json, GetPausedMatchRequest.class);
+            Match match = dbConnection.getMatch(getPausedMatchReq.getM_id());
+            List<Position> positions = dbConnection.getPositions(match);
+            if(positions!=null){
+                GetPausedMatchResponse getPausedMatchRes = new GetPausedMatchResponse(positions, match);
+                String jResponse = mapper.writeValueAsString(getPausedMatchRes);
+                printStream.println(jResponse);
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } {
+
+        }
+    }
+    private void sendMessage(String json) {
+        try {
+            // get the object from the json
+            SendMessageRequest sendMessageReq = mapper.readValue(json, SendMessageRequest.class);
+            // create notification for message
+            MessageNotification messageNotification = new MessageNotification(sendMessageReq.getMessage());
+            // convert notification to json
+            String jNotification = mapper.writeValueAsString(messageNotification);
+            // get the competitor socket then send him the message
+            clients.get(this.getId()).competitor.printStream.println(jNotification);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
     interface IAction {
         void handleAction(String json);
     }

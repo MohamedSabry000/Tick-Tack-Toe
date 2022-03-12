@@ -33,7 +33,7 @@ public class GameVsComputerViewController implements Initializable{
     private boolean myTurn;
     private boolean isEasy, viewMod;
     private Match match;
-    private List<Postion> positions;
+    private List<Position> positions;
     @FXML
     private Button b1, b2, b3, b4, b5, b6, b7, b8, b9;
     

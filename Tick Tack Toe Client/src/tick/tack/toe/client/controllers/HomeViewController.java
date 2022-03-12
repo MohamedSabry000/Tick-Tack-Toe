@@ -27,10 +27,17 @@ import javafx.stage.Stage;
 import tick.tack.toe.client.TickTackToeClient;
 import tick.tack.toe.client.controllers.server.ServerListener;
 import tick.tack.toe.client.models.Invitation;
+import tick.tack.toe.client.models.Match;
 import tick.tack.toe.client.models.Player;
 import tick.tack.toe.client.models.PlayerFullInfo;
+import tick.tack.toe.client.notifications.AskToResumeNotification;
+import tick.tack.toe.client.requests.AcceptToResumeRequest;
 import tick.tack.toe.client.requests.GetMatchHistoryRequest;
 import tick.tack.toe.client.requests.InviteToGameRequest;
+import tick.tack.toe.client.requests.RejectToResumeRequest;
+import tick.tack.toe.client.responses.AskToResumeResponse;
+import tick.tack.toe.client.responses.InviteToGameResponse;
+import tick.tack.toe.client.responses.Response;
 
 
 
@@ -89,8 +96,8 @@ public class HomeViewController implements Initializable {
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     if(tInvitation.getSelectionModel().getSelectedItem().getType() == Invitation.GAME_INVITATION)
                         showInvitationConfirmation();
-//                    else
-//                        respondToResumeReq();
+                    else
+                        respondToResumeReq();
                 }
             });
             return row;
@@ -229,6 +236,59 @@ public class HomeViewController implements Initializable {
                 fillPlayersTable();
             }
         }
+    }
+    
+    public void inviteToGameResponse(InviteToGameResponse inviteToGameRes) {
+        if (inviteToGameRes.getStatus().equals(Response.STATUS_ERROR)) {
+            TickTackToeClient.showAlert("Invite To game", inviteToGameRes.getMessage(), Alert.AlertType.WARNING);
+        }
+        sent.remove(inviteToGameRes.getPlayer().getDb_Player_id());
+    }
+    
+    public void addResumeReq(AskToResumeNotification askToResumeNotification){
+        if (invitations.get(askToResumeNotification.getPlayer().getDb_Player_id()) == null) {
+            Invitation invitation = new Invitation(Invitation.RESUME_INVITATION, askToResumeNotification.getPlayer(), askToResumeNotification.getMatch());
+            invitation.setName(playersFullInfo.get(askToResumeNotification.getPlayer().getDb_Player_id()).getName());
+            invitations.put(askToResumeNotification.getPlayer().getDb_Player_id(), invitation);
+            fillInvitationsTable();
+
+            TickTackToeClient.showAlert("Game Invitation", 
+                    playersFullInfo.get(askToResumeNotification.getPlayer().getDb_Player_id()).getName() + " sent you game invitation."
+                    ,Alert.AlertType.INFORMATION);
+        }
+    }
+    
+    public void respondToResumeReq()
+     {
+         Player player = tInvitation.getSelectionModel().getSelectedItem().getPlayer();
+         Match match = tInvitation.getSelectionModel().getSelectedItem().getMatch();
+         if(TickTackToeClient.showConfirmation("ShowNotification","Do you want to resume game ?","Accept","Reject"))
+         {
+            AcceptToResumeRequest acceptToResumeReq = new AcceptToResumeRequest(player, match);
+            try {
+                String jRequest = TickTackToeClient.mapper.writeValueAsString(acceptToResumeReq);
+                ServerListener.sendRequest(jRequest);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+         }
+         else{
+             RejectToResumeRequest rejectToResumeReq = new RejectToResumeRequest(player);
+             try {
+                 String jRequest = TickTackToeClient.mapper.writeValueAsString(rejectToResumeReq);
+                 ServerListener.sendRequest(jRequest);
+             } catch (JsonProcessingException e) {
+                 e.printStackTrace();
+             }
+         }
+         invitations.remove(player.getDb_Player_id());
+         fillInvitationsTable();
+     }
+
+    public void declineResume(AskToResumeResponse askToResumeRes){
+        TickTackToeClient.showAlert("Resume Game, Declined!", 
+            getPlayerFullInfo(askToResumeRes.getPlayer().getDb_Player_id()).getName()+" cannot resume game right now."
+            ,Alert.AlertType.INFORMATION);
     }
     
     public PlayerFullInfo getPlayerFullInfo(int id) {

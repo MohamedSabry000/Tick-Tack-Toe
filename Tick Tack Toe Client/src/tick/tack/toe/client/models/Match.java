@@ -5,16 +5,6 @@
  */
 package tick.tack.toe.client.models;
 
-//@JsonFormat is defined in the jackson-databind package so we need the following Maven Dependency:
-/*
-<dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-databind</artifactId>
-    <version>2.13.0</version>
-</dependency>
-*/
-//import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.sql.Timestamp;
 /**
  *

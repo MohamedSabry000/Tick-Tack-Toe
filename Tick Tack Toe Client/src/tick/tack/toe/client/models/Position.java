@@ -9,14 +9,14 @@ package tick.tack.toe.client.models;
  *
  * @author booga
  */
-public class Postion {
+public class Position {
     private int match_id, player_id;
     private String position;
 
-    public Postion() {
+    public Position() {
     }
 
-    public Postion(int match_id, int player_id, String position) {
+    public Position(int match_id, int player_id, String position) {
         this.match_id = match_id;
         this.player_id = player_id;
         this.position = position;

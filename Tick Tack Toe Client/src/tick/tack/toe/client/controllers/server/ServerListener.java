@@ -19,9 +19,16 @@ import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import org.json.JSONObject;
 import tick.tack.toe.client.TickTackToeClient;
+import tick.tack.toe.client.notifications.AskToResumeNotification;
 import tick.tack.toe.client.notifications.GameInvitationNotification;
+import tick.tack.toe.client.notifications.MessageNotification;
 import tick.tack.toe.client.notifications.Notification;
+import tick.tack.toe.client.notifications.ResumeGameNotification;
 import tick.tack.toe.client.notifications.UpdateStatusNotification;
+import tick.tack.toe.client.responses.AskToResumeResponse;
+import tick.tack.toe.client.responses.GetMatchHistoryResponse;
+import tick.tack.toe.client.responses.GetPausedMatchResponse;
+import tick.tack.toe.client.responses.InviteToGameResponse;
 import tick.tack.toe.client.responses.LoginResponse;
 import tick.tack.toe.client.responses.Response;
 
@@ -72,20 +79,20 @@ public class ServerListener extends Thread {
     private void initTypes() {
         types = new HashMap<>();
         types.put(Response.RESPONSE_LOGIN, this::Login);
-//        types.put(Response.RESPONSE_INVITE_TO_GAME, this::inviteToGameResponse);
+        types.put(Response.RESPONSE_INVITE_TO_GAME, this::inviteToGameResponse);
         types.put(Response.RESPONSE_SIGN_UP, this::signUpRes);
-//        types.put(Response.RESPONSE_GET_MATCH_HISTORY, this::getMatchHistory);
-//        types.put(Response.RESPONSE_ASK_TO_RESUME, this::rejectToResumeGame);
-//        types.put(Response.RESPONSE_GET_PAUSED_MATCH, this::getPausedMatch);
+        types.put(Response.RESPONSE_GET_MATCH_HISTORY, this::getMatchHistory);
+        types.put(Response.RESPONSE_ASK_TO_RESUME, this::rejectToResumeGame);
+        types.put(Response.RESPONSE_GET_PAUSED_MATCH, this::getPausedMatch);
 //        types.put(Response.RESPONSE_ASK_TO_PAUSE, this::askToPauseResponse);
 //
         types.put(Notification.NOTIFICATION_UPDATE_STATUS, this::updateStatus);
         types.put(Notification.NOTIFICATION_GAME_INVITATION, this::gameInvitation);
 //        types.put(Notification.NOTIFICATION_START_GAME, this::startGame);
 //        types.put(Notification.NOTIFICATION_ASK_TO_PAUSE, this::askToPauseNotification);
-//        types.put(Notification.NOTIFICATION_MESSAGE, this::sendMessageRes);
-//        types.put(Notification.NOTIFICATION_ASK_TO_RESUME, this::askToResume);
-//        types.put(Notification.NOTIFICATION_RESUME_GAME, this::resumeGame);
+        types.put(Notification.NOTIFICATION_MESSAGE, this::sendMessageRes);
+        types.put(Notification.NOTIFICATION_ASK_TO_RESUME, this::askToResume);
+        types.put(Notification.NOTIFICATION_RESUME_GAME, this::resumeGame);
 //        types.put(Notification.NOTIFICATION_FINISH_GAME, this::finishGameNotification);
 //        types.put(Notification.NOTIFICATION_PAUSE_GAME, this::pauseGameNotification);
 //        types.put(Notification.NOTIFICATION_COMPETITOR_CONNECTION_ISSUE, this::competitorConnectionIssueNotification);
@@ -106,6 +113,74 @@ public class ServerListener extends Thread {
             });
         }
     }
+    
+    private void getMatchHistory(String json) {
+        try {
+            GetMatchHistoryResponse getMatchHistoryRes=TickTackToeClient.mapper.readValue(json,GetMatchHistoryResponse.class);
+            TickTackToeClient.matchController.fillMatchesTable(getMatchHistoryRes.getMatches());
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void askToResume(String json) {
+        try {
+            AskToResumeNotification askToResumeNotification = TickTackToeClient.mapper.readValue(json, AskToResumeNotification.class);
+            Platform.runLater(() -> TickTackToeClient.homeController.addResumeReq(askToResumeNotification));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void resumeGame(String json) {
+        try {
+            ResumeGameNotification resumeGameNotification = TickTackToeClient.mapper.readValue(json, ResumeGameNotification.class);
+            Platform.runLater(() -> TickTackToeClient.gameController.confirmResume(resumeGameNotification));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void rejectToResumeGame(String json){
+        try{
+            AskToResumeResponse askToResumeRes = TickTackToeClient.mapper.readValue(json, AskToResumeResponse.class);
+            if(askToResumeRes.getStatus().equals(Response.STATUS_ERROR)){
+                Platform.runLater(() -> TickTackToeClient.homeController.declineResume(askToResumeRes));
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void inviteToGameResponse(String json) {
+        try {
+            InviteToGameResponse inviteToGameRes = TickTackToeClient.mapper.readValue(json, InviteToGameResponse.class);
+            Platform.runLater(() -> TickTackToeClient.homeController.inviteToGameResponse(inviteToGameRes));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void getPausedMatch(String json){
+//        try {
+//            GetPausedMatchResponse getPausedMatchRes = TickTackToeClient.mapper.readValue(json, GetPausedMatchResponse.class);
+//            Platform.runLater(()->TickTackToeClient.gameController.viewMatchHistory(getPausedMatchRes));
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+    }
+    
+    private void sendMessageRes(String json) {
+        try {
+            System.out.println("1");
+            MessageNotification messageNotification = TickTackToeClient.mapper.readValue(json, MessageNotification.class);
+            Platform.runLater(() -> TickTackToeClient.gameController.handleMessageNotification(messageNotification));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+    }
+    
     
     /****************************************************/
     public static void sendRequest(String json) {
