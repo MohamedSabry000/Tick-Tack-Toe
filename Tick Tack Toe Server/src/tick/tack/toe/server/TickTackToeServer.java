@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import tick.tack.toe.server.controllers.*;
 import tick.tack.toe.server.controllers.client.ClientListener;
@@ -29,6 +30,7 @@ public class TickTackToeServer extends Application {
         
         Scene scene = new Scene(root);
         primaryStage.setTitle("Server");
+        //primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(scene);
         primaryStage.show();
         

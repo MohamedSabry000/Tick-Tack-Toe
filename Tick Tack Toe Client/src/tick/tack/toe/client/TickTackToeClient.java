@@ -36,6 +36,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Optional;
 import java.net.URL;
+import javafx.stage.StageStyle;
 import tick.tack.toe.client.controllers.*;
 import tick.tack.toe.client.controllers.server.ServerListener;
 import tick.tack.toe.client.requests.UpdateInGameStatusRequest;
@@ -85,6 +86,7 @@ public class TickTackToeClient extends Application {
   
         primaryStage.setTitle("Login");
         primaryStage.setResizable(false);
+        //primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(sceneLogin);
         
         File iconfile = new File("views/imgs/xocolored-0١.png");
@@ -281,8 +283,9 @@ public class TickTackToeClient extends Application {
             Stage stage = new Stage();
             stage.setResizable(false);
             stage.setTitle(title);
-            
+
             stage.setScene(scene);
+
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
         } catch (IOException e) {

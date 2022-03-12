@@ -24,7 +24,6 @@
             <Image url="@imgs/xocolored-0١.png" />
          </image>
       </ImageView>
-      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Text" />
       <Text fill="#fcfcfc" layoutX="69.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Game Vs Computer">
          <font>
             <Font name="Gill Sans MT" size="17.0" />
@@ -35,7 +34,7 @@
             <Font name="Gill Sans MT Bold" size="18.0" />
          </font>
       </Button>
-      <Button id="reset" fx:id="ResetButton" layoutX="254.0" layoutY="555.0" mnemonicParsing="false" onAction="#onActionReset" prefHeight="46.0" prefWidth="154.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Reset" textFill="WHITE">
+      <Button id="reset" fx:id="ResetButton" defaultButton="true" layoutX="254.0" layoutY="555.0" mnemonicParsing="false" onAction="#onActionReset" prefHeight="46.0" prefWidth="154.0" style="-fx-background-radius: 20; -fx-background-color: #3D5B59;" text="Reset" textFill="WHITE">
          <font>
             <Font name="Gill Sans MT Bold" size="18.0" />
          </font>

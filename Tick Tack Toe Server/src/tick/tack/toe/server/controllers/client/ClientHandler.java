@@ -128,6 +128,9 @@ public class ClientHandler extends Thread {
         // if not logged in
         if (clients.get(this.getId()).myFullInfoPlayer != null) {
             clients.get(this.getId()).myFullInfoPlayer.setStatus(PlayerFullInfo.OFFLINE);
+            
+            dbConnection.updatePlayerDBStatus(clients.get(this.getId()).myFullInfoPlayer.getDb_Player_id(), PlayerFullInfo.OFFLINE);
+            
             clients.get(this.getId()).myFullInfoPlayer.setInGame(false);
             clients.get(this.getId()).myFullInfoPlayer.setServer_id(-1);
         }
@@ -156,6 +159,8 @@ public class ClientHandler extends Thread {
             LoginRequest loginReq = mapper.readValue(json, LoginRequest.class);
             LoginResponse loginRes = new LoginResponse();
             int u_id = dbConnection.authenticate(loginReq.getCredentials());
+            System.out.println("i'm id: "+loginReq.getCredentials() );
+            System.out.println("i'm id2: "+loginReq);
             if (u_id != -1) {
                 System.out.println(u_id);
                 playersFullInfo.get(u_id).setStatus(PlayerFullInfo.ONLINE);
@@ -164,6 +169,8 @@ public class ClientHandler extends Thread {
                 // clients <server_id, PlayerFullInfo>
                 clients.get(this.getId()).myFullInfoPlayer = playersFullInfo.get(u_id);
                 updateStatus(clients.get(this.getId()).myFullInfoPlayer);
+                
+                dbConnection.updatePlayerDBStatus(u_id, PlayerFullInfo.ONLINE);
                 
                 loginRes.setStatus(LoginResponse.STATUS_OK);
                 loginRes.setPlayerFullInfo(playersFullInfo.get(u_id));

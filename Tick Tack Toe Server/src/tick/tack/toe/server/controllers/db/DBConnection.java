@@ -61,19 +61,19 @@ public class DBConnection {
         try {
             System.out.println("Auth satr 1");
             Statement stmt = connection.createStatement();
-            System.out.println("Auth satr 2");
-            String queryString = new String("select id from player where username='" + credentials.getUsername() + "' and password='" + credentials.getPassword() + "'");
-            System.out.println("Auth satr 3");
-            ResultSet rs = stmt.executeQuery(queryString);
 
-            System.out.println("Auth satr 4");
+            ResultSet rs = stmt.executeQuery("SELECT `id` FROM `player` WHERE `username`='"+ credentials.getUsername() +"' and `password`='" + credentials.getPassword() + "' and status = 'offline' LIMIT 1;");
+
+            System.out.println(rs);
             if (rs.next()) {
                 return rs.getInt("id");
+            } else {
+                 return rs.getInt("id");
             }
         } catch (SQLException e) {
 
-            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
-                authenticate(credentials);
+            //try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+                //authenticate(credentials);
 
             System.out.println(e);
         }
@@ -101,6 +101,17 @@ public class DBConnection {
 
         System.out.println("Auth satr 5");
         return -1;
+    }
+    public void updatePlayerDBStatus(int player_id, String state) {
+        PreparedStatement p = null;
+        try {
+            p = connection.prepareStatement("update player set status= ? where id = ?");
+            p.setString(1, state);
+            p.setInt(2, player_id);
+            p.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
     }
 
     /**
