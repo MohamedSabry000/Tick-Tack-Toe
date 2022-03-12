@@ -62,7 +62,7 @@ public class DBConnection {
             System.out.println("Auth satr 1");
             Statement stmt = connection.createStatement();
 
-            ResultSet rs = stmt.executeQuery("SELECT `id` FROM `player` WHERE `username`='"+ credentials.getUsername() +"' and `password`='" + credentials.getPassword() + "' and status = 'offline' LIMIT 1;");
+            ResultSet rs = stmt.executeQuery("select id from player where user='"+ credentials.getUsername() +"' and password='" + credentials.getPassword() + "' and status = 'offline' LIMIT 1;");
 
             System.out.println(rs);
             if (rs.next()) {

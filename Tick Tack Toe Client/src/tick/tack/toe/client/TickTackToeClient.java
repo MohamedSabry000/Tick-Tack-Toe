@@ -267,9 +267,6 @@ public class TickTackToeClient extends Application {
         mainStage.hide();
         mainStage.setScene(sceneGameVsComputer);
         mainStage.setTitle("TicTacToe");
-        File iconfile = new File("images/7.png");
-        Image icon = new Image(iconfile.toURI().toString());
-        mainStage.getIcons().add(icon);
 //        gameVsComputerController.showAnimation();
         openedScene = scenes.vsComputerS;
         mainStage.show();
