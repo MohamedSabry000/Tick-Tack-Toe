@@ -22,7 +22,7 @@ import java.sql.Timestamp;
  */
 public class Match {
     private int match_id,player1_id,player2_id,winner;
-    private String player1_choice, player2_choice, status, level;
+    private String player1_choice, player2_choice, status, level, game_grid;
     //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private Timestamp match_date;
     

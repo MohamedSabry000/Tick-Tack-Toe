@@ -7,7 +7,7 @@ package tick.tack.toe.client.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
-import javax.swing.text.Position;
+import tick.tack.toe.client.models.Position;
 import tick.tack.toe.client.models.Match;
 
 /**

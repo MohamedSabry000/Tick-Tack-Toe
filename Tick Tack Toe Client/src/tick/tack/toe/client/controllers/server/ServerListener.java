@@ -20,10 +20,13 @@ import javafx.scene.control.Alert;
 import org.json.JSONObject;
 import tick.tack.toe.client.TickTackToeClient;
 import tick.tack.toe.client.notifications.AskToResumeNotification;
+import tick.tack.toe.client.notifications.FinishGameNotification;
 import tick.tack.toe.client.notifications.GameInvitationNotification;
 import tick.tack.toe.client.notifications.MessageNotification;
 import tick.tack.toe.client.notifications.Notification;
 import tick.tack.toe.client.notifications.ResumeGameNotification;
+import tick.tack.toe.client.notifications.StartGameNotification;
+import tick.tack.toe.client.notifications.UpdateBoardNotification;
 import tick.tack.toe.client.notifications.UpdateStatusNotification;
 import tick.tack.toe.client.responses.AskToResumeResponse;
 import tick.tack.toe.client.responses.GetMatchHistoryResponse;
@@ -84,19 +87,19 @@ public class ServerListener extends Thread {
         types.put(Response.RESPONSE_GET_MATCH_HISTORY, this::getMatchHistory);
         types.put(Response.RESPONSE_ASK_TO_RESUME, this::rejectToResumeGame);
         types.put(Response.RESPONSE_GET_PAUSED_MATCH, this::getPausedMatch);
-//        types.put(Response.RESPONSE_ASK_TO_PAUSE, this::askToPauseResponse);
+        types.put(Response.RESPONSE_ASK_TO_PAUSE, this::askToPauseResponse);
 //
         types.put(Notification.NOTIFICATION_UPDATE_STATUS, this::updateStatus);
         types.put(Notification.NOTIFICATION_GAME_INVITATION, this::gameInvitation);
-//        types.put(Notification.NOTIFICATION_START_GAME, this::startGame);
-//        types.put(Notification.NOTIFICATION_ASK_TO_PAUSE, this::askToPauseNotification);
+        types.put(Notification.NOTIFICATION_START_GAME, this::startGame);
+        types.put(Notification.NOTIFICATION_ASK_TO_PAUSE, this::askToPauseNotification);
         types.put(Notification.NOTIFICATION_MESSAGE, this::sendMessageRes);
         types.put(Notification.NOTIFICATION_ASK_TO_RESUME, this::askToResume);
         types.put(Notification.NOTIFICATION_RESUME_GAME, this::resumeGame);
-//        types.put(Notification.NOTIFICATION_FINISH_GAME, this::finishGameNotification);
-//        types.put(Notification.NOTIFICATION_PAUSE_GAME, this::pauseGameNotification);
-//        types.put(Notification.NOTIFICATION_COMPETITOR_CONNECTION_ISSUE, this::competitorConnectionIssueNotification);
-//        types.put(Notification.NOTIFICATION_UPDATE_BOARD, this::updateBoardNotification);
+        types.put(Notification.NOTIFICATION_FINISH_GAME, this::finishGameNotification);
+        types.put(Notification.NOTIFICATION_PAUSE_GAME, this::pauseGameNotification);
+        types.put(Notification.NOTIFICATION_COMPETITOR_CONNECTION_ISSUE, this::competitorConnectionIssueNotification);
+        types.put(Notification.NOTIFICATION_UPDATE_BOARD, this::updateBoardNotification);
     }
     
     private void goOffline() {
@@ -132,6 +135,14 @@ public class ServerListener extends Thread {
         }
     }
     
+    private void askToPauseResponse(String json) {
+        Platform.runLater(() -> TickTackToeClient.gameController.handleAskToPauseResponse());
+    }
+    
+    private void askToPauseNotification(String json) {
+        Platform.runLater(() -> TickTackToeClient.gameController.notifyAskToPause());
+    }
+    
     private void resumeGame(String json) {
         try {
             ResumeGameNotification resumeGameNotification = TickTackToeClient.mapper.readValue(json, ResumeGameNotification.class);
@@ -152,6 +163,28 @@ public class ServerListener extends Thread {
         }
     }
     
+    private void updateBoardNotification(String json) {
+        try {
+            UpdateBoardNotification updateBoardNotification = TickTackToeClient.mapper.readValue(json, UpdateBoardNotification.class);
+            Platform.runLater(() -> TickTackToeClient.gameController.handleUpdateBoard(updateBoardNotification.getPosition()));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void pauseGameNotification(String json) {
+        Platform.runLater(() -> TickTackToeClient.gameController.handlePauseGame());
+    }
+    
+    private void finishGameNotification(String json) {
+        try {
+            FinishGameNotification finishGameNotification = TickTackToeClient.mapper.readValue(json, FinishGameNotification.class);
+            Platform.runLater(() -> TickTackToeClient.gameController.handleFinishGame(finishGameNotification));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    
     private void inviteToGameResponse(String json) {
         try {
             InviteToGameResponse inviteToGameRes = TickTackToeClient.mapper.readValue(json, InviteToGameResponse.class);
@@ -161,13 +194,26 @@ public class ServerListener extends Thread {
         }
     }
     
+    private void startGame(String json) {
+        try {
+            StartGameNotification startGameNotification = TickTackToeClient.mapper.readValue(json, StartGameNotification.class);
+            Platform.runLater(() -> TickTackToeClient.homeController.startGame(startGameNotification.getMatch()));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    
     private void getPausedMatch(String json){
-//        try {
-//            GetPausedMatchResponse getPausedMatchRes = TickTackToeClient.mapper.readValue(json, GetPausedMatchResponse.class);
-//            Platform.runLater(()->TickTackToeClient.gameController.viewMatchHistory(getPausedMatchRes));
-//        } catch (JsonProcessingException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            GetPausedMatchResponse getPausedMatchRes = TickTackToeClient.mapper.readValue(json, GetPausedMatchResponse.class);
+            Platform.runLater(()->TickTackToeClient.gameController.viewMatchHistory(getPausedMatchRes));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void competitorConnectionIssueNotification(String json) {
+        Platform.runLater(() -> TickTackToeClient.gameController.competitorConnectionIssue());
     }
     
     private void sendMessageRes(String json) {

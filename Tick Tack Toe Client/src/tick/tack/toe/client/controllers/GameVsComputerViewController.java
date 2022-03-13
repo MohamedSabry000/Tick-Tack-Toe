@@ -37,16 +37,10 @@ public class GameVsComputerViewController implements Initializable{
     @FXML
     private Button b1, b2, b3, b4, b5, b6, b7, b8, b9;
     
-//    @FXML
-//    private ImageView backgroundimg, imgComputer;
-
     @FXML
     private Button ResetButton;
     @FXML
     private Button ExitButton;
-//
-//    @FXML
-//    private Label lblXPlayer, lblOPlayer;
     @FXML
     private Label lblXPlayer, lblXPlayer1;
     

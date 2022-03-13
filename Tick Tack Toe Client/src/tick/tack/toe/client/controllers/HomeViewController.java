@@ -31,9 +31,11 @@ import tick.tack.toe.client.models.Match;
 import tick.tack.toe.client.models.Player;
 import tick.tack.toe.client.models.PlayerFullInfo;
 import tick.tack.toe.client.notifications.AskToResumeNotification;
+import tick.tack.toe.client.requests.AcceptInvitationRequest;
 import tick.tack.toe.client.requests.AcceptToResumeRequest;
 import tick.tack.toe.client.requests.GetMatchHistoryRequest;
 import tick.tack.toe.client.requests.InviteToGameRequest;
+import tick.tack.toe.client.requests.RejectInvitationRequest;
 import tick.tack.toe.client.requests.RejectToResumeRequest;
 import tick.tack.toe.client.responses.AskToResumeResponse;
 import tick.tack.toe.client.responses.InviteToGameResponse;
@@ -108,8 +110,35 @@ public class HomeViewController implements Initializable {
     private void showInvitationConfirmation() {
         Invitation invitation = tInvitation.getSelectionModel().getSelectedItem();
         if (invitation.getType().equals(Invitation.GAME_INVITATION)) {
-//            confirmGameInvitation(invitation);
+            confirmGameInvitation(invitation);
         }
+    }
+    private void confirmGameInvitation(Invitation invitation) {
+        if (TickTackToeClient.showConfirmation(invitation.getType(), invitation.getName() + " invite you to a game.", "Accept", "Decline")) {
+            // accept the invitation
+            AcceptInvitationRequest acceptInvitationReq = new AcceptInvitationRequest(new Player(playersFullInfo.get(invitation.getPlayer().getDb_Player_id())));
+            try {
+                // create the json
+                String jRequest = TickTackToeClient.mapper.writeValueAsString(acceptInvitationReq);
+                ServerListener.sendRequest(jRequest);
+                //TicTacToeClient.gameController.setCompetitor(invitation.getPlayer());
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Reject the invitation
+            RejectInvitationRequest rejectInvitationReq = new RejectInvitationRequest(new Player(playersFullInfo.get(invitation.getPlayer().getDb_Player_id())));
+            try {
+                String jRequest = TickTackToeClient.mapper.writeValueAsString(rejectInvitationReq);
+                ServerListener.sendRequest(jRequest);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
+        }
+        // remove the invitation from the map
+        invitations.remove(invitation.getPlayer().getDb_Player_id());
+        // update the table
+        fillInvitationsTable();
     }
     @FXML protected void onActionCloseBtn (ActionEvent event){
         Platform.exit();
@@ -223,7 +252,7 @@ public class HomeViewController implements Initializable {
             if (playerFullInfo.getDb_Player_id()== myPlayerFullInfo.getDb_Player_id()) {
 
                 lblScore.setText(String.valueOf(playerFullInfo.getPoints()));
-                TickTackToeClient.showAlert("Back Online", "You are now online", Alert.AlertType.INFORMATION);
+                //TickTackToeClient.showAlert("Back Online", "You are now online", Alert.AlertType.INFORMATION);
             } else {
                 if (!playerFullInfo.getStatus().equals(playersFullInfo.get(playerFullInfo.getDb_Player_id()).getStatus())) {
                     if(playerFullInfo.getStatus().equals(PlayerFullInfo.ONLINE)){
@@ -298,6 +327,12 @@ public class HomeViewController implements Initializable {
         return playersFullInfo.get(id);
     }
 
+    public void startGame(Match match) {
+        sent.clear();
+        TickTackToeClient.gameController.startMatch(match);
+        TickTackToeClient.openGameView();
+    }
+    
     public void notifyGameInvitation(Player player) {
         // check if received this notification before
         if (invitations.get(player.getDb_Player_id()) == null) {

@@ -24,11 +24,17 @@ import tick.tack.toe.server.models.*;
  */
 public class DBConnection {
 
+//    private final String dbName = "u635309332_Tick_Tack_Toe";
+//    private final String dbHost = "109.106.246.1";
+//    private final String dbPort = "3306";
+//    private final String dbUser = "u635309332_itiTeam";
+//    private final String dbPass = "Itians:0)";
+    
     private final String dbName = "u635309332_Tick_Tack_Toe";
-    private final String dbHost = "109.106.246.1";
+    private final String dbHost = "localhost";
     private final String dbPort = "3306";
-    private final String dbUser = "u635309332_itiTeam";
-    private final String dbPass = "Itians:0)";
+    private final String dbUser = "root";
+    private final String dbPass = "1234";
     private static Connection connection = null;
 
     public DBConnection() {
@@ -62,7 +68,7 @@ public class DBConnection {
             System.out.println("Auth satr 1");
             Statement stmt = connection.createStatement();
 
-            ResultSet rs = stmt.executeQuery("select id from player where user='"+ credentials.getUsername() +"' and password='" + credentials.getPassword() + "' and status = 'offline' LIMIT 1;");
+            ResultSet rs = stmt.executeQuery("select id from player where user='"+ credentials.getUsername() +"' and password='" + credentials.getPassword() + "' and status = 'offline' LIMIT 1");
 
             System.out.println(rs);
             if (rs.next()) {
@@ -188,8 +194,8 @@ public class DBConnection {
                 return true;
             }
         } catch (SQLException e) {
-            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
-            updatePoints(player_id);
+//            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+//            updatePoints(player_id);
             System.out.println(e);
         }
         return false;
@@ -208,21 +214,22 @@ public class DBConnection {
             ResultSet resultSet = stm.executeQuery();
             
             resultSet.next();
-            match.setPlayer1_id(resultSet.getInt(1));
-            match.setPlayer2_id(resultSet.getInt(2));
-            match.setMatch_id(resultSet.getInt(3));
-            match.setStatus(resultSet.getString(4));
-            match.setWinner(resultSet.getInt(5));
+            match.setPlayer1_id(resultSet.getInt("player1_id"));
+            match.setPlayer2_id(resultSet.getInt("player2_id"));
+            match.setMatch_id(resultSet.getInt("game_id"));
+            match.setStatus(resultSet.getString("status"));
+            match.setWinner(resultSet.getInt("winner"));
             //match.gamegrid(resultSet.getInt(6)); //gamegrid to be put.
-            match.setPlayer1_choice(resultSet.getString(7));
-            match.setPlayer2_choice(resultSet.getString(8));
-            match.setMatch_date(resultSet.getTimestamp(9));
+            match.setPlayer1_choice(resultSet.getString("player1_choice"));
+            match.setPlayer2_choice(resultSet.getString("player2_choice"));
+            match.setMatch_date(resultSet.getTimestamp("game_date"));
             
         } catch (SQLException e) {
 //            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
             //getMatch(match_id);
             System.out.println(e);
         }
+        System.out.println("fgfdfg: "+match.getPlayer2_id());
         return match;
     }
 
@@ -264,7 +271,7 @@ public class DBConnection {
         for (Position position : positions) {
             try {
                 while (i < 9) {
-                    grid.append(position.getPosition().charAt(i));
+                    grid.append(position.getPosition());
                     i++;
                 }
                 Statement stmt = connection.createStatement();
@@ -438,23 +445,23 @@ public class DBConnection {
     public List<Position> getPositions(Match match) {
         List<Position> positions = new ArrayList<>();
         try {
-            PreparedStatement pst = connection.prepareStatement("select * from game where m_id = ?");
+            PreparedStatement pst = connection.prepareStatement("select * from game where game_id = ?");
             pst.setInt(1, match.getMatch_id());
             ResultSet rsmatch = pst.executeQuery();
             if (rsmatch.next()) {
                 
-                    int match_id = rsmatch.getInt("game_id"),
-                    p1 = rsmatch.getInt("player1_id"), 
-                    p2 = rsmatch.getInt("player2_id"), 
-                    winnerId = rsmatch.getInt("winner");
-                    
-                    String status =  rsmatch.getString("status"), 
-                    grid = rsmatch.getString("game_grid"), 
-                    date = rsmatch.getString("game_date") ;
-                    
-                    String p1Choice = rsmatch.getString("player1_choice"), 
-                    p2Choice = rsmatch.getString("player2_choice");
-                
+                int match_id = rsmatch.getInt("game_id"),
+                p1 = rsmatch.getInt("player1_id"), 
+                p2 = rsmatch.getInt("player2_id"), 
+                winnerId = rsmatch.getInt("winner");
+
+                String status =  rsmatch.getString("status"), 
+                grid = rsmatch.getString("game_grid"), 
+                date = rsmatch.getString("game_date") ;
+
+                String p1Choice = rsmatch.getString("player1_choice"), 
+                p2Choice = rsmatch.getString("player2_choice");
+
                 for(int i = 0; i<grid.length(); i++){
                     int player_id;
                     switch(grid.charAt(i)){
@@ -480,6 +487,7 @@ public class DBConnection {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return positions;
     }
 }

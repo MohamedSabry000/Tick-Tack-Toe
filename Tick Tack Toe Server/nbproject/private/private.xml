@@ -3,10 +3,8 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/DOCS%20MOHMA/iti/OPEN%20SOURCE/Java/Github%20for%20project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/controllers/client/ClientListener.java</file>
-            <file>file:/D:/DOCS%20MOHMA/iti/OPEN%20SOURCE/Java/Github%20for%20project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/TickTackToeServer.java</file>
-            <file>file:/D:/DOCS%20MOHMA/iti/OPEN%20SOURCE/Java/Github%20for%20project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/controllers/MainViewController.java</file>
-            <file>file:/D:/DOCS%20MOHMA/iti/OPEN%20SOURCE/Java/Github%20for%20project/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/controllers/client/ClientHandler.java</file>
+            <file>file:/E:/21_%20Java/Grad%20Project/V4/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/controllers/db/DBConnection.java</file>
+            <file>file:/E:/21_%20Java/Grad%20Project/V4/Tick-Tack-Toe/Tick%20Tack%20Toe%20Server/src/tick/tack/toe/server/controllers/client/ClientHandler.java</file>
         </group>
     </open-files>
 </project-private>

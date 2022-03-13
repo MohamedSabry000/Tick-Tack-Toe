@@ -69,21 +69,21 @@ public class ClientHandler extends Thread {
     private void initActions() {
         actions = new HashMap<>();
         actions.put(Request.ACTION_INVITE_TO_GAME, this::inviteToGame);
-//        actions.put(Request.ACTION_ACCEPT_INVITATION, this::acceptInvitation);
-//        actions.put(Request.ACTION_REJECT_INVITATION, this::rejectInvitation);
-//        actions.put(Request.ACTION_UPDATE_BOARD, this::updateBoard);
-//        actions.put(Request.ACTION_UPDATE_IN_GAME_STATUS, this::updateInGameStatus);
+        actions.put(Request.ACTION_ACCEPT_INVITATION, this::acceptInvitation);
+        actions.put(Request.ACTION_REJECT_INVITATION, this::rejectInvitation);
+            actions.put(Request.ACTION_UPDATE_BOARD, this::updateBoard);
+        actions.put(Request.ACTION_UPDATE_IN_GAME_STATUS, this::updateInGameStatus);
         actions.put(Request.ACTION_SIGN_UP, this::signUp);
         actions.put(Request.ACTION_LOGIN, this::login);
-//        actions.put(Request.ACTION_ASK_TO_PAUSE, this::askToPause);
-//        actions.put(Request.ACTION_SAVE_MATCH, this::saveMatch);
-//        actions.put(Request.ACTION_REJECT_TO_PAUSE, this::rejectToPause);
+        actions.put(Request.ACTION_ASK_TO_PAUSE, this::askToPause);
+        actions.put(Request.ACTION_SAVE_MATCH, this::saveMatch);
+        actions.put(Request.ACTION_REJECT_TO_PAUSE, this::rejectToPause);
         actions.put(Request.ACTION_SEND_MESSAGE, this::sendMessage);
         actions.put(Request.ACTION_GET_MATCH_HISTORY, this::getMatchHistory);
         actions.put(Request.ACTION_ASK_TO_RESUME, this::askToResume);
         actions.put(Request.ACTION_REJECT_TO_RESUME, this::rejectToResume);
         actions.put(Request.ACTION_ACCEPT_TO_RESUME, this::acceptToResume);
-//        actions.put(Request.ACTION_BACK_FROM_OFFLINE, this::backFromOffline);
+        actions.put(Request.ACTION_BACK_FROM_OFFLINE, this::backFromOffline);
         actions.put(Request.ACTION_GET_PAUSED_MATCH, this::getPausedMatch);
     }
     public static void initPlayerList() {
@@ -340,6 +340,163 @@ public class ClientHandler extends Thread {
             e.printStackTrace();
         }
     }
+    private void updateBoard(String json) {
+        try {
+            // get the object from the json
+            UpdateBoardRequest updateBoardReq = mapper.readValue(json, UpdateBoardRequest.class);
+            //create update board notification
+            UpdateBoardNotification updateBoardNotification = new UpdateBoardNotification(updateBoardReq.getPosition());
+            // create json
+            String jNotification = mapper.writeValueAsString(updateBoardNotification);
+            // send the notification to the players
+            clients.get(this.getId()).competitor.printStream.println(jNotification);
+            printStream.println(jNotification);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    private void saveMatch(String json) {
+        try {
+            SaveMatchRequest saveMatchReq = mapper.readValue(json, SaveMatchRequest.class);
+            int m_id = saveMatchReq.getMatch().getMatch_id();
+            System.out.println(saveMatchReq.getMatch().getMatch_id());
+            if(m_id != -1){
+                System.out.println("alter");
+                saveMatchReq.getMatch().setMatch_id(m_id);
+                dbConnection.alterMatch(saveMatchReq.getMatch(), saveMatchReq.getPositions());
+            }
+            else {
+                System.out.println("new");
+                dbConnection.saveMatch(saveMatchReq.getMatch(), saveMatchReq.getPositions());
+            }
+
+            // if the game was with a player
+            if (clients.get(this.getId()).competitor != null) {
+                String jResponse;
+                // if status of the match is paused
+                if (saveMatchReq.getMatch().getStatus().equals(Match.STATUS_PAUSED)) {
+                    PauseGameNotification pauseGameNotification = new PauseGameNotification();
+                    jResponse = mapper.writeValueAsString(pauseGameNotification);
+                } else {
+                    int u_id = saveMatchReq.getMatch().getWinner();
+                    //update points
+                    if (dbConnection.updatePoints(u_id)) {
+                        int points = playersFullInfo.get(u_id).getPoints();
+                        playersFullInfo.get(u_id).setPoints(points + 10);
+                        updateStatus(playersFullInfo.get(u_id));
+                    }
+                    // if status of the match is finished
+                    FinishGameNotification finishGameNotification = new FinishGameNotification();
+                    finishGameNotification.setWinner(u_id);
+                    jResponse = mapper.writeValueAsString(finishGameNotification);
+                }
+                // if the competitor still connected
+                if (clients.get(clients.get(this.getId()).competitor.getId()) != null) {
+                    // notify the competitor the game status
+                    clients.get(this.getId()).competitor.printStream.println(jResponse);
+                    // update competitor in game status
+                    clients.get(clients.get(this.getId()).competitor.getId()).myFullInfoPlayer.setInGame(false);
+                    updateStatus(clients.get(clients.get(this.getId()).competitor.getId()).myFullInfoPlayer);
+                    // unlink from the competitor
+                    clients.get(clients.get(this.getId()).competitor.getId()).competitor = null;
+                }
+                // unlink from the competitor
+                clients.get(this.getId()).competitor = null;
+            }
+            // update in game status for the player
+            clients.get(this.getId()).myFullInfoPlayer.setInGame(false);
+            updateStatus(clients.get(this.getId()).myFullInfoPlayer);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (SQLException ex) {
+            System.out.println("Can't Save Match! (Client Handler -> saveMatch()");
+        }
+    }
+    private void acceptInvitation(String json) {
+        try {
+            // get the object from the json
+            AcceptInvitationRequest acceptInvitationReq = mapper.readValue(json, AcceptInvitationRequest.class);
+            // get the competitor
+            ClientHandler _competitor = clients.get(acceptInvitationReq.getPlayer().getServer_id());
+            // check if the competitor is still online and not in a game
+            if (_competitor != null && !_competitor.myFullInfoPlayer.isInGame()) {
+                // link the two player with each other
+                clients.get(this.getId()).competitor = _competitor;
+                clients.get(acceptInvitationReq.getPlayer().getServer_id()).competitor = this;
+
+                // create new match
+                Match match = createMatch(acceptInvitationReq.getPlayer(), clients.get(this.getId()).myFullInfoPlayer);
+                // create start match notification
+                StartGameNotification startGameNotification = new StartGameNotification(match);
+                // create json
+                String jNotification = mapper.writeValueAsString(startGameNotification);
+                // send the notification to the two players to start the game
+                _competitor.printStream.println(jNotification);
+                printStream.println(jNotification);
+                // update in game status
+                clients.get(this.getId()).myFullInfoPlayer.setInGame(true);
+                clients.get(_competitor.getId()).myFullInfoPlayer.setInGame(true);
+                // cast the status to all
+                updateStatus(clients.get(this.getId()).myFullInfoPlayer);
+                updateStatus(clients.get(_competitor.getId()).myFullInfoPlayer);
+            } else {
+                System.out.println("offline");
+                // the competitor became offline or started a new another game
+                sendOfflineOrInGame(acceptInvitationReq.getPlayer(), _competitor);
+            }
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    private Match createMatch(Player p1, Player p2) {
+        Match match = new Match();
+        match.setPlayer1_id(p1.getDb_Player_id());
+        match.setPlayer2_id(p2.getDb_Player_id());
+        match.setMatch_date(new Timestamp(System.currentTimeMillis()));
+        char[] choices = new char[]{Match.CHOICE_X, Match.CHOICE_O};
+        match.setPlayer1_choice(String.valueOf(choices[new Random().nextInt(2)]));
+        match.setPlayer2_choice(String.valueOf(choices[match.getPlayer1_choice().equals(String.valueOf(Match.CHOICE_X)) ? 'O' : 'X']));
+        return match;
+    }
+    private void rejectInvitation(String json) {
+        try {
+            // get the object from the json
+            RejectInvitationRequest rejectInvitationReq = mapper.readValue(json, RejectInvitationRequest.class);
+            // get the competitor
+            ClientHandler _competitor = clients.get(rejectInvitationReq.getPlayer().getServer_id());
+            // check if the competitor is still online and not in a game
+            if (_competitor != null && !_competitor.myFullInfoPlayer.isInGame()) {
+                // create error response
+                InviteToGameResponse inviteToGameRes = new InviteToGameResponse(InviteToGameResponse.STATUS_ERROR, new Player(clients.get(this.getId()).myFullInfoPlayer));
+                inviteToGameRes.setMessage("It seems your competitor " + clients.get(this.getId()).myFullInfoPlayer.getName() + " can not play with you at this moment.");
+                // create json from response
+                String jResponse = mapper.writeValueAsString(inviteToGameRes);
+                // send the response to the client
+                _competitor.printStream.println(jResponse);
+            }
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
+    private void backFromOffline(String json) {
+        try {
+            BackFromOfflineRequest backFromOfflineReq = mapper.readValue(json, BackFromOfflineRequest.class);
+            playersFullInfo.get(backFromOfflineReq.getPlayer().getDb_Player_id()).setServer_id(this.getId());
+            playersFullInfo.get(backFromOfflineReq.getPlayer().getDb_Player_id()).setStatus(Player.ONLINE);
+            clients.get(this.getId()).myFullInfoPlayer = playersFullInfo.get(backFromOfflineReq.getPlayer().getDb_Player_id());
+            updateStatus(clients.get(this.getId()).myFullInfoPlayer);
+            LoginResponse loginRes = new LoginResponse(
+                    LoginResponse.STATUS_OK,
+                    clients.get(this.getId()).myFullInfoPlayer,
+                    playersFullInfo
+            );
+            String jResponse = mapper.writeValueAsString(loginRes);
+            printStream.println(jResponse);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+    }
     
     public void getMatchHistory(String json) {
         try {
@@ -386,6 +543,30 @@ public class ClientHandler extends Thread {
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+    }
+    public void askToPause(String json) {
+        try {
+            //create notification
+            AskToPauseNotification askToPauseNotification = new AskToPauseNotification();
+            //convert notification object to json string
+            String jNotification = mapper.writeValueAsString(askToPauseNotification);
+            //send the notification to the competitor
+            clients.get(this.getId()).competitor.printStream.println(jNotification);
+
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
+    }
+    private void rejectToPause(String json) {
+        try {
+            Response response = new Response(Response.STATUS_ERROR, Response.RESPONSE_ASK_TO_PAUSE);
+            String jResponse = mapper.writeValueAsString(response);
+            clients.get(this.getId()).competitor.printStream.println(jResponse);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
+
     }
     public void getPausedMatch(String json){
         try {
