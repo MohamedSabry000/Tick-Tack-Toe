@@ -29,9 +29,6 @@ import tick.tack.toe.client.models.Player;
 import tick.tack.toe.client.requests.AskToResumeRequest;
 import tick.tack.toe.client.requests.GetPausedMatchRequest;
 
-
-
-
 public class MatchViewController implements Initializable{
 
     @FXML

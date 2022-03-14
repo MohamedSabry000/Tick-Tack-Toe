@@ -257,6 +257,9 @@ public class ClientHandler extends Thread {
             InviteToGameRequest inviteToGameReq = mapper.readValue(json, InviteToGameRequest.class);
             // get the competitor and send the notification
             ClientHandler _competitor = clients.get(inviteToGameReq.getPlayer().getServer_id());
+            System.out.println("Client Handler -> inviteToGame: "+inviteToGameReq.getPlayer().getServer_id());
+            System.out.println("Client Handler -> inviteToGame2: "+_competitor.getName());
+
             // check if the competitor is still online and not in a game
             if (_competitor != null && !_competitor.myFullInfoPlayer.isInGame()) {
                 // create the notification
@@ -343,7 +346,7 @@ public class ClientHandler extends Thread {
     private void updateBoard(String json) {
         try {
             // get the object from the json
-            UpdateBoardRequest updateBoardReq = mapper.readValue(json, UpdateBoardRequest.class);
+            UpdateBoardRequest updateBoardReq = mapper.readValue(json, UpdateBoardRequest.class);            
             //create update board notification
             UpdateBoardNotification updateBoardNotification = new UpdateBoardNotification(updateBoardReq.getPosition());
             // create json
@@ -369,16 +372,27 @@ public class ClientHandler extends Thread {
                 System.out.println("new");
                 dbConnection.saveMatch(saveMatchReq.getMatch(), saveMatchReq.getPositions());
             }
-
+            
+            
+            System.out.println("Client Handler -> saveMatch: "+ this.getId());
+            System.out.println("Client Handler -> saveMatch: "+ clients.get(this.getId()));
+            System.out.println("Client Handler -> saveMatch: "+ clients.get(this.getId()).competitor);
             // if the game was with a player
             if (clients.get(this.getId()).competitor != null) {
+                System.out.println("here 1");
                 String jResponse;
                 // if status of the match is paused
                 if (saveMatchReq.getMatch().getStatus().equals(Match.STATUS_PAUSED)) {
+                                    System.out.println("here 2");
+
                     PauseGameNotification pauseGameNotification = new PauseGameNotification();
                     jResponse = mapper.writeValueAsString(pauseGameNotification);
                 } else {
+                                    System.out.println("here 3");
+
                     int u_id = saveMatchReq.getMatch().getWinner();
+                                    System.out.println("here 4: "+u_id);
+
                     //update points
                     if (dbConnection.updatePoints(u_id)) {
                         int points = playersFullInfo.get(u_id).getPoints();
@@ -418,6 +432,8 @@ public class ClientHandler extends Thread {
             AcceptInvitationRequest acceptInvitationReq = mapper.readValue(json, AcceptInvitationRequest.class);
             // get the competitor
             ClientHandler _competitor = clients.get(acceptInvitationReq.getPlayer().getServer_id());
+//            System.out.println("acceptInvitationReq = "+acceptInvitationReq.getPlayer().);
+            System.out.println("_competitor = "+_competitor.getName());
             // check if the competitor is still online and not in a game
             if (_competitor != null && !_competitor.myFullInfoPlayer.isInGame()) {
                 // link the two player with each other
@@ -452,10 +468,13 @@ public class ClientHandler extends Thread {
         Match match = new Match();
         match.setPlayer1_id(p1.getDb_Player_id());
         match.setPlayer2_id(p2.getDb_Player_id());
-        match.setMatch_date(new Timestamp(System.currentTimeMillis()));
+        
+        
+        match.setMatch_date(new Timestamp((System.currentTimeMillis())));
+        
         char[] choices = new char[]{Match.CHOICE_X, Match.CHOICE_O};
         match.setPlayer1_choice(String.valueOf(choices[new Random().nextInt(2)]));
-        match.setPlayer2_choice(String.valueOf(choices[match.getPlayer1_choice().equals(String.valueOf(Match.CHOICE_X)) ? 'O' : 'X']));
+        match.setPlayer2_choice(String.valueOf(choices[match.getPlayer1_choice().equals(String.valueOf(Match.CHOICE_X)) ? 1 : 0]));
         return match;
     }
     private void rejectInvitation(String json) {

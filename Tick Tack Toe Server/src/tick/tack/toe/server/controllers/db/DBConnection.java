@@ -190,6 +190,7 @@ public class DBConnection {
             p = connection.prepareStatement("update player set points= (points + 10) where id = ?");
             p.setInt(1, player_id);
             int rs = p.executeUpdate();
+            System.out.println("gggggggggggggggggggg: "+rs);
             if (rs == 1) {
                 return true;
             }
@@ -247,19 +248,23 @@ public class DBConnection {
             stms.setString(5, match.getPlayer1_choice());
             stms.setString(6, match.getPlayer2_choice());
             stms.setTimestamp(7, match.getMatch_date());
+            
+            stms.execute();
+            
             //excute returns boolean, excute query returns object (result set )
-            boolean isInserted = stms.execute();
-            if (isInserted) {
-                System.out.println("Inserted successfully into the database.");
-            }
+            System.out.println("dateeeee: '"+match.getMatch_date()+"'");
+                        System.out.println("hello............");
+
             int match_id = selectMatchId(match.getMatch_date(), match.getPlayer1_id(), match.getPlayer2_id());
+            System.out.println("hhhhhhhhhhhh: "+match_id);
             if (match_id != -1) {
+                System.out.println("booom");
                 //insert function
                 insertPositions(postions, match_id);
             }
         } catch (SQLException ex) {
-            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
-            saveMatch(match, postions);
+//            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+//            saveMatch(match, postions);
             System.out.println(ex);
         }
     }
@@ -272,14 +277,16 @@ public class DBConnection {
             try {
                 while (i < 9) {
                     grid.append(position.getPosition());
+                    System.out.println("=> "+position.getPosition());
                     i++;
                 }
+                System.out.println("woooooooooooow: "+grid);
                 Statement stmt = connection.createStatement();
                 String queryString = new String("INSERT INTO game (game_grid) values('" + grid + "') where game_id = '" + m_id + "' ");
                 ResultSet result = stmt.executeQuery(queryString);
             } catch (SQLException e) {
-                try { Thread.sleep(500); } catch (InterruptedException ignored) { }
-                insertPositions(positions, m_id);
+//                try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+//                insertPositions(positions, m_id);
                 System.out.println(e);
             }
         }
@@ -304,19 +311,22 @@ public class DBConnection {
     public int selectMatchId(Timestamp match_date, int player1_id, int player2_id) {
         int match_id = -1;
         try {
-            PreparedStatement stm = connection.prepareStatement("select game_id from game"
-                    + "where player1_id=? and player2_id1=? and game_date=?");
+            PreparedStatement stm = connection.prepareStatement("select game_id from game where player1_id=? and player2_id=? and game_date=?");
             stm.setInt(1, player1_id);
             stm.setInt(2, player2_id);
-            stm.setTimestamp(3, match_date);
+            String timeStr = match_date.toString();
+            String x = timeStr.substring(0, timeStr.length() - 2);
+            stm.setString(3, x);
+            System.out.println("cccccc: uuuuuuuuuuuu");
             ResultSet queryResult = stm.executeQuery();
-            if (queryResult.next()) {
-                match_id = queryResult.getInt("game_id");
-            }
+            queryResult.next();
+            match_id = queryResult.getInt("game_id");
+            System.out.println("booom: "+match_id);
         } catch (SQLException ex) {
-            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
-            selectMatchId(match_date, player1_id, player2_id);
+//            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+//            selectMatchId(match_date, player1_id, player2_id);
             System.out.println(ex);
+            ex.printStackTrace();
         }
         return match_id;
     }

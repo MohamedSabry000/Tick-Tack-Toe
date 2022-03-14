@@ -52,8 +52,6 @@ public class TickTackToeClient extends Application {
     private static Scene sceneRegister, sceneHome, sceneGame, sceneLogin, sceneMatch, sceneGameVsComputer, sceneTTT, sceneScore;
     public static final ObjectMapper mapper = new ObjectMapper();
 
-    private URL url;
-    private String css;
     public static RegisterViewController registerController;
     public static HomeViewController homeController;
     public static TicTacToeViewController gameController;
@@ -61,8 +59,6 @@ public class TickTackToeClient extends Application {
     public static MatchViewController matchController;
     public static GameVsComputerViewController gameVsComputerController;
     private static ServerListener serverListener;
-    private static TrayIcon trayIcon;
-    private SystemTray tray;
 
     public enum scenes {registerS, loginS, homeS, matchS, vsPlayerS, vsComputerS}
 
@@ -73,7 +69,6 @@ public class TickTackToeClient extends Application {
         super.init();
         serverListener = new ServerListener();
         initViews();
-//        initTray();
         serverListener.setDaemon(true);
         serverListener.start();
     }
@@ -88,10 +83,6 @@ public class TickTackToeClient extends Application {
         primaryStage.setResizable(false);
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(sceneLogin);
-        
-        File iconfile = new File("views/imgs/xocolored-0١.png");
-        Image icon = new Image(iconfile.toURI().toString());
-        primaryStage.getIcons().add(icon);
         
         mainStage = primaryStage;   
         primaryStage.show();
@@ -136,46 +127,7 @@ public class TickTackToeClient extends Application {
             e.printStackTrace();
         }
     }
-//    private void initTray() {
-//        //Obtain only one instance of the SystemTray object
-//        if (SystemTray.isSupported()) {
-//            tray = SystemTray.getSystemTray();
-//
-//            //If the icon is a file
-//            java.awt.Image image = Toolkit.getDefaultToolkit().getImage("views/imgs/xocolored-0١.png");
-//
-//            trayIcon = new TrayIcon(image, "Tic Tac Toe Game");
-//
-//            //Let the system resize the image if needed
-//            trayIcon.setImageAutoSize(true);
-//            //Set tooltip text for the tray icon
-//            trayIcon.setToolTip("Tic Tac Toe Game");
-//            trayIcon.addMouseListener(new MouseListener() {
-//                @Override
-//                public void mouseClicked(MouseEvent e) {
-//                    Platform.runLater(() -> {
-//                        mainStage.requestFocus();
-//                        mainStage.toFront();
-//                    });
-//                }
-//
-//                @Override
-//                public void mousePressed(MouseEvent e) {}
-//                @Override
-//                public void mouseReleased(MouseEvent e) {}
-//                @Override
-//                public void mouseEntered(MouseEvent e) {}
-//                @Override
-//                public void mouseExited(MouseEvent e) {}
-//            });
-//            try {
-//                tray.add(trayIcon);
-//            } catch (AWTException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
-//    
+    
     public static void showAlert(String title, String message, Alert.AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -183,13 +135,6 @@ public class TickTackToeClient extends Application {
         alert.setContentText("");
         alert.showAndWait();
     }
-//    public static void showSystemNotification(String title, String message, TrayIcon.MessageType messageType) {
-//        if (SystemTray.isSupported()) {
-//            trayIcon.displayMessage(title, message, messageType);
-//        } else {
-//            System.err.println("System tray not supported!");
-//        }
-//    }
     
     public static boolean showConfirmation(String title, String message, String btn1, String btn2) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "",
@@ -206,16 +151,11 @@ public class TickTackToeClient extends Application {
         return isOk[0];
     }
     
-    
     public static void openLoginView() {
 
         mainStage.hide();
         mainStage.setScene(sceneLogin);
         mainStage.setTitle("Login");
-        File iconfile = new File("views/imgs/xocolored-0١");
-        Image icon = new Image(iconfile.toURI().toString());
-        mainStage.getIcons().add(icon);
-//        loginController.showAnimation();
         openedScene = scenes.loginS;
         mainStage.show();
     }
@@ -223,10 +163,6 @@ public class TickTackToeClient extends Application {
         mainStage.hide();
         mainStage.setScene(sceneRegister);
         mainStage.setTitle("Register");
-        File iconfile = new File("views/imgs/xocolored-0١");
-        Image icon = new Image(iconfile.toURI().toString());
-        mainStage.getIcons().add(icon);
-//        registerController.showAnimation();
         openedScene = scenes.registerS;
         mainStage.show();
     }
@@ -234,40 +170,27 @@ public class TickTackToeClient extends Application {
         mainStage.hide();
         mainStage.setScene(sceneHome);
         mainStage.setTitle("Home");
-        File iconfile = new File("views/imgs/xocolored-0١");
-        Image icon = new Image(iconfile.toURI().toString());
-        mainStage.getIcons().add(icon);
         openedScene = scenes.homeS;
         mainStage.show();
-//        homeController.showAnimation();
     }
     public static void openMatchView() {
         mainStage.hide();
         mainStage.setScene(sceneMatch);
         mainStage.setTitle("Match");
-        File iconfile = new File("views/imgs/xocolored-0١");
-        Image icon = new Image(iconfile.toURI().toString());
-        mainStage.getIcons().add(icon);
         openedScene = scenes.matchS;
         mainStage.show();
-//        matchController.showAnimation();
     }
     public static void openGameView() {
         mainStage.hide();
         mainStage.setScene(sceneGame);
         mainStage.setTitle("TicTacToe");
-        File iconfile = new File("views/imgs/xocolored-0١");
-        Image icon = new Image(iconfile.toURI().toString());
-        mainStage.getIcons().add(icon);
         openedScene = scenes.vsPlayerS;
         mainStage.show();
-//        gameController.showAnimation();
     }
     public static void openGameVsComputerView() {
         mainStage.hide();
         mainStage.setScene(sceneGameVsComputer);
         mainStage.setTitle("TicTacToe");
-//        gameVsComputerController.showAnimation();
         openedScene = scenes.vsComputerS;
         mainStage.show();
     }
@@ -286,7 +209,7 @@ public class TickTackToeClient extends Application {
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.showAndWait();
         } catch (IOException e) {
-            System.out.println("tick.tack.toe.client.TickTackToeClient.showAlert()");
+            //System.out.println("tick.tack.toe.client.TickTackToeClient.showAlert()");
         }
     }
     public static void sendUpdateInGameStatus(boolean isInGame) {
@@ -305,7 +228,6 @@ public class TickTackToeClient extends Application {
     public void stop() throws Exception {
         try{
             super.stop();
-            tray.remove(trayIcon);
             serverListener.interrupt();
         } catch(NullPointerException e){}
         

@@ -109,19 +109,27 @@ public class HomeViewController implements Initializable {
     // to confirm user
     private void showInvitationConfirmation() {
         Invitation invitation = tInvitation.getSelectionModel().getSelectedItem();
+        System.out.println("HomeViewController -> showInvitationConfirmation: "+ invitation.getPlayer().getDb_Player_id());
+        System.out.println("HomeViewController -> showInvitationConfirmation: "+ invitation.getPlayer().getServer_id());
         if (invitation.getType().equals(Invitation.GAME_INVITATION)) {
             confirmGameInvitation(invitation);
         }
     }
     private void confirmGameInvitation(Invitation invitation) {
+        
+                System.out.println("HomeViewController -> confirmGameInvitation: "+ invitation.getPlayer().getServer_id());
+                System.out.println("HomeViewController -> confirmGameInvitation: "+ invitation.getPlayer().getDb_Player_id());
         if (TickTackToeClient.showConfirmation(invitation.getType(), invitation.getName() + " invite you to a game.", "Accept", "Decline")) {
             // accept the invitation
+            playersFullInfo.get(invitation.getPlayer().getDb_Player_id()).setServer_id(invitation.getPlayer().getServer_id());
             AcceptInvitationRequest acceptInvitationReq = new AcceptInvitationRequest(new Player(playersFullInfo.get(invitation.getPlayer().getDb_Player_id())));
             try {
+                System.out.println("HomeViewController -> confirmGameInvitation: "+ acceptInvitationReq.getPlayer().getServer_id());
+                System.out.println("HomeViewController -> confirmGameInvitation: "+ acceptInvitationReq.getPlayer().getDb_Player_id());
                 // create the json
                 String jRequest = TickTackToeClient.mapper.writeValueAsString(acceptInvitationReq);
                 ServerListener.sendRequest(jRequest);
-                //TicTacToeClient.gameController.setCompetitor(invitation.getPlayer());
+                //TickTackToeClient.gameController.setCompetitor(invitation.getPlayer());
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
             }
@@ -175,6 +183,7 @@ public class HomeViewController implements Initializable {
         System.out.println("pressed Invite Player");
         // get selected object
         PlayerFullInfo playerFullInfo = tPlayers.getSelectionModel().getSelectedItem();
+        System.out.println("HomeViewController -> onActionInvitePlayer: "+playerFullInfo.getDb_Player_id());
         // check if the selected object is valid and not sent him invite before
         if (isValidSelection(playerFullInfo) && sent.get(playerFullInfo.getDb_Player_id()) == null) {
             // create invite to a game request
@@ -293,6 +302,13 @@ public class HomeViewController implements Initializable {
          Match match = tInvitation.getSelectionModel().getSelectedItem().getMatch();
          if(TickTackToeClient.showConfirmation("ShowNotification","Do you want to resume game ?","Accept","Reject"))
          {
+                         System.out.println("respondToResumeReq 1: ");
+
+            System.out.println("xxxxxxxxxx: "+match.getPlayer1_id());
+            System.out.println("uuuu: "+match.getPlayer2_id());
+            System.out.println("oooo: "+match.getPlayer1_choice());
+            System.out.println("respond: "+match.getPlayer2_choice());
+
             AcceptToResumeRequest acceptToResumeReq = new AcceptToResumeRequest(player, match);
             try {
                 String jRequest = TickTackToeClient.mapper.writeValueAsString(acceptToResumeReq);
@@ -302,6 +318,8 @@ public class HomeViewController implements Initializable {
             }
          }
          else{
+                                      System.out.println("respondToResumeReq 2: ");
+
              RejectToResumeRequest rejectToResumeReq = new RejectToResumeRequest(player);
              try {
                  String jRequest = TickTackToeClient.mapper.writeValueAsString(rejectToResumeReq);
@@ -341,6 +359,7 @@ public class HomeViewController implements Initializable {
             invitation.setPlayer(player);
             invitation.setName(playersFullInfo.get(player.getDb_Player_id()).getName());
             invitations.put(invitation.getPlayer().getDb_Player_id(), invitation);
+            
             fillInvitationsTable();
 //            TickTackToeClient.showSystemNotification("Game Invitation",
 //                    playersFullInfo.get(player.getDb_Player_id()).getName() + " sent you game invitation.",

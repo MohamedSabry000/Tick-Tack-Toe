@@ -5,16 +5,7 @@
  */
 package tick.tack.toe.server.models;
 
-//@JsonFormat is defined in the jackson-databind package so we need the following Maven Dependency:
-/*
-<dependency>
-    <groupId>com.fasterxml.jackson.core</groupId>
-    <artifactId>jackson-databind</artifactId>
-    <version>2.13.0</version>
-</dependency>
-*/
-//import com.fasterxml.jackson.annotation.JsonFormat;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.sql.Timestamp;
 /**
  *
@@ -23,7 +14,7 @@ import java.sql.Timestamp;
 public class Match {
     private int match_id,player1_id,player2_id,winner;
     private String player1_choice, player2_choice, status, level, game_grid;
-    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private Timestamp match_date;
     
     public static final char CHOICE_X = 'X';

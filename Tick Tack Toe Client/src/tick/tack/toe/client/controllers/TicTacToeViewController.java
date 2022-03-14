@@ -127,7 +127,9 @@ public class TicTacToeViewController implements Initializable{
             Position position = new Position();
             position.setMatch_id(match.getMatch_id());
             position.setPlayer_id(TickTackToeClient.homeController.getMyPlayerFullInfo().getDb_Player_id());
+            
             position.setPosition(btnId);
+            System.out.println("get Position: "+ btnId);
             UpdateBoardRequest updateBoardReq = new UpdateBoardRequest(position);
             try {
                 String jRequest = TickTackToeClient.mapper.writeValueAsString(updateBoardReq);
@@ -312,7 +314,7 @@ public class TicTacToeViewController implements Initializable{
         if (winner == -1) {
             title = "Game Over";
             msg = "Game Over";
-            img = "gameOver";
+            img = "loser";
         } else if (winner == TickTackToeClient.homeController.getMyPlayerFullInfo().getDb_Player_id()) {
             title = "You Won";
             msg = "WINNER";
@@ -323,7 +325,7 @@ public class TicTacToeViewController implements Initializable{
             img = "loser";
         }
 //        TickTackToeClient.showSystemNotification(title, msg, TrayIcon.MessageType.INFO);
-        TickTackToeClient.showAlert(title, msg, Alert.AlertType.INFORMATION);
+        TickTackToeClient.showAlert(title, img);
         backToHome();
     }
     

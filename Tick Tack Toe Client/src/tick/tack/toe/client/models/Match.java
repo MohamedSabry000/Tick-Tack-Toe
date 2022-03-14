@@ -5,6 +5,7 @@
  */
 package tick.tack.toe.client.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.sql.Timestamp;
 /**
  *
@@ -13,7 +14,7 @@ import java.sql.Timestamp;
 public class Match {
     private int match_id,player1_id,player2_id,winner;
     private String player1_choice, player2_choice, status, level;
-    //@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
     private Timestamp match_date;
     
     public static final char CHOICE_X = 'X';
