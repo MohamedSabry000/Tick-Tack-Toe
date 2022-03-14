@@ -128,6 +128,14 @@ public class TicTacToeViewController implements Initializable{
             position.setMatch_id(match.getMatch_id());
             position.setPlayer_id(TickTackToeClient.homeController.getMyPlayerFullInfo().getDb_Player_id());
             
+            int id = TickTackToeClient.homeController.getMyPlayerFullInfo().getDb_Player_id();
+            if(id == match.getPlayer1_id())
+                position.setType(match.getPlayer1_choice());
+            else if(id == match.getPlayer2_id())
+                position.setType(match.getPlayer2_choice());
+            else 
+                position.setType("-");
+            
             position.setPosition(btnId);
             System.out.println("get Position: "+ btnId);
             UpdateBoardRequest updateBoardReq = new UpdateBoardRequest(position);
@@ -376,6 +384,7 @@ public class TicTacToeViewController implements Initializable{
     }
     
     private void saveMatch() {
+
         SaveMatchRequest saveMatchReq = new SaveMatchRequest(match, positions);
         try {
             String jRequest = TickTackToeClient.mapper.writeValueAsString(saveMatchReq);

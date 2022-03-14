@@ -11,7 +11,7 @@ package tick.tack.toe.client.models;
  */
 public class Position {
     private int match_id, player_id;
-    private String position;
+    private String position, type;
 
     public Position() {
     }
@@ -20,6 +20,12 @@ public class Position {
         this.match_id = match_id;
         this.player_id = player_id;
         this.position = position;
+    }
+    public Position(int match_id, int player_id, String position, String type) {
+        this.match_id = match_id;
+        this.player_id = player_id;
+        this.position = position;
+        this.type = type;
     }
 
     public int getMatch_id() {
@@ -44,6 +50,14 @@ public class Position {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+    
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     

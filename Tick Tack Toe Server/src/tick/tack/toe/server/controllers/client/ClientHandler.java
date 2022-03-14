@@ -360,6 +360,7 @@ public class ClientHandler extends Thread {
     }
     private void saveMatch(String json) {
         try {
+            System.out.println("I'm in ");
             SaveMatchRequest saveMatchReq = mapper.readValue(json, SaveMatchRequest.class);
             int m_id = saveMatchReq.getMatch().getMatch_id();
             System.out.println(saveMatchReq.getMatch().getMatch_id());
@@ -469,8 +470,13 @@ public class ClientHandler extends Thread {
         match.setPlayer1_id(p1.getDb_Player_id());
         match.setPlayer2_id(p2.getDb_Player_id());
         
-        
-        match.setMatch_date(new Timestamp((System.currentTimeMillis())));
+//        String dateTimePre = new Timestamp(System.currentTimeMillis()).toString();
+//        String dateTime = dateTimePre.substring(0, dateTimePre.length()-2);
+//        match.setMatch_date(dateTime);
+        match.setMatch_date(new Timestamp(System.currentTimeMillis()));
+//        match.setMatch_date("2022-03-14 17-05-26");
+
+        System.out.println("Client Handler > create match: "+match.getMatch_date());
         
         char[] choices = new char[]{Match.CHOICE_X, Match.CHOICE_O};
         match.setPlayer1_choice(String.valueOf(choices[new Random().nextInt(2)]));
@@ -546,16 +552,23 @@ public class ClientHandler extends Thread {
             AskToResumeRequest askToResumeReq = mapper.readValue(json, AskToResumeRequest.class);
             // get competitor
             ClientHandler _competitor = clients.get(askToResumeReq.getPlayer().getServer_id());
+            System.out.println("Client Handler > Ask to resume: "+_competitor.getId());
             // check if the competitor is still online and not in a game
             if (_competitor != null && !_competitor.myFullInfoPlayer.isInGame()) {
+                            System.out.println("Client Handler > Ask to resume: started");
+
                 // create the notification
                 AskToResumeNotification askToResumeNotification = new AskToResumeNotification(
                         new Player(clients.get(this.getId()).myFullInfoPlayer), askToResumeReq.getMatch());
                 // create json from the notification
                 String jNotification = mapper.writeValueAsString(askToResumeNotification);
+                System.out.println("I'm going");
                 // send the game invitation to the competitor
                 _competitor.printStream.println(jNotification);
+                System.out.println("I went there");
             } else {
+                            System.out.println("Client Handler > Ask to resume: offline ");
+
                 // the competitor became offline or started a new another game
                 sendOfflineOrInGame(askToResumeReq.getPlayer(), _competitor);
             }

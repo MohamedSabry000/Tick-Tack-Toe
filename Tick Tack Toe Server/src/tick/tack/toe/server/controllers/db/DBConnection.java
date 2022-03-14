@@ -248,12 +248,13 @@ public class DBConnection {
             stms.setString(5, match.getPlayer1_choice());
             stms.setString(6, match.getPlayer2_choice());
             stms.setTimestamp(7, match.getMatch_date());
+//            stms.setString(7, "2022-03-14 12-21-55");
             
             stms.execute();
             
             //excute returns boolean, excute query returns object (result set )
             System.out.println("dateeeee: '"+match.getMatch_date()+"'");
-                        System.out.println("hello............");
+                        System.out.println("hello............ heeeeeeeeeeeereeeeeeeeeeeeee");
 
             int match_id = selectMatchId(match.getMatch_date(), match.getPlayer1_id(), match.getPlayer2_id());
             System.out.println("hhhhhhhhhhhh: "+match_id);
@@ -271,25 +272,24 @@ public class DBConnection {
 
     //to be worked on.
     private void insertPositions(List<Position> positions, int m_id) {
-        StringBuilder grid = new StringBuilder("");
-        int i = 0;
-        for (Position position : positions) {
+        StringBuilder grid = new StringBuilder("---------");
             try {
-                while (i < 9) {
-                    grid.append(position.getPosition());
-                    System.out.println("=> "+position.getPosition());
-                    i++;
-                }
+
                 System.out.println("woooooooooooow: "+grid);
-                Statement stmt = connection.createStatement();
-                String queryString = new String("INSERT INTO game (game_grid) values('" + grid + "') where game_id = '" + m_id + "' ");
-                ResultSet result = stmt.executeQuery(queryString);
+                for (Position position : positions) {
+                    System.out.println("position.getType().charAt(0): "+position.getType().charAt(0));
+                                    System.out.println("woooooooooooow: "+grid);
+
+                    int id = Character.getNumericValue(position.getPosition().charAt(1));
+                    grid.setCharAt(id-1, position.getType().charAt(0));
+                }
+                PreparedStatement stms = connection.prepareStatement("UPDATE game SET game_grid = '"+ grid +"' WHERE game_id = '" + m_id + "' ");
+                stms.executeUpdate();
+                System.out.println("rrrrrrrrrrrrrrrrrrrr");
             } catch (SQLException e) {
-//                try { Thread.sleep(500); } catch (InterruptedException ignored) { }
-//                insertPositions(positions, m_id);
                 System.out.println(e);
             }
-        }
+//        }
     }
 
     public void alterMatch(Match match, List<Position> positions) throws SQLException {
@@ -314,10 +314,11 @@ public class DBConnection {
             PreparedStatement stm = connection.prepareStatement("select game_id from game where player1_id=? and player2_id=? and game_date=?");
             stm.setInt(1, player1_id);
             stm.setInt(2, player2_id);
-            String timeStr = match_date.toString();
-            String x = timeStr.substring(0, timeStr.length() - 2);
-            stm.setString(3, x);
-            System.out.println("cccccc: uuuuuuuuuuuu");
+//            String timeStr = match_date.toString();
+//            String x = timeStr.substring(0, timeStr.length() - 2);
+            stm.setTimestamp(3, match_date);
+//            stm.setString(3, "2022-03-14 12-21-55");
+            System.out.println("cccccc: uuuuuuuuuuuu hereeeeeeeeeeeeeeeeee");
             ResultSet queryResult = stm.executeQuery();
             queryResult.next();
             match_id = queryResult.getInt("game_id");
@@ -486,7 +487,7 @@ public class DBConnection {
                         default:
                             player_id = -1;
                     }
-                    positions.add(new Position(match_id, player_id, grid.charAt(i)+""));
+                    positions.add(new Position(match_id, player_id, "b"+i, grid.charAt(i)+""));
                     
                     System.out.println(grid.charAt(i));
                 }
