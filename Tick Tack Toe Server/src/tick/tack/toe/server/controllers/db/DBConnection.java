@@ -207,6 +207,7 @@ public class DBConnection {
      */
     // -> Get Match using Match id
     public Match getMatch(int match_id) {
+        System.out.println("DBConnection > get Match of id: "+match_id);
         PreparedStatement stm = null;
         Match match = new Match();
         try {
@@ -224,6 +225,8 @@ public class DBConnection {
             match.setPlayer1_choice(resultSet.getString("player1_choice"));
             match.setPlayer2_choice(resultSet.getString("player2_choice"));
             match.setMatch_date(resultSet.getTimestamp("game_date"));
+            
+            System.out.println("The Match is: "+ match);
             
         } catch (SQLException e) {
 //            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
@@ -276,14 +279,18 @@ public class DBConnection {
             try {
 
                 System.out.println("woooooooooooow: "+grid);
+                int i = 0;
                 for (Position position : positions) {
                     System.out.println("position.getType().charAt(0): "+position.getType().charAt(0));
                                     System.out.println("woooooooooooow: "+grid);
 
-                    int id = Character.getNumericValue(position.getPosition().charAt(1));
-                    grid.setCharAt(id-1, position.getType().charAt(0));
+//                    int id = Character.getNumericValue(position.getPosition().charAt(1));
+//                    if()
+                    grid.setCharAt(i, position.getType().charAt(0));
+                    i++;
                 }
-                PreparedStatement stms = connection.prepareStatement("UPDATE game SET game_grid = '"+ grid +"' WHERE game_id = '" + m_id + "' ");
+                System.out.println("Finally: "+grid);
+                PreparedStatement stms = connection.prepareStatement("UPDATE game SET game_grid = '"+ grid +"' WHERE game_id = " + m_id + " ");
                 stms.executeUpdate();
                 System.out.println("rrrrrrrrrrrrrrrrrrrr");
             } catch (SQLException e) {

@@ -557,9 +557,12 @@ public class ClientHandler extends Thread {
             if (_competitor != null && !_competitor.myFullInfoPlayer.isInGame()) {
                             System.out.println("Client Handler > Ask to resume: started");
 
+                // get Match
+                Match match = dbConnection.getMatch(askToResumeReq.getMatch().getMatch_id());
+                System.out.println("Match has Got, client handler > ask to resume");
                 // create the notification
                 AskToResumeNotification askToResumeNotification = new AskToResumeNotification(
-                        new Player(clients.get(this.getId()).myFullInfoPlayer), askToResumeReq.getMatch());
+                        new Player(clients.get(this.getId()).myFullInfoPlayer), match);
                 // create json from the notification
                 String jNotification = mapper.writeValueAsString(askToResumeNotification);
                 System.out.println("I'm going");

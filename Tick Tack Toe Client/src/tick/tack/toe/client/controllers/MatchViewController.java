@@ -113,6 +113,10 @@ public class MatchViewController implements Initializable{
                 Player player = new Player(db_id, s_id);
                 Match match = new Match();
                 match.setMatch_id(matchTable.getMatch_id());
+                match.setPlayer1_id(matchTable.getPlayer1_id());
+                match.setPlayer2_id(matchTable.getPlayer2_id());
+                match.setMatch_date(matchTable.getMatch_date());
+                
                 AskToResumeRequest askToResumeReq = new AskToResumeRequest();
                 askToResumeReq.setPlayer(player);
                 askToResumeReq.setMatch(match);

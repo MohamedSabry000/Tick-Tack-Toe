@@ -4,19 +4,22 @@
  * and open the template in the editor.
  */
 package tick.tack.toe.client.models;
+
+import java.sql.Timestamp;
+
 /**
  *
  * @author booga
  */
 public class MatchTable {
     private String player1_Name, player2_Name, winner,status;
-    private String match_date;
+    private Timestamp match_date;
     private int match_id,player1_id, player2_id;
     public static final String STATUS_FINISHED = "finished";
     public static final String STATUS_PAUSED = "paused";
 
     public MatchTable(){}
-    public MatchTable(String player1_Name, String player2_Name, String winner, String status, String match_date, int match_id, int player1_id, int player2_id) {
+    public MatchTable(String player1_Name, String player2_Name, String winner, String status, Timestamp match_date, int match_id, int player1_id, int player2_id) {
         this.player1_Name = player1_Name;
         this.player2_Name = player2_Name;
         this.status = status;
@@ -57,11 +60,11 @@ public class MatchTable {
         this.status = status;
     }
 
-    public String getMatch_date() {
+    public Timestamp getMatch_date() {
         return match_date;
     }
 
-    public void setMatch_date(String match_date) {
+    public void setMatch_date(Timestamp match_date) {
         this.match_date = match_date;
     }
 
