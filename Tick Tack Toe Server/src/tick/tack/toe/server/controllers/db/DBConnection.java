@@ -380,7 +380,7 @@ public class DBConnection {
     public void alterMatch(Match match, List<Position> positions) throws SQLException {
         PreparedStatement p = null;
         try {
-            p = connection.prepareStatement("update game set game_date=now(), status='finished', winner=? where game_id=?;");
+            p = connection.prepareStatement("update game set game_date=now(), status='paused', winner=? where game_id=?;");
             p.setInt(1, match.getWinner());
             p.setInt(2, match.getMatch_id());
             p.executeUpdate();
