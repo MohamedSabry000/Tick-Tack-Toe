@@ -20,9 +20,17 @@ import tick.tack.toe.server.controllers.MainViewController;
 import tick.tack.toe.server.requests.*;
 import tick.tack.toe.server.responses.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.application.Platform;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import tick.tack.toe.server.TickTackToeServer;
 import tick.tack.toe.server.controllers.MainViewController;
 import tick.tack.toe.server.notifications.*;
@@ -49,10 +57,11 @@ public class ClientHandler extends Thread {
     private Map<String, IAction> actions;
     private ClientHandler competitor;
     private PlayerFullInfo myFullInfoPlayer;
-
+    
+    
 
     
-    public ClientHandler(Socket socket) {
+    public ClientHandler(Socket socket) {            
         initActions();
         try {
             dataInputStream = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -160,6 +169,7 @@ public class ClientHandler extends Thread {
         try {
             LoginRequest loginReq = mapper.readValue(json, LoginRequest.class);
             LoginResponse loginRes = new LoginResponse();
+
             int u_id = dbConnection.authenticate(loginReq.getCredentials());
             System.out.println("i'm id: "+loginReq.getCredentials() );
             System.out.println("i'm id2: "+loginReq);
@@ -214,6 +224,7 @@ public class ClientHandler extends Thread {
     private void signUp(String json) {
         try {
             SignUpRequest signUpReq = mapper.readValue(json, SignUpRequest.class);
+      
             PlayerFullInfo playerFullInfo = dbConnection.signUp(signUpReq.getUser());
             SignUpResponse signUpRes = new SignUpResponse();
             if (playerFullInfo != null) {
@@ -239,6 +250,7 @@ public class ClientHandler extends Thread {
             e.printStackTrace();
         }
     }
+    
     private void updateInGameStatus(String json) {
         try {
             UpdateInGameStatusRequest updateInGameStatusReq = mapper.readValue(json, UpdateInGameStatusRequest.class);

@@ -7,6 +7,8 @@ package tick.tack.toe.server.controllers.db;
 
 import java.net.*;
 import java.io.*;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -14,6 +16,15 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.KeyGenerator;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 import tick.tack.toe.server.controllers.client.ClientHandler;
 
 import tick.tack.toe.server.models.*;
@@ -34,8 +45,12 @@ public class DBConnection {
     private final String dbHost = "localhost";
     private final String dbPort = "3306";
     private final String dbUser = "root";
-    private final String dbPass = "Awad36148";
+    private final String dbPass = "1234";
     private static Connection connection = null;
+    
+    static Cipher cipher; 
+    SecretKey secretKey = decodeKeyFromString("hXarwfB0G/KydnnYeJOhcw==");
+    KeyGenerator keyGenerator;
 
     public DBConnection() {
         connect();
@@ -61,21 +76,66 @@ public class DBConnection {
     }
 
     /**
+     * Encryption and Decryption
+     */
+    
+    public static String encrypt(String plainText, SecretKey secretKey) {
+        byte[] plainTextByte = plainText.getBytes();
+        try {
+            cipher = Cipher.getInstance("AES");
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+            byte[] encryptedByte = cipher.doFinal(plainTextByte);
+            Base64.Encoder encoder = Base64.getEncoder();
+            String encryptedText = encoder.encodeToString(encryptedByte);
+            return encryptedText;
+        } catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException | NoSuchAlgorithmException | NoSuchPaddingException ex) {
+            System.out.println("Some thing related to Encryption Happened");
+            return plainText;
+        } 
+    }
+
+    public static String keyToString(SecretKey secretKey) {
+        /* Get key in encoding format */
+        byte encoded[] = secretKey.getEncoded();
+
+        /*
+         * Encodes the specified byte array into a String using Base64 encoding
+         * scheme
+         */
+        String encodedKey = Base64.getEncoder().encodeToString(encoded);
+
+        return encodedKey;
+    }
+    
+    public static SecretKey decodeKeyFromString(String keyStr) {
+        /* Decodes a Base64 encoded String into a byte array */
+        byte[] decodedKey = Base64.getDecoder().decode(keyStr);
+
+        /* Constructs a secret key from the given byte array */
+        SecretKey secretKey = new SecretKeySpec(decodedKey, 0,
+          decodedKey.length, "AES");
+
+        return secretKey;
+    }
+    /**
      * ******** Start Sign In **************
      */
     public int authenticate(Credentials credentials) {
         try {
             System.out.println("Auth satr 1");
-            Statement stmt = connection.createStatement();
-
-            ResultSet rs = stmt.executeQuery("select id from player where user='"+ credentials.getUsername() +"' and password='" + credentials.getPassword() + "' and status = 'offline' LIMIT 1");
-
-            System.out.println(rs);
-            if (rs.next()) {
-                return rs.getInt("id");
+            Statement passStmt = connection.createStatement();
+            ResultSet pass = passStmt.executeQuery("select id, password from player where username='"+ credentials.getUsername() +"' LIMIT 1");
+            
+            pass.next();
+            
+            if (encrypt( credentials.getPassword(), secretKey).equals(pass.getString("password"))){
+                return pass.getInt("id");
             } else {
-                 return rs.getInt("id");
+                System.out.println("encrypt( credentials.getPassword(), decodeKeyFromString(passAndKey.getString(\"encKey\"))): "+ encrypt( credentials.getPassword(), secretKey));
+                System.out.println("passAndKey.getString(\"password\"): "+ pass.getString("password"));
+                System.out.println("Hello from Encryption");
             }
+           
         } catch (SQLException e) {
 
             //try { Thread.sleep(500); } catch (InterruptedException ignored) { }
@@ -127,22 +187,38 @@ public class DBConnection {
      * ******** Start Sign Up And Return PlayerFullInfo model **************
      */
     public PlayerFullInfo signUp(User user) {
+        
+         try {
+//            keyGenerator = KeyGenerator.getInstance("AES");
+//            keyGenerator.init(128); // block size is 128bits
+//            secretKey = keyGenerator.generateKey();
+            cipher = Cipher.getInstance("AES"); //SunJCE provider AES algorithm, mode(optional) and padding schema(optional)  
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException ex) {
+            System.out.println("Error While Creating Key for Ecryption!!");
+        }
+        
+        String encryptedText = encrypt(user.getPassword(), secretKey);          
+        
         if (validateUser(user.getUsername())) {
             return null;
         } else {
             try {
+                System.out.println("1: "+  user.getUsername());
+                System.out.println("2 "+  user.getName());
+                System.out.println("3: "+  user.getPassword());
                 PreparedStatement stm = connection.prepareStatement("insert into player (username, user, password) values (?,?,?);");
                 stm.setString(1, user.getUsername());
                 stm.setString(2, user.getName());
-                stm.setString(3, user.getPassword());
+                stm.setString(3, encryptedText);
                 System.out.println("hello DBConnection Class -> SignUp Method: "+stm.toString());
-                stm.execute();
+                stm.executeUpdate();
                 System.out.println("Good Job");
                 return getPlayerInfo(user.getUsername());
             } catch (SQLException ex) {
-                try { Thread.sleep(500); } catch (InterruptedException ignored) { }
-                signUp(user);       
+//                try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+//                signUp(user);       
                 System.out.println(ex);
+                ex.printStackTrace();
             }
         }
         return null;
@@ -151,14 +227,16 @@ public class DBConnection {
     // -> Validate User Existance
     public boolean validateUser(String username) {
         try {
+            System.out.println("user: "+username);
             PreparedStatement stm = connection.prepareStatement("select * from player where username=?");
             stm.setString(1, username);
             ResultSet result = stm.executeQuery();
             return result.next();
         } catch (SQLException ex) {
-            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
-            validateUser(username); 
+//            try { Thread.sleep(500); } catch (InterruptedException ignored) { }
+//            validateUser(username); 
             System.out.println(ex);
+            ex.printStackTrace();
         }
         return false;
     }

@@ -96,5 +96,12 @@
             <Font name="Gill Sans MT" size="17.0" />
          </font>
       </Text>
+      <Label layoutX="490.0" layoutY="225.0" text="Password Rules:" />
+      <Label layoutX="490.0" layoutY="243.0" text="1. must have at least one digit" />
+      <Label layoutX="490.0" layoutY="260.0" prefHeight="38.0" prefWidth="159.0" text="2. must have at least one lower case character" wrapText="true" />
+      <Label layoutX="490.0" layoutY="298.0" prefHeight="38.0" prefWidth="159.0" text="3. must have at least one upper case character" wrapText="true" />
+      <Label layoutX="490.0" layoutY="336.0" prefHeight="38.0" prefWidth="159.0" text="4. must have at least one special character" wrapText="true" />
+      <Label layoutX="490.0" layoutY="394.0" prefHeight="38.0" prefWidth="159.0" text="6. password must be at least  eight characters" wrapText="true" />
+      <Label layoutX="490.0" layoutY="374.0" prefHeight="20.0" prefWidth="159.0" text="5. no whitespace allowed" wrapText="true" />
    </children>
 </AnchorPane>
