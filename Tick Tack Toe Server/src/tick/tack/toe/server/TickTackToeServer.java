@@ -9,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -22,7 +23,8 @@ import tick.tack.toe.server.controllers.client.ClientListener;
  */
 public class TickTackToeServer extends Application {
     public static MainViewController controller;
-    
+    private static double xOffset = 0;
+    private static double yOffset = 0;
     @Override
     public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("views/MainView.fxml"));
@@ -33,6 +35,16 @@ public class TickTackToeServer extends Application {
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(scene);
         primaryStage.show();
+        
+        root.setOnMousePressed((MouseEvent event) -> {
+             xOffset = event.getSceneX();
+             yOffset = event.getSceneY();
+        });
+        root.setOnMouseDragged((MouseEvent event) -> {
+            primaryStage.setX(event.getScreenX() - xOffset);
+            primaryStage.setY(event.getScreenY() - yOffset);
+        });
+
         
         MainViewController.initClientListener();
     }

@@ -3,6 +3,7 @@ package tick.tack.toe.client.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,8 +47,7 @@ public class TicTacToeViewController implements Initializable{
     private Image imgChoice;
     private char txtChoice;
     private boolean myTurn = false;
-    private final Image imgX = new Image(new File("images/x.png").toURI().toString());
-    private final Image imgO = new Image(new File("images/o.png").toURI().toString());
+    private Image imgX, imgO;
     private final GameEngine gameEngine = new GameEngine();
     
     @FXML
@@ -62,6 +62,10 @@ public class TicTacToeViewController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resources) {
         initButtons();
+        InputStream inputX = getClass().getResourceAsStream("imgs/x1.png");
+        InputStream inputO = getClass().getResourceAsStream("imgs/o1.png");
+        imgX = new Image(inputX,55,55,true,true);
+        imgO = new Image(inputO, 55,55,true,true);   
     }
     
     private void initButtons(){

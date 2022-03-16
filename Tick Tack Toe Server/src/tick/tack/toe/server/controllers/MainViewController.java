@@ -48,7 +48,7 @@ public class MainViewController implements Initializable {
         cStatus.setCellValueFactory(new PropertyValueFactory<>("Status"));
         cIsInGame.setCellValueFactory(new PropertyValueFactory<>("InGame"));
         cScore.setCellValueFactory(new PropertyValueFactory<>("Points"));
-        cStatus.setComparator(cStatus.getComparator().reversed());
+        cScore.setComparator(cScore.getComparator().reversed());
         tPlayers.setItems(_tableView);
 
     }

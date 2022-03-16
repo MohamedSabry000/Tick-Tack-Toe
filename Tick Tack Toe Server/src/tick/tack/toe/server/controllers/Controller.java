@@ -43,7 +43,7 @@ public class Controller implements Initializable  {
         cStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
         cIsInGame.setCellValueFactory(new PropertyValueFactory<>("inGame"));
         cScore.setCellValueFactory(new PropertyValueFactory<>("points"));
-        cStatus.setComparator(cStatus.getComparator().reversed());
+        cScore.setComparator(cScore.getComparator().reversed());
     }
 
     @FXML
@@ -61,8 +61,8 @@ public class Controller implements Initializable  {
 
     public void fillPlayersTable(Collection<PlayerFullInfo> playersFullInfo) {
         tPlayers.getItems().clear();
+        tPlayers.getSortOrder().add(cScore);
         tPlayers.getItems().setAll(playersFullInfo);
-        tPlayers.getSortOrder().add(cStatus);
     }
 
 

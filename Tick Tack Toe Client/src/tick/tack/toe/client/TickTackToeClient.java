@@ -59,6 +59,9 @@ public class TickTackToeClient extends Application {
     public static MatchViewController matchController;
     public static GameVsComputerViewController gameVsComputerController;
     private static ServerListener serverListener;
+    private static double xOffset = 0;
+    private static double yOffset = 0;
+
 
     public enum scenes {registerS, loginS, homeS, matchS, vsPlayerS, vsComputerS}
 
@@ -83,6 +86,16 @@ public class TickTackToeClient extends Application {
         primaryStage.setResizable(false);
         primaryStage.initStyle(StageStyle.UNDECORATED);
         primaryStage.setScene(sceneLogin);
+        
+        sceneLogin.setOnMousePressed((javafx.scene.input.MouseEvent event) -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        sceneLogin.setOnMouseDragged((javafx.scene.input.MouseEvent event) -> {
+            primaryStage.setX(event.getScreenX() - xOffset);
+            primaryStage.setY(event.getScreenY() - yOffset);
+        });
+
         
         mainStage = primaryStage;   
         primaryStage.show();
@@ -164,6 +177,17 @@ public class TickTackToeClient extends Application {
         mainStage.setScene(sceneRegister);
         mainStage.setTitle("Register");
         openedScene = scenes.registerS;
+        
+        //resizeable
+        sceneRegister.setOnMousePressed((javafx.scene.input.MouseEvent event) -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        sceneRegister.setOnMouseDragged((javafx.scene.input.MouseEvent event) -> {
+            mainStage.setX(event.getScreenX() - xOffset);
+            mainStage.setY(event.getScreenY() - yOffset);
+        });
+        
         mainStage.show();
     }
     public static void openHomeView() {
@@ -171,6 +195,18 @@ public class TickTackToeClient extends Application {
         mainStage.setScene(sceneHome);
         mainStage.setTitle("Home");
         openedScene = scenes.homeS;
+        
+        //resizeable
+        sceneHome.setOnMousePressed((javafx.scene.input.MouseEvent event) -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        sceneHome.setOnMouseDragged((javafx.scene.input.MouseEvent event) -> {
+            mainStage.setX(event.getScreenX() - xOffset);
+            mainStage.setY(event.getScreenY() - yOffset);
+        });
+        
+
         mainStage.show();
     }
     public static void openMatchView() {
@@ -178,6 +214,17 @@ public class TickTackToeClient extends Application {
         mainStage.setScene(sceneMatch);
         mainStage.setTitle("Match");
         openedScene = scenes.matchS;
+        
+        //resizeable
+        sceneMatch.setOnMousePressed((javafx.scene.input.MouseEvent event) -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        sceneMatch.setOnMouseDragged((javafx.scene.input.MouseEvent event) -> {
+            mainStage.setX(event.getScreenX() - xOffset);
+            mainStage.setY(event.getScreenY() - yOffset);
+        });
+
         mainStage.show();
     }
     public static void openGameView() {
@@ -185,6 +232,18 @@ public class TickTackToeClient extends Application {
         mainStage.setScene(sceneGame);
         mainStage.setTitle("TicTacToe");
         openedScene = scenes.vsPlayerS;
+        
+        //resizeable
+        sceneGame.setOnMousePressed((javafx.scene.input.MouseEvent event) -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        sceneGame.setOnMouseDragged((javafx.scene.input.MouseEvent event) -> {
+            mainStage.setX(event.getScreenX() - xOffset);
+            mainStage.setY(event.getScreenY() - yOffset);
+        });
+
+        
         mainStage.show();
     }
     public static void openGameVsComputerView() {
@@ -192,6 +251,17 @@ public class TickTackToeClient extends Application {
         mainStage.setScene(sceneGameVsComputer);
         mainStage.setTitle("TicTacToe");
         openedScene = scenes.vsComputerS;
+        
+        //resizeable
+        sceneGameVsComputer.setOnMousePressed((javafx.scene.input.MouseEvent event) -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        sceneGameVsComputer.setOnMouseDragged((javafx.scene.input.MouseEvent event) -> {
+            mainStage.setX(event.getScreenX() - xOffset);
+            mainStage.setY(event.getScreenY() - yOffset);
+        });
+
         mainStage.show();
     }
 

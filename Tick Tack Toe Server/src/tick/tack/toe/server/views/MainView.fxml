@@ -71,7 +71,7 @@
             <TableColumn id="cPlayerName" fx:id="cPlayerName" editable="false" prefWidth="97.0" style="-fx-alignment: BASELINE_CENTER; -fx-font-size: 16;" styleClass=".col" text="Player" />
             <TableColumn id="cStatus" fx:id="cStatus" editable="false" prefWidth="102.0" style="-fx-alignment: BASELINE_CENTER; -fx-font-size: 16;" styleClass=".col" text="Status" />
             <TableColumn id="cIsInGame" fx:id="cIsInGame" editable="false" prefWidth="123.0" style="-fx-alignment: BASELINE_CENTER; -fx-font-size: 16;" styleClass=".col" text="Is In Game" />
-            <TableColumn id="cScore" fx:id="cScore" editable="false" prefWidth="98.0" style="-fx-alignment: BASELINE_CENTER; -fx-font-size: 16;" styleClass=".col" text="Winner" />
+            <TableColumn id="cScore" fx:id="cScore" editable="false" prefWidth="98.0" style="-fx-alignment: BASELINE_CENTER; -fx-font-size: 16;" styleClass=".col" text="Points" />
          </columns>
       </TableView>
    </children>

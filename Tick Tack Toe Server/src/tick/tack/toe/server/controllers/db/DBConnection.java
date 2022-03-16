@@ -34,7 +34,7 @@ public class DBConnection {
     private final String dbHost = "localhost";
     private final String dbPort = "3306";
     private final String dbUser = "root";
-    private final String dbPass = "1234";
+    private final String dbPass = "Awad36148";
     private static Connection connection = null;
 
     public DBConnection() {
