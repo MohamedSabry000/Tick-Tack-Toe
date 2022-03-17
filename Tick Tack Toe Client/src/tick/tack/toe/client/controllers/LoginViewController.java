@@ -65,15 +65,26 @@ public class LoginViewController implements Initializable{
         }
     }
     private boolean isValidInput() {
-        String regex = "^[a-z]+([_.][a-z0-9]+)*${4,}";
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+        /**
+         * ^                 # start-of-string
+           (?=.*[0-9])       # a digit must occur at least once
+           (?=.*[a-z])       # a lower case letter must occur at least once
+           (?=.*[A-Z])       # an upper case letter must occur at least once
+           (?=.*[@#$%^&+=])  # a special character must occur at least once
+           (?=\S+$)          # no whitespace allowed in the entire string
+           .{8,}             # anything, at least eight places though
+           $                 # end-of-string
+         */
+    
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher1 = pattern.matcher(UserNameTxt.getText().trim());
-        if (UserNameTxt.getText().trim().equals("") || !matcher1.matches()) {
+        if (UserNameTxt.getText().trim().equals("") || UserNameTxt.getText().length() < 4 || UserNameTxt.getText().contains(" ")) {
             invaliduserTxt.setText("Invalid username!");
             return false;
         }
 
-        if (PasswordTxt.getText().equals("") || PasswordTxt.getText().length() < 3) {
+        if (PasswordTxt.getText().equals("")) {
             invaliduserTxt.setText("Invalid Password!");
             return false;
         }

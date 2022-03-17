@@ -83,18 +83,18 @@ public class MatchViewController implements Initializable{
             askToResumeReq(matchTable);
         }
     }
-    @FXML protected void onActionView(ActionEvent event) {
-        try {
-            matchTable = MatchTable.getSelectionModel().getSelectedItem();
-            if (matchTable != null) {
-                GetPausedMatchRequest getPausedMatchReq = new GetPausedMatchRequest(matchTable.getMatch_id());
-                String jRequest = TickTackToeClient.mapper.writeValueAsString(getPausedMatchReq);
-                ServerListener.sendRequest(jRequest);
-            }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-    }
+//    @FXML protected void onActionView(ActionEvent event) {
+//        try {
+//            matchTable = MatchTable.getSelectionModel().getSelectedItem();
+//            if (matchTable != null) {
+//                GetPausedMatchRequest getPausedMatchReq = new GetPausedMatchRequest(matchTable.getMatch_id());
+//                String jRequest = TickTackToeClient.mapper.writeValueAsString(getPausedMatchReq);
+//                ServerListener.sendRequest(jRequest);
+//            }
+//        } catch (JsonProcessingException e) {
+//            e.printStackTrace();
+//        }
+//    }
     
     private void askToResumeReq(MatchTable matchTable) {
         System.out.println(matchTable.getMatch_date()+" "+matchTable.getPlayer1_Name()+" "+matchTable.getPlayer1_id()+" "+matchTable.getPlayer2_id());
