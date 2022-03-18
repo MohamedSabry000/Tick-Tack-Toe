@@ -45,7 +45,7 @@ public class DBConnection {
     private final String dbHost = "localhost";
     private final String dbPort = "3306";
     private final String dbUser = "root";
-    private final String dbPass = "1234";
+    private final String dbPass = "Awad36148";
     private static Connection connection = null;
     
     static Cipher cipher; 
@@ -187,7 +187,7 @@ public class DBConnection {
      * ******** Start Sign Up And Return PlayerFullInfo model **************
      */
     public PlayerFullInfo signUp(User user) {
-        
+       
          try {
 //            keyGenerator = KeyGenerator.getInstance("AES");
 //            keyGenerator.init(128); // block size is 128bits
@@ -198,11 +198,12 @@ public class DBConnection {
         }
         
         String encryptedText = encrypt(user.getPassword(), secretKey);          
-        
+       
         if (validateUser(user.getUsername())) {
             return null;
         } else {
             try {
+              
                 System.out.println("1: "+  user.getUsername());
                 System.out.println("2 "+  user.getName());
                 System.out.println("3: "+  user.getPassword());

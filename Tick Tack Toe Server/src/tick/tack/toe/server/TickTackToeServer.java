@@ -36,6 +36,7 @@ public class TickTackToeServer extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         
+        //on drag
         root.setOnMousePressed((MouseEvent event) -> {
              xOffset = event.getSceneX();
              yOffset = event.getSceneY();
