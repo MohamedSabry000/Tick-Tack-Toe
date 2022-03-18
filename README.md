@@ -2,7 +2,7 @@
 
 ![](https://github.com/AbdlrahmanSaberAbdo/AbdlrahmanSaberAbdo/blob/main/thoughtworks-gif_dribbble.gif)
 
-<p>
+<p align="center">
 <img alt="GitHub all releases" src="https://img.shields.io/github/downloads/Vette1123/Insects-Game/total?color=%23F6E7D8&label=Java&logo=Java&logoColor=%23E45826&style=for-the-badge">
 </p>
 
