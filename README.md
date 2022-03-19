@@ -20,7 +20,7 @@
 
 ## Requirements to run the game:
 
-### you will find the following files in [Files/schema](https://github.com/Mohamedfadah/Tick-Tack-Toe/tree/main/Documentation/Database){:target="\_blank"}.
+### you will find the following files in [Files/schema](https://github.com/Mohamedfadah/Tick-Tack-Toe/tree/main/Documentation/Database).
 
 > mySql database with the player/game tables, you can customize the database info in the dbConnection class inorder to fit your needs.
 
