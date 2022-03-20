@@ -57,3 +57,6 @@
 - Updated list of the whole single and multi mode game history.
 
 - The ability to replay any previous game from the `Matches` list.
+
+## Demo
+[![Watch the video](https://i.ytimg.com/vi_webp/OPpdJQMQl-k/maxresdefault.webp)](https://youtu.be/OPpdJQMQl-k)
