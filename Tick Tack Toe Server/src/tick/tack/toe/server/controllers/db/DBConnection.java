@@ -45,7 +45,7 @@ public class DBConnection {
     private final String dbHost = "localhost";
     private final String dbPort = "3306";
     private final String dbUser = "root";
-    private final String dbPass = "Awad36148";
+    private final String dbPass = "1234";
     private static Connection connection = null;
     
     static Cipher cipher; 
@@ -363,10 +363,11 @@ public class DBConnection {
                     System.out.println("position.getType().charAt(0): "+position.getType().charAt(0));
                                     System.out.println("woooooooooooow: "+grid);
 
-//                    int id = Character.getNumericValue(position.getPosition().charAt(1));
-//                    if()
-                    grid.setCharAt(i, position.getType().charAt(0));
-                    i++;
+                    int id = Character.getNumericValue(position.getPosition().charAt(1));
+                    System.out.println("id: "+id);
+//                   if(id>0 && id<=9)
+                        grid.setCharAt((id-1), position.getType().charAt(0));
+//                    i++;
                 }
                 System.out.println("Finally: "+grid);
                 PreparedStatement stms = connection.prepareStatement("UPDATE game SET game_grid = '"+ grid +"' WHERE game_id = " + m_id + " ");
@@ -573,7 +574,7 @@ public class DBConnection {
                         default:
                             player_id = -1;
                     }
-                    positions.add(new Position(match_id, player_id, "b"+i, grid.charAt(i)+""));
+                    positions.add(new Position(match_id, player_id, "b"+(i+1), grid.charAt(i)+""));
                     
                     System.out.println(grid.charAt(i));
                 }
